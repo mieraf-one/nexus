@@ -27,6 +27,33 @@ class FollowSerializer(serializers.Serializer):
         following = get_object_or_404(CustomUser, pk=validated_data['user_id'])
         return Follow.objects.create(follower=follower, following=following)
 
+
+class UnFollowSerializer(serializers.Serializer):
+    user_id = serializers.CharField(write_only=True)
+
+    def validate_user_id(self, value):
+        user = get_object_or_404(CustomUser, pk=value)
+
+        if self.context['request'].user.custom_user == user:
+            raise ValidationError("You cannot unfollow yourself.")
+
+        if not Follow.objects.filter(
+            follower = self.context['request'].user.custom_user,
+            following = user
+        ).exists():
+            raise ValidationError("You already not following.")
+        
+        return value
+    
+    def create(self, validated_data):
+        follower = self.context['request'].user.custom_user
+        following = get_object_or_404(CustomUser, pk=validated_data['user_id'])
+        followed_user = Follow.objects.get(follower=follower, following=following)
+        followed_user.delete()
+
+        return {'success': f'You unfollowed {following.user.username}'}
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -53,11 +80,11 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['user', 'bio', 'profile_picture']
+        fields = ['user', 'bio', 'profile_picture', 'following', 'follower']
     
     def update(self, instance, validated_data):
         request = self.context['request']
-        
+
         user_data = validated_data.pop('user', {})
         user_serializer = UserSerializer(instance=instance.user, data=user_data, context={'request': request}, partial=True)
         if user_serializer.is_valid(raise_exception=True):

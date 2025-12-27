@@ -1,6 +1,6 @@
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.response import Response
-from .serializers import FollowSerializer
+from .serializers import FollowSerializer, ProfileSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 
@@ -14,3 +14,12 @@ class FollowView(CreateAPIView):
         serializer.save()
 
         return Response(status=status.HTTP_201_CREATED)
+
+class ProfileView(RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+
+    def get_serializer_context(self):
+        return {'request': self.request}
+    
+    def get_object(self):
+        return self.request.user.custom_user

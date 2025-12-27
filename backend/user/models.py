@@ -7,6 +7,9 @@ class CustomUser(models.Model):
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
     bio = models.CharField(max_length=200, null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.user.username}'
+
 
 class Follow(models.Model):
     follower = models.ForeignKey(
@@ -25,3 +28,6 @@ class Follow(models.Model):
 
     class Meta:
         unique_together = ('follower', 'following')
+    
+    def __str__(self):
+        return f'{self.follower.user.username, self.following.user.username}'

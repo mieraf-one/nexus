@@ -1,6 +1,11 @@
 from django.urls import path
 from .views import SignupView
+from user.views import FollowView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
-    path('signup/', SignupView.as_view(), name='signup')
+    path('signup/', SignupView.as_view(), name='signup'),
+    path('token/', TokenObtainPairView.as_view(), name='token'),
+    path('refresh/', TokenRefreshView.as_view(), name='refresh'),
+    path('user/follow/<int:pk>/', FollowView.as_view(), name='follow')
 ]

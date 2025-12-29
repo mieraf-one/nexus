@@ -272,6 +272,8 @@ const MainContent = () => {
 };
 
 const SidebarRight = () => {
+  const { user } =  useContext(AuthContext);
+
   const friendSuggestions = [
     { name: 'Mike Thompson', handle: '@miket_design', image: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDlq1M1MGGt0eKcXODBfGkPcBawBYu_18UZ6biXFlrQdmyXE5CClkjDPWPleIldHb5suWVDhtEQP5I2GQH_QOPW7DmtYS7IyCuhA5NkH-TFFpA6eB7_CIB_hWJVCnUjyQ2vCN84ugMttKwojgInPjWcE1zVWnZbNLlDnFgyUydW8wc_WJuPwM_fRa2Zx6T17hVoAkB3UbY7Hn8GCW3Upv7NnA_PpVn-e_RL3hefEHjMs_WUpMqEqwytRlKuJCgHtkmhIC5Ahfp05WMr")', isFollowing: false },
     { name: 'Sarah Jenkins', handle: '@sarah_j', image: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCAvytpHetbHBoclqocctShLueN0d3j1vLCCILREkyMzOLXw9e5auSU6C6KoAjoQ2RDfwPu_2Bz6AF5hswBmDaiWEhs4YWbqSiRostSwEYvn_Y0E3FJYNO4yFegf-hzyglelo9Fud_Ck0lSLrw7f10Dk82uT4A_LJrL3WBfxT1285e-0ljpmVhW59dduWOmxRWfsd2HJA7qBMQwYEKWRBeUIf7R8UoQREBSS3a4qi9hG7SEwWyEtGhtLJy_79YA2DDQN-3P-qFLOjL")', isFollowing: true },
@@ -290,8 +292,8 @@ const SidebarRight = () => {
           <div className="online-indicator"></div>
         </div>
         <div className="profile-info">
-          <h3 className="profile-name">Alex Morgan</h3>
-          <p className="profile-handle">@alex_creative</p>
+          <h3 className="profile-name">{user.user.first_name}</h3>
+          <p className="profile-handle">@{user.user.username}</p>
         </div>
         <span className="material-symbols-outlined chevron">chevron_right</span>
       </a>

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './css/DashboardPage.css';
+import { AuthContext } from '../context/AuthContext';
 
 export default function DashboardPage() {
   return (
@@ -18,6 +19,8 @@ export default function DashboardPage() {
 
 
 const Header = () => {
+  const { logout } = useContext(AuthContext);
+  
  return (
     <header className="header">
       <div className="header-content">
@@ -40,7 +43,7 @@ const Header = () => {
         </div>
         
         <div className="actions-section">
-          <button className="logout-button">
+          <button className="logout-button" onClick={logout}>
             <span className="material-symbols-outlined logout-icon">logout</span>
             <span className="logout-text">Logout</span>
           </button>
@@ -324,7 +327,7 @@ const SidebarRight = () => {
         <a href="#" className="footer-link">Help</a>
         <a href="#" className="footer-link">Privacy</a>
         <a href="#" className="footer-link">Terms</a>
-        <span className="copyright">© 2023 Nexus Inc.</span>
+        <span className="copyright">© 2026 Nexus Inc.</span>
       </div>
     </aside>
   );

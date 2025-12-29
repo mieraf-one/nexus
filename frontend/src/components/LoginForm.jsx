@@ -6,12 +6,17 @@ import { AuthContext } from "../context/AuthContext";
 function LoginForm() {    
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] =  useState(false);
+    const [error, setError] = useState(null);
+
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
+            setLoading(true);
+
             const tokens = await AuthPost(
                 'token/',
                 {
@@ -23,12 +28,20 @@ function LoginForm() {
             navigate('/dashboard');
             console.log('success login');
         } catch (err) {
-            console.log(err.message);
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
     }
 
     return (
     <form onSubmit={(e) => { handleSubmit(e); }} className="login-form">
+        {error && (
+            <div className="alert alert-error" role="alert">
+                {error}
+            </div>
+        )}
+
         <div className="form-group">
             <label htmlFor="identifier">Username or Email</label>
             <input
@@ -38,6 +51,7 @@ function LoginForm() {
             placeholder="jane@example.com"
             value={username}
             onChange={(e) => { setUsername(e.target.value) }}
+            required
             />
         </div>
 
@@ -53,11 +67,19 @@ function LoginForm() {
             placeholder="••••••••"
             value={password}
             onChange={(e) => { setPassword(e.target.value) }}
+            required
             />
         </div>
 
-        <button type="submit" className="submit-button">
-            Log In
+        <button type="submit" className={`submit-button ${loading ? 'loading' : ''}`}>
+            {loading ? (
+                        <>
+                        <span className="spinner"></span>
+                        Logging In...
+                        </>
+                    ) : (
+                        'Log In'
+                    )}
         </button>
 
         <div className="signup-prompt">

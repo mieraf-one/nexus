@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { BASE_URL } from './const';
 
-export async function SignupPost(data) {
+export async function AuthPost(endPoint, data) {
     try {
         const res = await axios.post(
-            `${BASE_URL}/signup/`,
-            data
+            `${BASE_URL}/${endPoint}`,
+            data,
+            {timeout: 7000}
         )
 
         return res.data
@@ -14,7 +15,7 @@ export async function SignupPost(data) {
         if (!err.response) {
             throw new Error('Something went wrong');
         }
-
+        
         throw new Error(Object.values(err.response.data).join('\n'));
     }
 }

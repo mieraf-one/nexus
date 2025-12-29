@@ -1,0 +1,1043 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24;
+}
+
+/* Responsive */
+@media (max-width: 1023px) {
+  .sidebar-left,
+  .sidebar-right {
+    display: none !important;
+  }
+  
+  .main-content {
+    width: 100% !important;
+  }
+}
+.nexus-app {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f7f6f8;
+  color: #141118;
+}
+
+.nexus-app.dark {
+  background-color: #171022;
+  color: #ffffff;
+}
+
+.main-container {
+  flex-grow: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+@media (min-width: 1024px) {
+  .main-container {
+    padding: 2rem;
+  }
+  
+  .layout-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+}
+
+
+
+/* ************************** Header CSS ************************************** */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nexus-app.dark .header {
+  border-color: #374151;
+  background-color: #171022;
+}
+
+.header-content {
+  display: flex;
+  height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  gap: 1rem;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: fit-content;
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  background-color: #7b27f1;
+  color: white;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #141118;
+  display: none;
+}
+
+.nexus-app.dark .logo-text {
+  color: #ffffff;
+}
+
+.search-section {
+  flex: 1;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  transition: color 0.2s;
+}
+
+.search-wrapper:focus-within .search-icon {
+  color: #7b27f1;
+}
+
+.search-input {
+  display: block;
+  width: 100%;
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+  background-color: #f3f4f6;
+  padding: 0.625rem 1rem 0.625rem 2.5rem;
+  font-size: 0.875rem;
+  color: #141118;
+  transition: all 0.2s;
+}
+
+.nexus-app.dark .search-input {
+  border-color: #374151;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #7b27f1;
+  box-shadow: 0 0 0 1px #7b27f1;
+}
+
+.search-input::placeholder {
+  color: #6b7280;
+}
+
+.actions-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: fit-content;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 0.75rem;
+  padding-right: 1rem;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  border-radius: 9999px;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nexus-app.dark .logout-button {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #d1d5db;
+}
+
+.logout-button:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.nexus-app.dark .logout-button:hover {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #fca5a5;
+}
+
+.logout-icon {
+  font-size: 1.25rem;
+  transition: transform 0.2s;
+}
+
+.logout-button:hover .logout-icon {
+  transform: translateX(-2px);
+}
+
+.logout-text {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+@media (min-width: 640px) {
+  .logo-text {
+    display: block;
+  }
+  
+  .actions-section {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header-content {
+    padding: 0 2rem;
+  }
+}
+
+/* ************************* Side Left CSS ************************************ */
+.sidebar-left {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .sidebar-left {
+    display: block;
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+.sidebar-nav {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nexus-app.dark .sidebar-nav {
+  background-color: #1e1629;
+  border-color: #374151;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nexus-app.dark .nav-item {
+  color: #d1d5db;
+}
+
+.nav-item:hover {
+  background-color: #f9fafb;
+}
+
+.nexus-app.dark .nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-item.active {
+  background-color: rgba(123, 39, 241, 0.1);
+  color: #7b27f1;
+  font-weight: 700;
+}
+
+.create-post-btn {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: #7b27f1;
+  color: white;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(123, 39, 241, 0.3);
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.create-post-btn:hover {
+  background-color: rgba(123, 39, 241, 0.9);
+}
+
+
+/* *************************** Main Content ******************************** */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .main-content {
+    grid-column: span 6;
+  }
+}
+
+/* Stories Card */
+.stories-card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nexus-app.dark .stories-card {
+  background-color: #1e1629;
+  border-color: #374151;
+}
+
+.stories-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0 0.25rem;
+}
+
+.stories-title {
+  font-weight: 700;
+  color: #141118;
+  font-size: 1.125rem;
+}
+
+.nexus-app.dark .stories-title {
+  color: #ffffff;
+}
+
+.see-all-btn {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #7b27f1;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.see-all-btn:hover {
+  color: rgba(123, 39, 241, 0.8);
+}
+
+.stories-container {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.stories-container::-webkit-scrollbar {
+  display: none;
+}
+
+.story-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 70px;
+  cursor: pointer;
+}
+
+.story-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 9999px;
+  padding: 2px;
+}
+
+.add-story {
+  border: 2px dashed #7b27f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+}
+
+.story-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+}
+
+.nexus-app.dark .story-inner {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.add-story .story-inner {
+  color: #7b27f1;
+}
+
+.gradient-border {
+  background: linear-gradient(to top right, #fbbf24, #7b27f1);
+}
+
+.normal-border {
+  background-color: #d1d5db;
+}
+
+.nexus-app.dark .normal-border {
+  background-color: #374151;
+}
+
+.story-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  background-size: cover;
+  background-position: center;
+  background-color: #e5e7eb;
+}
+
+.story-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #141118;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: center;
+}
+
+.nexus-app.dark .story-name {
+  color: #ffffff;
+}
+
+/* Post Cards */
+.post-card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.nexus-app.dark .post-card {
+  background-color: #1e1629;
+  border-color: #374151;
+}
+
+.post-header {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.author-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  background-size: cover;
+  background-position: center;
+}
+
+.author-name {
+  font-weight: 700;
+  color: #141118;
+  font-size: 0.875rem;
+}
+
+.nexus-app.dark .author-name {
+  color: #ffffff;
+}
+
+.post-meta {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.nexus-app.dark .post-meta {
+  color: #9ca3af;
+}
+
+.post-options {
+  color: #9ca3af;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.post-options:hover {
+  color: #4b5563;
+}
+
+.nexus-app.dark .post-options:hover {
+  color: #d1d5db;
+}
+
+.post-content {
+  padding: 0 1rem 0.75rem;
+}
+
+.post-text {
+  color: #141118;
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+.nexus-app.dark .post-text {
+  color: #d1d5db;
+}
+
+.hashtag {
+  color: #7b27f1;
+  font-weight: 500;
+}
+
+.post-media {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #f3f4f6;
+  overflow: hidden;
+}
+
+.nexus-app.dark .post-media {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.aspect-4-3 {
+  aspect-ratio: 4/3;
+}
+
+.media-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.post-footer {
+  padding: 1rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.nexus-app.dark .post-footer {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.nexus-app.dark .action-btn {
+  color: #d1d5db;
+}
+
+.like-btn:hover {
+  color: #dc2626;
+}
+
+.comment-btn:hover {
+  color: #7b27f1;
+}
+
+.share-btn:hover {
+  color: #10b981;
+}
+
+.action-count {
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.bookmark-btn {
+  color: #9ca3af;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.bookmark-btn:hover {
+  color: #7b27f1;
+}
+
+.post-likes {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.liked-by-avatars {
+  display: flex;
+  margin-right: -0.5rem;
+}
+
+.liked-avatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  background-size: cover;
+  border: 2px solid #ffffff;
+  margin-right: -0.5rem;
+}
+
+.nexus-app.dark .liked-avatar {
+  border-color: #1e1629;
+}
+
+.likes-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.nexus-app.dark .likes-text {
+  color: #9ca3af;
+}
+
+.liked-name {
+  font-weight: 700;
+  color: #141118;
+}
+
+.nexus-app.dark .liked-name {
+  color: #ffffff;
+}
+
+.post-comments {
+  margin-top: 0.75rem;
+}
+
+.comment-item {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.comment-author {
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: #141118;
+}
+
+.nexus-app.dark .comment-author {
+  color: #ffffff;
+}
+
+.comment-text {
+  font-size: 0.75rem;
+  color: #4b5563;
+}
+
+.nexus-app.dark .comment-text {
+  color: #d1d5db;
+}
+
+.view-comments {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.view-comments:hover {
+  color: #7b27f1;
+}
+
+.add-comment {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.comment-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  background-size: cover;
+  flex-shrink: 0;
+}
+
+.comment-input {
+  flex: 1;
+  background-color: #f9fafb;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: #141118;
+  transition: all 0.2s;
+}
+
+.nexus-app.dark .comment-input {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+}
+
+.comment-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #7b27f1;
+}
+
+.comment-input::placeholder {
+  color: #6b7280;
+}
+
+/* *********************** Side Right *************************************** */
+
+
+.sidebar-right {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .sidebar-right {
+    display: block;
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.nexus-app.dark .profile-card {
+  background-color: #1e1629;
+  border-color: #374151;
+}
+
+.profile-card:hover {
+  border-color: #7b27f1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar-image {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  overflow: hidden;
+  border: 2px solid #ffffff;
+  background-size: cover;
+  background-position: center;
+}
+
+.nexus-app.dark .avatar-image {
+  border-color: #2a2435;
+}
+
+.online-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #10b981;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
+}
+
+.nexus-app.dark .online-indicator {
+  border-color: #1e1629;
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-name {
+  font-weight: 700;
+  color: #141118;
+  transition: color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexus-app.dark .profile-name {
+  color: #ffffff;
+}
+
+.profile-card:hover .profile-name {
+  color: #7b27f1;
+}
+
+.profile-handle {
+  font-size: 0.75rem;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexus-app.dark .profile-handle {
+  color: #9ca3af;
+}
+
+.chevron {
+  color: #9ca3af;
+  transition: color 0.2s;
+}
+
+.profile-card:hover .chevron {
+  color: #7b27f1;
+}
+
+.friends-card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: 1.25rem;
+}
+
+.nexus-app.dark .friends-card {
+  background-color: #1e1629;
+  border-color: #374151;
+}
+
+.friends-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.friends-title {
+  font-weight: 700;
+  color: #141118;
+  font-size: 1rem;
+}
+
+.nexus-app.dark .friends-title {
+  color: #ffffff;
+}
+
+.friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.friend-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.friend-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.friend-details {
+  overflow: hidden;
+}
+
+.friend-name {
+  font-weight: 700;
+  color: #141118;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexus-app.dark .friend-name {
+  color: #ffffff;
+}
+
+.friend-handle {
+  font-size: 0.75rem;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexus-app.dark .friend-handle {
+  color: #9ca3af;
+}
+
+.follow-btn {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #7b27f1;
+  background-color: rgba(123, 39, 241, 0.1);
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.follow-btn:hover {
+  background-color: rgba(123, 39, 241, 0.2);
+}
+
+.follow-btn.following {
+  color: #ffffff;
+  background-color: #7b27f1;
+  box-shadow: 0 1px 2px 0 rgba(123, 39, 241, 0.3);
+}
+
+.follow-btn.following:hover {
+  background-color: rgba(123, 39, 241, 0.9);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.footer-link {
+  font-size: 0.6875rem;
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+.copyright {
+  font-size: 0.6875rem;
+  color: #d1d5db;
+}

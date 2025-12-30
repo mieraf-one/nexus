@@ -9,6 +9,7 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] =  useState(false);
     const [error, setError] = useState(null);
+     const [showPassword, setShowPassword] = useState(false);
 
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -34,6 +35,10 @@ function LoginForm() {
             setLoading(false);
         }
     }
+
+    const togglePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
 
     return (
         <form onSubmit={(e) => { handleSubmit(e); }} className={styles.loginForm}>
@@ -61,15 +66,32 @@ function LoginForm() {
                     <label className={styles.formLabel}>Password</label>
                     <a href="#" className={styles.forgotLink}>Forgot Password?</a>
                   </div>
+                  <div className={styles.passwordWrapper}>
+
+                  
                   <input 
-                    type="password" 
+                    type={showPassword ? "text" : "password"}
                     className={styles.formInput}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => { setPassword(e.target.value) }}
                     required
                   />
+                  <button 
+                    type="button"
+                    className={styles.passwordToggle}
+                    onClick={togglePasswordVisibility}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? (
+                      <span className="material-symbols-outlined">visibility_off</span>
+                    ) : (
+                      <span className="material-symbols-outlined">visibility</span>
+                    )}
+                  </button>
+                  </div>
                 </div>
+  
                 
                 <button type="submit" className={`${styles.loginButton} ${loading ? styles.loading : ''}`}>
                  {loading ? (

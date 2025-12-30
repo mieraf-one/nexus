@@ -1,3 +1,4 @@
+import { useState } from "react";
 import useSignup from "../hooks/useSignup";
 import styles from "../pages/css/SignupPage.module.css"
 
@@ -9,6 +10,17 @@ function SignupForm() {
         success, error, loading, handleSubmit
         
      } = useSignup();
+    
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+     const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
     return (
         <form onSubmit={handleSubmit} className={styles.signupForm}>
@@ -81,24 +93,55 @@ function SignupForm() {
                 {/* Password Fields */}
                 <div className={styles.formGroup}>
                   <label className={styles.formLabel}>Password</label>
-                  <input 
-                    type="password" 
-                    className={styles.formInput}
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => { setPassword(e.target.value)} }
-                  />
+                  <div className={styles.passwordWrapper}>
+                    <input 
+                      type={showPassword ? "text" : "password"}
+                      className={styles.formInput}
+                      placeholder="••••••••"
+                      value={password}
+                      onChange={(e) => { setPassword(e.target.value) }}
+                      required
+                    />
+                    <button 
+                      type="button"
+                      className={styles.passwordToggle}
+                      onClick={togglePasswordVisibility}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? (
+                        <span className="material-symbols-outlined">visibility_off</span>
+                      ) : (
+                        <span className="material-symbols-outlined">visibility</span>
+                      )}
+                    </button>
+                  </div>
                 </div>
                 
+                {/* Confirm Password Field */}
                 <div className={styles.formGroup}>
                   <label className={styles.formLabel}>Confirm Password</label>
-                  <input 
-                    type="password" 
-                    className={styles.formInput}
-                    placeholder="••••••••"
-                    value={confirmPassword}
-                    onChange={(e) => { setConfirmPassword(e.target.value) }}
-                  />
+                  <div className={styles.passwordWrapper}>
+                    <input 
+                      type={showConfirmPassword ? "text" : "password"}
+                      className={styles.formInput}
+                      placeholder="••••••••"
+                      value={confirmPassword}
+                      onChange={(e) => { setConfirmPassword(e.target.value) }}
+                      required
+                    />
+                    <button 
+                      type="button"
+                      className={styles.passwordToggle}
+                      onClick={toggleConfirmPasswordVisibility}
+                      aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                    >
+                      {showConfirmPassword ? (
+                        <span className="material-symbols-outlined">visibility_off</span>
+                      ) : (
+                        <span className="material-symbols-outlined">visibility</span>
+                      )}
+                    </button>
+                  </div>
                 </div>
                 
                 {/* Terms Checkbox */}

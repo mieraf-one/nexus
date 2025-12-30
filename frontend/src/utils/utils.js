@@ -6,7 +6,6 @@ export async function AuthPost(endPoint, data) {
         const res = await axios.post(
             `${BASE_URL}/${endPoint}`,
             data,
-            {timeout: 7000}
         )
 
         return res.data

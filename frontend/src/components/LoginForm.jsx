@@ -50,11 +50,11 @@ function LoginForm() {
                 )}
 
                 <div className={styles.formGroup}>
-                  <label className={styles.formLabel}>Username or Email</label>
+                  <label className={styles.formLabel}>Username</label>
                   <input 
                     type="text" 
                     className={styles.formInput}
-                    placeholder="jane@example.com"
+                    placeholder="ela"
                     value={username}
                     onChange={(e) => { setUsername(e.target.value) }}
                     required

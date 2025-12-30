@@ -1,4 +1,5 @@
 import useSignup from "../hooks/useSignup";
+import styles from "../pages/css/SignupPage.module.css"
 
 function SignupForm() {    
     const {
@@ -10,123 +11,122 @@ function SignupForm() {
      } = useSignup();
 
     return (
-        <form onSubmit={handleSubmit} className="signup-form">
-            {success && (
-                <div className="alert alert-success" role="alert">
+        <form onSubmit={handleSubmit} className={styles.signupForm}>
+                {/* Success Message */}
+                {success && (
+                <div className={`${styles.alert} ${styles.success}`} role="alert">
                     {success}
                 </div>
-            )}
+                )}
+                
+                {/* Error Message */}
+                {error && (
+                    <div className={`${styles.alert} ${styles.error}`} role="alert">
+                        {error}
+                    </div>
+                )}
 
-            {error && (
-                <div className="alert alert-error" role="alert">
-                    {error}
-                </div>
-            )}
-
-                <div className="name-row">
-                    <div className="form-group">
-                    <label htmlFor="firstName">First Name</label>
-                    <input
-                        id="firstName"
-                        name="firstName"
-                        type="text"
+                {/* Name Fields - Side by side on desktop */}
+                <div className={styles.nameFields}>
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLabel}>First Name</label>
+                    <input 
+                        type="text" 
+                        className={styles.formInput}
                         placeholder="Elyas"
                         value={firstName}
                         onChange={(e) => {setFirstName(e.target.value)}}
                     />
-                    </div>
-                    <div className="form-group">
-                    <label htmlFor="lastName">Last Name</label>
-                    <input
-                        id="lastName"
-                        name="lastName"
-                        type="text"
+                  </div>
+                  
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLabel}>Last Name</label>
+                    <input 
+                        type="text" 
+                        className={styles.formInput}
                         placeholder="Tadesse"
                         value={lastName}
                         onChange={(e) => { setLastName(e.target.value) }}
                     />
-                    </div>
+                  </div>
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <div className="input-with-prefix">
-                    <span className="input-prefix">@</span>
-                    <input
-                        id="username"
-                        name="username"
-                        type="text"
+                
+                {/* Username Field with @ prefix */}
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Username</label>
+                  <div className={styles.usernameWrapper}>
+                    <span className={styles.usernamePrefix}>@</span>
+                    <input 
+                        type="text" 
+                        className={styles.formInputWithPrefix}
                         placeholder="ela"
                         value={username}
                         onChange={(e) => { setUsername(e.target.value)} }
                     />
-                    </div>
+                  </div>
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input
-                    id="email"
-                    name="email"
-                    type="email"
+                
+                {/* Email Field */}
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Email</label>
+                  <input 
+                    type="email" 
+                    className={styles.formInput}
                     placeholder="elyas@example.com"
                     value={email}
                     onChange={(e) => { setEmail(e.target.value) }}
-                    />
+                  />
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                    id="password"
-                    name="password"
-                    type="password"
+                
+                {/* Password Fields */}
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Password</label>
+                  <input 
+                    type="password" 
+                    className={styles.formInput}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => { setPassword(e.target.value)} }
-                    />
+                  />
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type="password"
+                
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Confirm Password</label>
+                  <input 
+                    type="password" 
+                    className={styles.formInput}
                     placeholder="••••••••"
                     value={confirmPassword}
                     onChange={(e) => { setConfirmPassword(e.target.value) }}
-                    />
+                  />
                 </div>
-
-                <div className="terms-check">
-                    <input
-                    id="terms"
-                    name="terms"
-                    type="checkbox"
+                
+                {/* Terms Checkbox */}
+                <div className={styles.termsContainer}>
+                  <input 
+                    type="checkbox" 
+                    id="terms" 
+                    className={styles.termsCheckbox}
                     checked={terms}
                     onChange={(e) => { setTerms(e.target.checked) }}
-                    />
-                    <label htmlFor="terms">
-                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-                    </label>
+                  />
+                  <label htmlFor="terms" className={styles.termsLabel}>
+                    I agree to the <a href="#" className={styles.termsLink}>Terms of Service</a> and <a href="#" className={styles.termsLink}>Privacy Policy</a>.
+                  </label>
                 </div>
-
-                <button
-                    type="submit"
-                    className={`submit-button ${loading ? 'loading' : ''}`}
-                    disabled={loading}
-                >
-                    {loading ? (
+                
+                {/* Submit Button */}
+                <button type="submit" className={`${styles.signupButton} ${loading ? styles.loading : ''}`}>
+                  {loading ? (
                         <>
-                        <span className="spinner"></span>
-                        Creating Account...
+                        <span className={styles.spinner}></span>
+                        Signing In...
                         </>
                     ) : (
-                        'Create Account'
-                    )}
+                        'Sign Up'
+                        )}
                 </button>
-                </form>
+              </form>
     )
 }
 

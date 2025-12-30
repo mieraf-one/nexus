@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './css/LandingPage.module.css';
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.nexusApp}>
       {/* Header */}

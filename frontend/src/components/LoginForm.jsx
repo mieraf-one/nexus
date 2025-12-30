@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import { AuthPost } from "../utils/utils";
 import { AuthContext } from "../context/AuthContext";
+import styles from '../pages/css/LoginPage.module.css'
 
 function LoginForm() {    
     const [username, setUsername] = useState('');
@@ -35,60 +36,59 @@ function LoginForm() {
     }
 
     return (
-    <form onSubmit={(e) => { handleSubmit(e); }} className="login-form">
-        {error && (
-            <div className="alert alert-error" role="alert">
-                {error}
-            </div>
-        )}
+        <form onSubmit={(e) => { handleSubmit(e); }} className={styles.loginForm}>
 
-        <div className="form-group">
-            <label htmlFor="identifier">Username or Email</label>
-            <input
-            id="identifier"
-            name="identifier"
-            type="text"
-            placeholder="jane@example.com"
-            value={username}
-            onChange={(e) => { setUsername(e.target.value) }}
-            required
-            />
-        </div>
+                {error && (
+                    <div className={`${styles.alert} ${styles.error}`} role="alert">
+                        {error}
+                    </div>
+                )}
 
-        <div className="form-group">
-            <div className="password-header">
-            <label htmlFor="password">Password</label>
-            <a href="#" className="forgot-link">Forgot Password?</a>
-            </div>
-            <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => { setPassword(e.target.value) }}
-            required
-            />
-        </div>
-
-        <button type="submit" className={`submit-button ${loading ? 'loading' : ''}`}>
-            {loading ? (
-                        <>
-                        <span className="spinner"></span>
-                        Logging In...
-                        </>
-                    ) : (
-                        'Log In'
-                    )}
-        </button>
-
-        <div className="signup-prompt">
-            <p>
-            Don't have an account?{' '}
-            <Link to={'/signup'} className="signup-link">Sign Up</Link>
-            </p>
-        </div>
-        </form>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Username or Email</label>
+                  <input 
+                    type="text" 
+                    className={styles.formInput}
+                    placeholder="jane@example.com"
+                    value={username}
+                    onChange={(e) => { setUsername(e.target.value) }}
+                    required
+                  />
+                </div>
+                
+                <div className={styles.formGroup}>
+                  <div className={styles.passwordHeader}>
+                    <label className={styles.formLabel}>Password</label>
+                    <a href="#" className={styles.forgotLink}>Forgot Password?</a>
+                  </div>
+                  <input 
+                    type="password" 
+                    className={styles.formInput}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => { setPassword(e.target.value) }}
+                    required
+                  />
+                </div>
+                
+                <button type="submit" className={`${styles.loginButton} ${loading ? styles.loading : ''}`}>
+                 {loading ? (
+                         <>
+                         <span className={styles.spinner}></span>
+                         Logging In...
+                         </>
+                     ) : (
+                         'Log In'
+                        )}
+                </button>
+                
+                <div className={styles.signupPrompt}>
+                  <p className={styles.promptText}>
+                    Don't have an account?{' '}
+                    <Link to={'/signup'} className={styles.signupLink}>Sign Up</Link>
+                  </p>
+                </div>
+              </form>
     )
 }
 

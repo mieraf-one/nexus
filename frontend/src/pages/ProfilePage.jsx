@@ -3,10 +3,11 @@ import styles from './css/ProfilePage.module.css';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { DotSpinner } from '../components/LoadingSpinner';
+import { AuthContext } from '../context/AuthContext';
 
 const ProfilePage = () => {
     const { user, loading } = useContext(UserContext);
-
+    const { logout } = useContext(AuthContext);
 
   const posts = [
     {
@@ -170,6 +171,10 @@ const ProfilePage = () => {
             <button className={styles.iconButton}>
               <span className="material-symbols-outlined">settings</span>
             </button>
+            <button className={styles.iconButton} onClick={logout}>
+                <span className="material-symbols-outlined logout-icon">logout</span>
+            </button>
+
           </div>
         </div>
 

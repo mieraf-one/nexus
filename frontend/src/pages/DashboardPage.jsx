@@ -4,7 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { getReq } from '../utils/utils';
 import { UserContext } from '../context/UserContext';
 import LoadingSpinner, { DotSpinner, PulseSpinner, RingSpinner } from '../components/LoadingSpinner';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function DashboardPage() { 
   return (
@@ -24,6 +24,8 @@ export default function DashboardPage() {
 
 const Header = () => {
   const { logout } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   
  return (
     <header className="header">
@@ -45,12 +47,15 @@ const Header = () => {
             />
           </div>
         </div>
-        
-        <div className="actions-section">
-          <button className="logout-button" onClick={logout}>
-            <span className="material-symbols-outlined logout-icon">logout</span>
-            <span className="logout-text">Logout</span>
-          </button>
+
+        <div className='user-section' onClick={() => {navigate('/profile')}}>
+            <div className='user-profile'>
+              <span className='username'>{user?.user?.username}</span>
+              <div 
+                className='user-avatar'
+                style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAGOO2c733Sn-XaBGWfmdFMayLADmKtDVH68HNtYVZbyPNn3KbALF46kD_fbGL-dLsi6vo-jfkOOSavRYy4EVK7nli4Dthhfp33HM3RFbyK9SDpiZAzfeTRbrwKSqf43ZxeC3OKpm1nmHorH47QKK-f1bgiQLzpswuGqkpFg7eIr2tljTiODiXn7bV-F7ZaQql3naCvrKSSIsoMsR4IM0ltvh3XJeHn_hGC6RdBXm6x6P7oaK2bfdDonOBu0xRusbj-JRaTUbxER_o5")' }}
+              ></div>
+            </div>
         </div>
       </div>
     </header>

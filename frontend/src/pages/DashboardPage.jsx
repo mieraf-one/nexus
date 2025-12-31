@@ -4,6 +4,7 @@ import { AuthContext } from '../context/AuthContext';
 import { getReq } from '../utils/utils';
 import { UserContext } from '../context/UserContext';
 import LoadingSpinner, { DotSpinner, PulseSpinner, RingSpinner } from '../components/LoadingSpinner';
+import { Link } from 'react-router-dom';
 
 export default function DashboardPage() { 
   return (
@@ -290,8 +291,8 @@ const SidebarRight = () => {
       ?
         <DotSpinner />
       :
-      <a href="#" className="profile-card">
-        <div className="profile-avatar">
+      <Link to={'/profile'} className='profile-card'>
+          <div className="profile-avatar">
           <div 
             className="avatar-image"
             style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCFniLr9qQ4CyMr7gt_qH24PZq4DIBiAoXewcG0PV1tilRCyEE5kMENVO3PA-BDYFeOKp7kX8wLfwEJ7ZRaCM6Ud8MX5XZDJq6NEABH8fIRUGzXPC6ZeahQeSXt3Oa6rC6shhdl7b_wCOM-H3QW55eMINzf5nKVUeAU7LLFct__MMyEYJU2RHCLjJyBt7W67fYv2aDn3cgLs6PH2aZp-ZMtuDpkiGGAzqykfmuNHuzPHu9tTsS8fRgCCkt0wyDv4Dqny52Kj7EZpN3y")' }}
@@ -303,7 +304,7 @@ const SidebarRight = () => {
           <p className="profile-handle">@{user?.user?.username}</p>
         </div>
         <span className="material-symbols-outlined chevron">chevron_right</span>
-      </a>
+      </Link> 
       }
       
       

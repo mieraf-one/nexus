@@ -1,11 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import { getReq } from "../utils/utils";
+import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext(null);
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const fetchUser = async () => {
         try {
@@ -13,7 +15,9 @@ const UserProvider = ({ children }) => {
             const res = await getReq('user/profile/');
             setUser(res);
         } catch (err) {
-            // setUser(null);
+            if (err.message == 401) {
+                navigate('/login', {replace: true})
+            }
         } finally {
             setLoading(false);
         };

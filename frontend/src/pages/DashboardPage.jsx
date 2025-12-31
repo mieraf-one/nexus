@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import './css/DashboardPage.css';
 import { AuthContext } from '../context/AuthContext';
-import { getReq } from '../utils/utils';
 import { UserContext } from '../context/UserContext';
-import LoadingSpinner, { DotSpinner, PulseSpinner, RingSpinner } from '../components/LoadingSpinner';
+import { DotSpinner } from '../components/LoadingSpinner';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function DashboardPage() { 

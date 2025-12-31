@@ -29,7 +29,6 @@ export async function getReq(path) {
                 }
             }
         )
-        console.log(res);
         return res.data
     } catch (err) {
         if (!err.response) {

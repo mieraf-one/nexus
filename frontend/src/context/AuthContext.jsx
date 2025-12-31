@@ -1,5 +1,4 @@
 import { createContext, useState } from "react";
-import { getReq } from "../utils/utils";
 
 export const AuthContext = createContext(null);
 

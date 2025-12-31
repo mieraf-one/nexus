@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage'
 import LandingPage from './pages/LandingPage'
 import DashboardPage from './pages/DashboardPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import UserProvider from './context/UserContext'
 
 function App() {
 
@@ -12,7 +13,13 @@ function App() {
         <Route path='/' element={ <LandingPage /> } />
         <Route path='/signup' element={ <SignupPage /> }/>
         <Route path='/login' element={ <LoginPage /> } />
-        <Route path='/dashboard' element={ <ProtectedRoute> <DashboardPage /> </ProtectedRoute> } />
+        
+        <Route path='/dashboard' element={
+                                          <ProtectedRoute>
+                                              <UserProvider>
+                                                    <DashboardPage />
+                                              </UserProvider>
+                                          </ProtectedRoute> } />
       </Routes>
   )
 }

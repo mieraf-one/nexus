@@ -57,7 +57,7 @@ class UnFollowSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email']
+        fields = ['id', 'first_name', 'last_name', 'username', 'email']
     
     def validate_username(self, value):
         user = self.context['request'].user
@@ -75,13 +75,29 @@ class UserSerializer(serializers.ModelSerializer):
         
         return value
 
+
+class FollowingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Follow
+        fields = ['following', 'follower']
+
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
+    follower = serializers.SerializerMethodField()
+    following = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
         fields = ['user', 'bio', 'following', 'follower']
     
+    def get_follower(self, obj):
+        follows = obj.follower.all()
+        return UserSerializer([f.follower.user for f in follows], many=True).data
+    
+    def get_following(self, obj):
+        followers = obj.following.all()
+        return UserSerializer([f.following.user for f in followers], many=True).data
+
     def update(self, instance, validated_data):
         request = self.context['request']
 

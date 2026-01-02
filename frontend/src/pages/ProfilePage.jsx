@@ -5,10 +5,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { DotSpinner } from '../components/LoadingSpinner';
 import { AuthContext } from '../context/AuthContext';
+import FollowingModal from '../components/FollowingModal';
+import FollowersModal from '../components/FollowersModal';
 
 export default function ProfilePage() {
     const { user, loading } = useContext(UserContext);
     const { logout } = useContext(AuthContext);
+    const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
+    const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
+
 
   const posts = [
     {
@@ -144,19 +149,46 @@ export default function ProfilePage() {
             
             {/* Stats Row */}
             <div className={styles.statsContainer}>
-                <button className={styles.statItem}>
-                    <span className={styles.statNumber}>{(user?.follower)?.length}</span>
-                    <span className={styles.statLabel}>Followers</span>
-                </button>
 
+              {/* Followers button*/}
+                <div>
+                  <button
+                    className={styles.statItem}
+                    onClick={() => {setIsFollowersModalOpen(true);}}
+                  >
+                      <span className={styles.statNumber}>{(user?.follower)?.length}</span>
+                      <span className={styles.statLabel}>Followers</span>
+                  </button>
+
+                  <FollowersModal
+                    isOpen={isFollowersModalOpen}
+                    onClose={() => {setIsFollowersModalOpen(false);}}>
+                  </FollowersModal>
+
+                </div>
+                
+                
+                {/* divider */}
                 <div className={styles.statDivider}></div>
 
-                <button className={styles.statItem} >
-                  
 
+                {/* Following button */}
+                <div>
+                  <button
+                  className={styles.statItem}
+                  onClick={() => {setIsFollowingModalOpen(true);}}
+                >
                     <span className={styles.statNumber}>{(user?.following)?.length}</span>
                     <span className={styles.statLabel}>Following</span>
                 </button>
+
+                <FollowingModal
+                  isOpen={isFollowingModalOpen}
+                  onClose={() => {setIsFollowingModalOpen(false);}}>
+                </FollowingModal>    
+                </div>
+                
+                
             </div>
             </>
 
@@ -243,3 +275,17 @@ export default function ProfilePage() {
     </div>
   );
 };
+
+
+
+function Modal({ open, onClose, children }) {
+  if (!open) return null;
+
+  return (
+    <div className={styles.overlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        {children}
+      </div>
+    </div>
+  );
+}

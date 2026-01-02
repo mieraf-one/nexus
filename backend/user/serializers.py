@@ -80,7 +80,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['user', 'bio', 'profile_picture', 'following', 'follower']
+        fields = ['user', 'bio', 'following', 'follower']
     
     def update(self, instance, validated_data):
         request = self.context['request']
@@ -91,7 +91,21 @@ class ProfileSerializer(serializers.ModelSerializer):
             user_serializer.save()
 
         instance.bio = validated_data.get('bio', instance.bio)
-        instance.profile_picture = validated_data.get('profile_picture', instance.profile_picture)
         instance.save()
 
         return instance
+
+
+class FollowSuggestionSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    first_name = serializers.CharField()
+    username = serializers.CharField()
+    is_following = serializers.SerializerMethodField()
+
+    def get_is_following(self, obj):
+        follower = self.context['request'].user.custom_user
+        
+        return Follow.objects.filter(
+            follower=follower,
+            following=obj.custom_user
+        ).exists()

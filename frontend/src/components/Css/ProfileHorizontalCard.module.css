@@ -1,0 +1,274 @@
+/* Google Fonts & Icons */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+/* Horizontal Scrollable Container */
+.horizontalContainer {
+  display: none;
+}
+
+@media (max-width: 764px) {
+    .horizontalContainer {
+        display: block;
+        position: relative;
+        width: 100%;
+    }
+}
+
+/* Blur gradients for scroll indication */
+.leftGradient {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3rem;
+  background: linear-gradient(to right, #f7f6f8, transparent);
+  z-index: 10;
+  pointer-events: none;
+  display: none;
+}
+
+.rightGradient {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3rem;
+  background: linear-gradient(to left, #f7f6f8, transparent);
+  z-index: 10;
+  pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .leftGradient,
+  .rightGradient {
+    display: block;
+  }
+}
+
+/* Scroll Area */
+.scrollArea {
+  display: flex;
+  overflow-x: auto;
+  gap: 1.5rem;
+  padding: 1rem 0.25rem 2rem;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar */
+.scrollArea::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollArea {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Card */
+.card {
+  flex: none;
+  width: 240px;
+  background-color: #ffffff;
+  border-radius: 2rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0eff5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  position: relative;
+  transition: all 0.3s;
+  scroll-snap-align: center;
+}
+
+.card:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Close Button */
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: #bfb5cc;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  color: #141118;
+  background-color: #f2f0f5;
+}
+
+.closeButton .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+/* Avatar Container */
+.avatarContainer {
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.avatar {
+  aspect-ratio: 1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 9999px;
+  width: 6rem;
+  height: 6rem;
+  border: 4px solid #f7f6f8;
+  transition: all 0.3s;
+}
+
+.card:hover .avatar {
+  border-color: rgba(123, 39, 241, 0.1);
+}
+
+.onlineIndicator {
+  position: absolute;
+  bottom: 0.25rem;
+  right: 0.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: #10b981;
+  border: 2px solid #ffffff;
+  border-radius: 9999px;
+}
+
+/* User Info */
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+}
+
+.userName {
+  color: #141118;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.userUsername {
+  color: #72608a;
+  font-size: 0.875rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.userDescription {
+  color: #9e94aa;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Follow Button */
+.followButton {
+  width: 100%;
+  height: 2.5rem;
+  background-color: #7b27f1;
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.followButton:hover {
+  background-color: #6a21d1;
+}
+
+/* Following State */
+.followButton.following {
+  background-color: rgba(123, 39, 241, 0.1);
+  color: #7b27f1;
+}
+
+.followButton.following:hover {
+  background-color: rgba(123, 39, 241, 0.2);
+}
+
+.followButton .material-symbols-outlined {
+  font-size: 1.125rem;
+}
+
+.followButton.following .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1;
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Optional: Add scroll buttons for better UX */
+.scrollButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.scrollButton:hover {
+  background-color: #f8fafc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.scrollButton.left {
+  left: 1rem;
+}
+
+.scrollButton.right {
+  right: 1rem;
+}
+
+.scrollButton .material-symbols-outlined {
+  font-size: 1.25rem;
+  color: #4b5563;
+}

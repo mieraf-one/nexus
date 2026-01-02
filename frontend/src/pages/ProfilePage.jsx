@@ -7,6 +7,7 @@ import { DotSpinner } from '../components/LoadingSpinner';
 import { AuthContext } from '../context/AuthContext';
 import FollowingModal from '../components/FollowingModal';
 import FollowersModal from '../components/FollowersModal';
+import ProfileHorizontalCard from '../components/ProfileHorizontalCard';
 
 export default function ProfilePage() {
     const { user, loading } = useContext(UserContext);
@@ -213,6 +214,8 @@ export default function ProfilePage() {
 
           </div>
         </div>
+
+            <ProfileHorizontalCard />
 
         {/* Content Tabs */}
         <div className={styles.contentTabs}>

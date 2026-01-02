@@ -7,14 +7,23 @@ import ProtectedRoute from './components/ProtectedRoute'
 import UserProvider from './context/UserContext'
 import ProfilePage from './pages/ProfilePage'
 import EditProfilePage from './pages/EditProfilePage'
+import PublicRoute from './components/PublicRoute'
 
 function App() {
 
   return (
       <Routes>
         <Route path='/' element={ <LandingPage /> } />
-        <Route path='/signup' element={ <SignupPage /> }/>
-        <Route path='/login' element={ <LoginPage /> } />
+        <Route path='/signup' element={ 
+                                    <PublicRoute>
+                                        <SignupPage />
+                                    </PublicRoute>
+                                }/>
+        <Route path='/login' element={ 
+                                    <PublicRoute>
+                                        <LoginPage />
+                                    </PublicRoute>
+                                } />
         
         <Route path='/dashboard' element={
                                           <ProtectedRoute>
@@ -37,6 +46,7 @@ function App() {
                                               </UserProvider>
                                           </ProtectedRoute>
         }/>
+        
       </Routes>
   )
 }

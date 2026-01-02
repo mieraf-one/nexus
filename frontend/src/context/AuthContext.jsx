@@ -10,12 +10,13 @@ function AuthProvider({ children }) {
         localStorage.setItem('refresh', refresh);
         setIsAuthenticated(true);
     }
+
     const logout = () => {
         localStorage.removeItem('access');
         localStorage.removeItem('refresh');
         setIsAuthenticated(false);
     }
- 
+
 
     return (
         <AuthContext.Provider value={{

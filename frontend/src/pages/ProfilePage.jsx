@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './css/ProfilePage.module.css';
-import { Link } from 'react-router-dom';
+import popupStyles from './css/FollowingPopup.module.css';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { DotSpinner } from '../components/LoadingSpinner';
 import { AuthContext } from '../context/AuthContext';
 
-const ProfilePage = () => {
+export default function ProfilePage() {
     const { user, loading } = useContext(UserContext);
     const { logout } = useContext(AuthContext);
 
@@ -149,10 +150,13 @@ const ProfilePage = () => {
                 </button>
 
                 <div className={styles.statDivider}></div>
-                    <button className={styles.statItem}>
-                        <span className={styles.statNumber}>{(user?.following)?.length}</span>
-                        <span className={styles.statLabel}>Following</span>
-                    </button>
+
+                <button className={styles.statItem} >
+                  
+
+                    <span className={styles.statNumber}>{(user?.following)?.length}</span>
+                    <span className={styles.statLabel}>Following</span>
+                </button>
             </div>
             </>
 
@@ -239,5 +243,3 @@ const ProfilePage = () => {
     </div>
   );
 };
-
-export default ProfilePage;

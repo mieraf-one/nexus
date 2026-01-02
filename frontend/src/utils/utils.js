@@ -70,3 +70,29 @@ export async function patchReq(path, data) {
 
     }
 }
+
+
+export async function postReq(path, data) {
+    try {
+        const res = await axios.post(
+            `${BASE_URL}/${path}`,
+            data,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access')}`
+                }
+            }
+        )
+        return res.data
+    } catch (err) {
+        if (!err.response) {
+            throw new Error('Something went wrong');
+        }
+
+        if (err.response.status == 401) {
+            throw new Error(401);
+        }
+        
+        throw new Error(Object.values(err.response.data).join('\n'));
+    }
+}

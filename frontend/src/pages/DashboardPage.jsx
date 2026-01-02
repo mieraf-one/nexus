@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import './css/DashboardPage.css';
 import { AuthContext } from '../context/AuthContext';
 import { UserContext } from '../context/UserContext';
 import { DotSpinner } from '../components/LoadingSpinner';
 import { Link, useNavigate } from 'react-router-dom';
+import { getReq, postReq } from '../utils/utils';
+import { useEffect } from 'react';
 
 export default function DashboardPage() { 
   return (
@@ -22,7 +24,6 @@ export default function DashboardPage() {
 
 
 const Header = () => {
-  const { logout } = useContext(AuthContext);
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   
@@ -281,13 +282,60 @@ const MainContent = () => {
 
 const SidebarRight = () => {
   const { user, loading } = useContext(UserContext);
+  const [suggestAccounts, setSuggestAccounts] = useState([]);
+  const [childLoading, setChildLoading] = useState(false);
+  
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      try {
+        setChildLoading(true);
+      const res = await getReq('follow-suggestions/');
+      console.log(res.results)
+      setSuggestAccounts(res.results);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        setChildLoading(false);
+      }
+    }
 
-  const friendSuggestions = [
-    { name: 'Mike Thompson', handle: '@miket_design', image: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDlq1M1MGGt0eKcXODBfGkPcBawBYu_18UZ6biXFlrQdmyXE5CClkjDPWPleIldHb5suWVDhtEQP5I2GQH_QOPW7DmtYS7IyCuhA5NkH-TFFpA6eB7_CIB_hWJVCnUjyQ2vCN84ugMttKwojgInPjWcE1zVWnZbNLlDnFgyUydW8wc_WJuPwM_fRa2Zx6T17hVoAkB3UbY7Hn8GCW3Upv7NnA_PpVn-e_RL3hefEHjMs_WUpMqEqwytRlKuJCgHtkmhIC5Ahfp05WMr")', isFollowing: false },
-    { name: 'Sarah Jenkins', handle: '@sarah_j', image: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCAvytpHetbHBoclqocctShLueN0d3j1vLCCILREkyMzOLXw9e5auSU6C6KoAjoQ2RDfwPu_2Bz6AF5hswBmDaiWEhs4YWbqSiRostSwEYvn_Y0E3FJYNO4yFegf-hzyglelo9Fud_Ck0lSLrw7f10Dk82uT4A_LJrL3WBfxT1285e-0ljpmVhW59dduWOmxRWfsd2HJA7qBMQwYEKWRBeUIf7R8UoQREBSS3a4qi9hG7SEwWyEtGhtLJy_79YA2DDQN-3P-qFLOjL")', isFollowing: true },
-    { name: 'James Wright', handle: '@james_writes', image: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuASqnoqallbOltYisWtkeWuH__miWyYk9YrVjxkby3mKdhcNkadi9B9Keelh8CSjnU5K-gFmia4mC9wycTDa2Ry9j0t0nupcYdKrk1nmOml8-Q51HTg44mzwfl6Tu-Bm7IDZk3y84zfPkNCxd7t24vUDcKa_5bFWqqtTY8LLUi0S6W8DlDBPkiKuH2gCFkQKj5YqQht5ZTC_8ZG75pH5H3bt76axzxKhRWlw6HEqLwcbva5jsFXwjDZO87zAbephzokpZ7VzMCjeOyc")', isFollowing: true },
-    { name: 'Emily Chen', handle: '@emily_c', image: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuASqnoqallbOltYisWtkeWuH__miWyYk9YrVjxkby3mKdhcNkadi9B9Keelh8CSjnU5K-gFmia4mC9wycTDa2Ry9j0t0nupcYdKrk1nmOml8-Q51HTg44mzwfl6Tu-Bm7IDZk3y84zfPkNCxd7t24vUDcKa_5bFWqqtTY8LLUi0S6W8DlDBPkiKuH2gCFkQKj5YqQht5ZTC_8ZG75pH5H3bt76axzxKhRWlw6HEqLwcbva5jsFXwjDZO87zAbephzokpZ7VzMCjeOyc")', isFollowing: true }
-  ];
+    fetchSuggestions();
+    
+  }, [])
+
+  const followUser = async (id) => {
+    try {
+      const res = await postReq(`user/follow/${id}/`, {})
+
+      setSuggestAccounts(suggestAccounts.map((user) => {
+        if (user.id == id) {
+          return {...user, is_following: !user.is_following};
+        }
+        return user;
+        
+      }))
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  const unFollowUser = async (id) => {
+    try {
+      const res = await postReq(`user/unfollow/${id}/`, {});
+
+      setSuggestAccounts(suggestAccounts.map((user) => {
+        if (user.id == id) {
+          return {...user, is_following: !user.is_following};
+        }
+        return user;
+
+      }))
+    } catch (err) {
+      console.log(err.message)
+    }
+  }
+
+  const image = 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDlq1M1MGGt0eKcXODBfGkPcBawBYu_18UZ6biXFlrQdmyXE5CClkjDPWPleIldHb5suWVDhtEQP5I2GQH_QOPW7DmtYS7IyCuhA5NkH-TFFpA6eB7_CIB_hWJVCnUjyQ2vCN84ugMttKwojgInPjWcE1zVWnZbNLlDnFgyUydW8wc_WJuPwM_fRa2Zx6T17hVoAkB3UbY7Hn8GCW3Upv7NnA_PpVn-e_RL3hefEHjMs_WUpMqEqwytRlKuJCgHtkmhIC5Ahfp05WMr")'
 
   return (
     <aside className="sidebar-right">
@@ -311,32 +359,39 @@ const SidebarRight = () => {
       </Link> 
       }
       
-      
-      <div className="friends-card">
+      {childLoading 
+      ?
+      <DotSpinner />
+      :
+        <div className="friends-card">
         <div className="friends-header">
           <h3 className="friends-title">Friend Suggestions</h3>
           <button className="see-all-btn">See all</button>
         </div>
         <div className="friends-list">
-          {friendSuggestions.map((friend, index) => (
-            <div key={index} className="friend-item">
+          {suggestAccounts.map((user) => (
+            <div key={user.id} className="friend-item">
               <div className="friend-info">
                 <div 
                   className="friend-avatar"
-                  style={{ backgroundImage: friend.image }}
+                  style={{ backgroundImage: image }}
                 />
                 <div className="friend-details">
-                  <h4 className="friend-name">{friend.name}</h4>
-                  <p className="friend-handle">{friend.handle}</p>
+                  <h4 className="friend-name">{user.first_name}</h4>
+                  <p className="friend-handle">@{user.username}</p>
                 </div>
               </div>
-              <button className={`follow-btn ${friend.isFollowing ? 'following' : ''}`}>
-                {friend.isFollowing ? 'Follow' : 'Follow'}
+              <button
+                  className={`follow-btn ${user.is_following ? 'following' : ''}`}
+                  onClick={() => {user.is_following ? unFollowUser(user.id) : followUser(user.id)}}
+              >
+                {user.is_following ? 'Following' : 'Follow'}
               </button>
             </div>
           ))}
         </div>
       </div>
+      }
       
       <div className="footer-links">
         <a href="#" className="footer-link">About</a>

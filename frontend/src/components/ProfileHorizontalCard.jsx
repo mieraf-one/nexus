@@ -76,10 +76,16 @@ const ProfileHorizontalCard = () => {
       }
 
   return (
-    <>{loading
+    <>
+    {loading
         ?
     <DotSpinner />
         :
+    <>
+    <div className={styles.simpleHeader}>
+      <h2 className={styles.simpleTitle}>Suggestions For You</h2>
+      <p className={styles.simpleSubtitle}>Accounts you might like</p>
+    </div>
     <div className={styles.horizontalContainer}>
       {/* Blur gradients for scroll indication */}
       <div className={styles.leftGradient}></div>
@@ -132,6 +138,8 @@ const ProfileHorizontalCard = () => {
         ))}
       </div>
     </div>
+    </>
+    
     }
     
     </>

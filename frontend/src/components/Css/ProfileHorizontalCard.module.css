@@ -2,6 +2,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
+/* Header */
+
+/* Simple Header */
+.simpleHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 1rem;
+}
+
+.simpleTitle {
+  color: #141118;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin-bottom: 0.25rem;
+}
+
+.simpleSubtitle {
+  color: #72608a;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+@media (min-width: 764px) {
+    .simpleHeader {
+        display: none;
+    }
+}
+
 /* Horizontal Scrollable Container */
 .horizontalContainer {
   display: none;

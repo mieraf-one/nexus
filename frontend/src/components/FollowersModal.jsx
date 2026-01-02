@@ -62,7 +62,7 @@ const FollowersModal = ({ isOpen, onClose }) => {
           <div className={styles.modalHeader}>
             <div className={styles.headerContent}>
               <h2 className={styles.modalTitle}>
-                Followers <span className={styles.count}>8,204</span>
+                Followers <span className={styles.count}>{followers?.length}</span>
               </h2>
               <button 
                 className={styles.closeButton}

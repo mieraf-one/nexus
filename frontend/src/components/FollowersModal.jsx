@@ -12,7 +12,7 @@ const FollowersModal = ({ isOpen, onClose }) => {
            const fetchFollowing = async () => {
                try {
                    const res = await getReq('user/profile/');
-                   console.log(res.follower);
+                  //  console.log(res.follower);
                    setFollowers(res.follower);
                } catch (err) {
                    

@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { getReq } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
+import path from "../utils/apiEndPoints";
 
 export const UserContext = createContext(null);
 
@@ -12,7 +13,8 @@ const UserProvider = ({ children }) => {
     const fetchUser = async () => {
         try {
             setLoading(true);
-            const res = await getReq('user/profile/');
+            const res = await getReq(path.profile());
+            // console.log(res);
             setUser(res);
         } catch (err) {
             if (err.message == 401) {

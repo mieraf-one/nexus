@@ -1,39 +1,17 @@
+/* DashboardPage.module.css */
+
+/* Import Google Fonts & Icons */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 /* Reset */
-* {
+.nexusApp {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} 
 
-body {
-  margin: 0;
-  padding: 0;
-}
-
-/* Material Symbols */
-.material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24;
-}
-
-/* Responsive */
-@media (max-width: 1023px) {
-  .sidebar-left,
-  .sidebar-right {
-    display: none !important;
-  }
-  
-  .main-content {
-    width: 100% !important;
-  }
-}
-.nexus-app {
+.nexusApp {
   font-family: 'Plus Jakarta Sans', sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -46,12 +24,12 @@ body {
   color: #141118;
 }
 
-.nexus-app.dark {
+.nexusApp.dark {
   background-color: #171022;
   color: #ffffff;
 }
 
-.main-container {
+.mainContainer {
   flex-grow: 1;
   width: 100%;
   max-width: 1440px;
@@ -60,11 +38,11 @@ body {
 }
 
 @media (min-width: 1024px) {
-  .main-container {
+  .mainContainer {
     padding: 2rem;
   }
   
-  .layout-grid {
+  .layoutGrid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 2rem;
@@ -72,10 +50,24 @@ body {
   }
 }
 
+/* Material Symbols */
+.materialSymbolsOutlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
 
+/* Responsive */
+@media (max-width: 1023px) {
+  .sidebarLeft,
+  .sidebarRight {
+    display: none !important;
+  }
+  
+  .mainContent {
+    width: 100% !important;
+  }
+}
 
 /* ************************** Header CSS ************************************** */
-
 .header {
   position: sticky;
   top: 0;
@@ -86,12 +78,12 @@ body {
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-.nexus-app.dark .header {
+.nexusApp.dark .header {
   border-color: #374151;
   background-color: #171022;
 }
 
-.header-content {
+.headerContent {
   display: flex;
   height: 4rem;
   align-items: center;
@@ -103,14 +95,14 @@ body {
   gap: 1rem;
 }
 
-.logo-section {
+.logoSection {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   min-width: fit-content;
 }
 
-.logo-icon {
+.logoIcon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,7 +113,7 @@ body {
   color: white;
 }
 
-.logo-text {
+.logoText {
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.025em;
@@ -129,891 +121,180 @@ body {
   display: none;
 }
 
-.nexus-app.dark .logo-text {
+.nexusApp.dark .logoText {
   color: #ffffff;
 }
 
-.search-section {
+/* Search Container */
+.searchContainer {
   flex: 1;
-  max-width: 32rem;
+  max-width: 512px;
   margin: 0 auto;
-}
-
-.search-wrapper {
   position: relative;
 }
 
-.search-icon {
-  position: absolute;
-  top: 50%;
-  left: 0.75rem;
-  transform: translateY(-50%);
-  color: #9ca3af;
-  transition: color 0.2s;
+.searchWrapper {
+  position: relative;
+  z-index: 20;
 }
 
-.search-wrapper:focus-within .search-icon {
+.searchIcon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  color: #9ca3af;
+  transition: color 0.2s ease;
+}
+
+.searchWrapper:focus-within .searchIcon {
   color: #7b27f1;
 }
 
-.search-input {
+.searchInput {
   display: block;
   width: 100%;
   border-radius: 9999px;
   border: 1px solid #e5e7eb;
   background-color: #f3f4f6;
-  padding: 0.625rem 1rem 0.625rem 2.5rem;
-  font-size: 0.875rem;
+  padding: 10px 16px 10px 40px;
+  font-size: 14px;
   color: #141118;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
-.nexus-app.dark .search-input {
-  border-color: #374151;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
+.searchInput::placeholder {
+  color: #6b7280;
 }
 
-.search-input:focus {
+.searchInput:focus {
   outline: none;
   border-color: #7b27f1;
-  box-shadow: 0 0 0 1px #7b27f1;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(123, 39, 241, 0.1);
 }
 
-.search-input::placeholder {
-  color: #6b7280;
-}
-
-.actions-section {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: fit-content;
-}
-
-
-@media (min-width: 640px) {
-  .logo-text {
-    display: block;
-  }
-  
-  .actions-section {
-    gap: 1rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .header-content {
-    padding: 0 2rem;
-  }
-}
-
-/* ************************* Side Left CSS ************************************ */
-.sidebar-left {
+/* Search Dropdown */
+.searchDropdown {
   display: none;
-}
-
-@media (min-width: 1024px) {
-  .sidebar-left {
-    display: block;
-    grid-column: span 3;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-}
-
-.sidebar-nav {
-  background-color: #ffffff;
-  border-radius: 1rem;
-  padding: 1rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.nexus-app.dark .sidebar-nav {
-  background-color: #1e1629;
-  border-color: #374151;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  text-decoration: none;
-  color: #4b5563;
-  font-weight: 500;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.nexus-app.dark .nav-item {
-  color: #d1d5db;
-}
-
-.nav-item:hover {
-  background-color: #f9fafb;
-}
-
-.nexus-app.dark .nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.nav-item.active {
-  background-color: rgba(123, 39, 241, 0.1);
-  color: #7b27f1;
-  font-weight: 700;
-}
-
-.create-post-btn {
-  width: 100%;
-  padding: 0.875rem;
-  background-color: #7b27f1;
-  color: white;
-  font-weight: 700;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 15px -3px rgba(123, 39, 241, 0.3);
-  transition: all 0.2s;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.create-post-btn:hover {
-  background-color: rgba(123, 39, 241, 0.9);
-}
-
-
-/* *************************** Main Content ******************************** */
-.main-content {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-@media (min-width: 1024px) {
-  .main-content {
-    grid-column: span 6;
-  }
-}
-
-/* Stories Card */
-.stories-card {
-  background-color: #ffffff;
-  border-radius: 1rem;
-  padding: 1.25rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.nexus-app.dark .stories-card {
-  background-color: #1e1629;
-  border-color: #374151;
-}
-
-.stories-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  padding: 0 0.25rem;
-}
-
-.stories-title {
-  font-weight: 700;
-  color: #141118;
-  font-size: 1.125rem;
-}
-
-.nexus-app.dark .stories-title {
-  color: #ffffff;
-}
-
-.see-all-btn {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #7b27f1;
-  transition: color 0.2s;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.see-all-btn:hover {
-  color: rgba(123, 39, 241, 0.8);
-}
-
-.stories-container {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-  padding-left: 0.25rem;
-}
-
-.stories-container::-webkit-scrollbar {
-  display: none;
-}
-
-.story-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 70px;
-  cursor: pointer;
-}
-
-.story-circle {
-  width: 70px;
-  height: 70px;
-  border-radius: 9999px;
-  padding: 2px;
-}
-
-.add-story {
-  border: 2px dashed #7b27f1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem;
-}
-
-.story-inner {
-  width: 100%;
-  height: 100%;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f3f4f6;
-}
-
-.nexus-app.dark .story-inner {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.add-story .story-inner {
-  color: #7b27f1;
-}
-
-.gradient-border {
-  background: linear-gradient(to top right, #fbbf24, #7b27f1);
-}
-
-.normal-border {
-  background-color: #d1d5db;
-}
-
-.nexus-app.dark .normal-border {
-  background-color: #374151;
-}
-
-.story-image {
-  width: 100%;
-  height: 100%;
-  border-radius: 9999px;
-  background-size: cover;
-  background-position: center;
-  background-color: #e5e7eb;
-}
-
-.story-name {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #141118;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-  text-align: center;
-}
-
-.nexus-app.dark .story-name {
-  color: #ffffff;
-}
-
-/* Post Cards */
-.post-card {
-  background-color: #ffffff;
-  border-radius: 1rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-}
-
-.nexus-app.dark .post-card {
-  background-color: #1e1629;
-  border-color: #374151;
-}
-
-.post-header {
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.post-author {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.author-avatar {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 9999px;
-  background-color: #e5e7eb;
-  background-size: cover;
-  background-position: center;
-}
-
-.author-name {
-  font-weight: 700;
-  color: #141118;
-  font-size: 0.875rem;
-}
-
-.nexus-app.dark .author-name {
-  color: #ffffff;
-}
-
-.post-meta {
-  font-size: 0.75rem;
-  color: #6b7280;
-}
-
-.nexus-app.dark .post-meta {
-  color: #9ca3af;
-}
-
-.post-options {
-  color: #9ca3af;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.post-options:hover {
-  color: #4b5563;
-}
-
-.nexus-app.dark .post-options:hover {
-  color: #d1d5db;
-}
-
-.post-content {
-  padding: 0 1rem 0.75rem;
-}
-
-.post-text {
-  color: #141118;
-  font-size: 0.875rem;
-  line-height: 1.625;
-}
-
-.nexus-app.dark .post-text {
-  color: #d1d5db;
-}
-
-.hashtag {
-  color: #7b27f1;
-  font-weight: 500;
-}
-
-.post-media {
-  width: 100%;
-  aspect-ratio: 16/9;
-  background-color: #f3f4f6;
-  overflow: hidden;
-}
-
-.nexus-app.dark .post-media {
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.aspect-4-3 {
-  aspect-ratio: 4/3;
-}
-
-.media-image {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-}
-
-.post-footer {
-  padding: 1rem;
-  border-top: 1px solid #f3f4f6;
-}
-
-.nexus-app.dark .post-footer {
-  border-color: rgba(255, 255, 255, 0.05);
-}
-
-.post-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.action-buttons {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #4b5563;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.nexus-app.dark .action-btn {
-  color: #d1d5db;
-}
-
-.like-btn:hover {
-  color: #dc2626;
-}
-
-.comment-btn:hover {
-  color: #7b27f1;
-}
-
-.share-btn:hover {
-  color: #10b981;
-}
-
-.action-count {
-  font-weight: 700;
-  font-size: 0.875rem;
-}
-
-.bookmark-btn {
-  color: #9ca3af;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.bookmark-btn:hover {
-  color: #7b27f1;
-}
-
-.post-likes {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.liked-by-avatars {
-  display: flex;
-  margin-right: -0.5rem;
-}
-
-.liked-avatar {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 9999px;
-  background-color: #e5e7eb;
-  background-size: cover;
-  border: 2px solid #ffffff;
-  margin-right: -0.5rem;
-}
-
-.nexus-app.dark .liked-avatar {
-  border-color: #1e1629;
-}
-
-.likes-text {
-  font-size: 0.75rem;
-  color: #6b7280;
-}
-
-.nexus-app.dark .likes-text {
-  color: #9ca3af;
-}
-
-.liked-name {
-  font-weight: 700;
-  color: #141118;
-}
-
-.nexus-app.dark .liked-name {
-  color: #ffffff;
-}
-
-.post-comments {
-  margin-top: 0.75rem;
-}
-
-.comment-item {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.comment-author {
-  font-weight: 700;
-  font-size: 0.75rem;
-  color: #141118;
-}
-
-.nexus-app.dark .comment-author {
-  color: #ffffff;
-}
-
-.comment-text {
-  font-size: 0.75rem;
-  color: #4b5563;
-}
-
-.nexus-app.dark .comment-text {
-  color: #d1d5db;
-}
-
-.view-comments {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.view-comments:hover {
-  color: #7b27f1;
-}
-
-.add-comment {
-  margin-top: 0.75rem;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.comment-avatar {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 9999px;
-  background-color: #e5e7eb;
-  background-size: cover;
-  flex-shrink: 0;
-}
-
-.comment-input {
-  flex: 1;
-  background-color: #f9fafb;
-  border: none;
-  border-radius: 9999px;
-  padding: 0.5rem 1rem;
-  font-size: 0.75rem;
-  color: #141118;
-  transition: all 0.2s;
-}
-
-.nexus-app.dark .comment-input {
-  background-color: rgba(0, 0, 0, 0.2);
-  color: #ffffff;
-}
-
-.comment-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 1px #7b27f1;
-}
-
-.comment-input::placeholder {
-  color: #6b7280;
-}
-
-/* *********************** Side Right *************************************** */
-
-
-.sidebar-right {
-  display: none;
-}
-
-@media (min-width: 1024px) {
-  .sidebar-right {
-    display: block;
-    grid-column: span 3;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-}
-
-.profile-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background-color: #ffffff;
-  border-radius: 1rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  transition: all 0.2s;
-  text-decoration: none;
-}
-
-.nexus-app.dark .profile-card {
-  background-color: #1e1629;
-  border-color: #374151;
-}
-
-.profile-card:hover {
-  border-color: #7b27f1;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.profile-avatar {
-  position: relative;
-  flex-shrink: 0;
-}
-
-.avatar-image {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 9999px;
-  background-color: #e5e7eb;
-  overflow: hidden;
-  border: 2px solid #ffffff;
-  background-size: cover;
-  background-position: center;
-}
-
-.nexus-app.dark .avatar-image {
-  border-color: #2a2435;
-}
-
-.online-indicator {
   position: absolute;
-  bottom: 0;
+  top: 100%;
+  left: 0;
   right: 0;
-  background-color: #10b981;
-  width: 0.75rem;
-  height: 0.75rem;
+  margin-top: 8px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  z-index: 30;
+}
+
+.searchInput:focus + .searchDropdown {
+  display: block;
+}
+
+.searchWrapper:hover .searchDropdown {
+  display: block;
+}
+
+.dropdownContent {
+  padding: 8px 0;
+}
+
+.dropdownTitle {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.dropdownItem:hover {
+  background-color: #f9fafb;
+}
+
+.dropdownAvatar {
+  width: 40px;
+  height: 40px;
   border-radius: 9999px;
-  border: 2px solid #ffffff;
+  background-color: #e5e7eb;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid #e5e7eb;
+  flex-shrink: 0;
 }
 
-.nexus-app.dark .online-indicator {
-  border-color: #1e1629;
-}
-
-.profile-info {
+.dropdownUserInfo {
   flex: 1;
   min-width: 0;
 }
 
-.profile-name {
+.dropdownUsername {
+  font-size: 14px;
   font-weight: 700;
   color: #141118;
-  transition: color 0.2s;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.nexus-app.dark .profile-name {
-  color: #ffffff;
-}
-
-.profile-card:hover .profile-name {
-  color: #7b27f1;
-}
-
-.profile-handle {
-  font-size: 0.75rem;
+.dropdownUserhandle {
+  font-size: 12px;
   color: #6b7280;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.nexus-app.dark .profile-handle {
-  color: #9ca3af;
-}
-
-.chevron {
-  color: #9ca3af;
-  transition: color 0.2s;
-}
-
-.profile-card:hover .chevron {
+.dropdownItem:hover .dropdownUsername {
   color: #7b27f1;
 }
 
-.friends-card {
-  background-color: #ffffff;
-  border-radius: 1rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  padding: 1.25rem;
-}
-
-.nexus-app.dark .friends-card {
-  background-color: #1e1629;
-  border-color: #374151;
-}
-
-.friends-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.friends-title {
-  font-weight: 700;
-  color: #141118;
-  font-size: 1rem;
-}
-
-.nexus-app.dark .friends-title {
-  color: #ffffff;
-}
-
-.friends-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.friend-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.friend-info {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  overflow: hidden;
-}
-
-.friend-avatar {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 9999px;
-  background-color: #e5e7eb;
-  background-size: cover;
-  background-position: center;
-  flex-shrink: 0;
-}
-
-.friend-details {
-  overflow: hidden;
-}
-
-.friend-name {
-  font-weight: 700;
-  color: #141118;
-  font-size: 0.875rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.nexus-app.dark .friend-name {
-  color: #ffffff;
-}
-
-.friend-handle {
-  font-size: 0.75rem;
-  color: #6b7280;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.nexus-app.dark .friend-handle {
-  color: #9ca3af;
-}
-
-.follow-btn {
-  flex-shrink: 0;
-  font-size: 0.75rem;
+.dropdownSeeAll {
+  display: block;
+  padding: 12px;
+  text-align: center;
+  font-size: 12px;
   font-weight: 700;
   color: #7b27f1;
-  background-color: rgba(123, 39, 241, 0.1);
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.follow-btn:hover {
-  background-color: rgba(123, 39, 241, 0.2);
-}
-
-.follow-btn.following {
-  color: #ffffff;
-  background-color: #7b27f1;
-  box-shadow: 0 1px 2px 0 rgba(123, 39, 241, 0.3);
-}
-
-.follow-btn.following:hover {
-  background-color: rgba(123, 39, 241, 0.9);
-}
-
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 0 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.footer-link {
-  font-size: 0.6875rem;
-  color: #9ca3af;
   text-decoration: none;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
+  border-top: 1px solid #f3f4f6;
 }
 
-.footer-link:hover {
-  text-decoration: underline;
+.dropdownSeeAll:hover {
+  color: rgba(123, 39, 241, 0.8);
 }
-
-.copyright {
-  font-size: 0.6875rem;
-  color: #d1d5db;
-}
-
 
 /* User Section */
-.user-section {
+.userSection {
   display: none;
-  /* display: flex; */
   align-items: center;
   gap: 1rem;
 }
 
-@media (max-width: 768px) or (max-width: 1023px) {
-  .user-section {
+@media (max-width: 768px), (max-width: 1023px) {
+  .userSection {
     display: flex;
   }
 }
 
-.user-profile {
+.userProfile {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -1025,7 +306,7 @@ body {
   transition: background-color 0.2s;
 }
 
-.user-profile:hover {
+.userProfile:hover {
   background-color: #f8fafc;
 }
 
@@ -1042,7 +323,7 @@ body {
   }
 }
 
-.user-avatar {
+.userAvatar {
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 9999px;
@@ -1050,4 +331,796 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+/* ************************* Side Left CSS ************************************ */
+.sidebarLeft {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .sidebarLeft {
+    display: block;
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+.sidebarNav {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nexusApp.dark .sidebarNav {
+  background-color: #1e1629;
+  border-color: #374151;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 500;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nexusApp.dark .navItem {
+  color: #d1d5db;
+}
+
+.navItem:hover {
+  background-color: #f9fafb;
+}
+
+.nexusApp.dark .navItem:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.navItem.active {
+  background-color: rgba(123, 39, 241, 0.1);
+  color: #7b27f1;
+  font-weight: 700;
+}
+
+.createPostBtn {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: #7b27f1;
+  color: white;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(123, 39, 241, 0.3);
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.createPostBtn:hover {
+  background-color: rgba(123, 39, 241, 0.9);
+}
+
+/* *************************** Main Content ******************************** */
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .mainContent {
+    grid-column: span 6;
+  }
+}
+
+/* Stories Card */
+.storiesCard {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.nexusApp.dark .storiesCard {
+  background-color: #1e1629;
+  border-color: #374151;
+}
+
+.storiesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0 0.25rem;
+}
+
+.storiesTitle {
+  font-weight: 700;
+  color: #141118;
+  font-size: 1.125rem;
+}
+
+.nexusApp.dark .storiesTitle {
+  color: #ffffff;
+}
+
+.seeAllBtn {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #7b27f1;
+  transition: color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.seeAllBtn:hover {
+  color: rgba(123, 39, 241, 0.8);
+}
+
+.storiesContainer {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.storiesContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.storyItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 70px;
+  cursor: pointer;
+}
+
+.storyCircle {
+  width: 70px;
+  height: 70px;
+  border-radius: 9999px;
+  padding: 2px;
+}
+
+.addStory {
+  border: 2px dashed #7b27f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+}
+
+.storyInner {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+}
+
+.nexusApp.dark .storyInner {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.addStory .storyInner {
+  color: #7b27f1;
+}
+
+.gradientBorder {
+  background: linear-gradient(to top right, #fbbf24, #7b27f1);
+}
+
+.normalBorder {
+  background-color: #d1d5db;
+}
+
+.nexusApp.dark .normalBorder {
+  background-color: #374151;
+}
+
+.storyImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  background-size: cover;
+  background-position: center;
+  background-color: #e5e7eb;
+}
+
+.storyName {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #141118;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: center;
+}
+
+.nexusApp.dark .storyName {
+  color: #ffffff;
+}
+
+/* Post Cards */
+.postCard {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.nexusApp.dark .postCard {
+  background-color: #1e1629;
+  border-color: #374151;
+}
+
+.postHeader {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.postAuthor {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.authorAvatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  background-size: cover;
+  background-position: center;
+}
+
+.authorName {
+  font-weight: 700;
+  color: #141118;
+  font-size: 0.875rem;
+}
+
+.nexusApp.dark .authorName {
+  color: #ffffff;
+}
+
+.postMeta {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.nexusApp.dark .postMeta {
+  color: #9ca3af;
+}
+
+.postOptions {
+  color: #9ca3af;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.postOptions:hover {
+  color: #4b5563;
+}
+
+.nexusApp.dark .postOptions:hover {
+  color: #d1d5db;
+}
+
+.postContent {
+  padding: 0 1rem 0.75rem;
+}
+
+.postText {
+  color: #141118;
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+.nexusApp.dark .postText {
+  color: #d1d5db;
+}
+
+.hashtag {
+  color: #7b27f1;
+  font-weight: 500;
+}
+
+.postMedia {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #f3f4f6;
+  overflow: hidden;
+}
+
+.nexusApp.dark .postMedia {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.aspect4_3 {
+  aspect-ratio: 4/3;
+}
+
+.mediaImage {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.postFooter {
+  padding: 1rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.nexusApp.dark .postFooter {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.postActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.actionButtons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #4b5563;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.nexusApp.dark .actionBtn {
+  color: #d1d5db;
+}
+
+.likeBtn:hover {
+  color: #dc2626;
+}
+
+.commentBtn:hover {
+  color: #7b27f1;
+}
+
+.shareBtn:hover {
+  color: #10b981;
+}
+
+.actionCount {
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.bookmarkBtn {
+  color: #9ca3af;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.bookmarkBtn:hover {
+  color: #7b27f1;
+}
+
+.postLikes {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.likedByAvatars {
+  display: flex;
+  margin-right: -0.5rem;
+}
+
+.likedAvatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  background-size: cover;
+  border: 2px solid #ffffff;
+  margin-right: -0.5rem;
+}
+
+.nexusApp.dark .likedAvatar {
+  border-color: #1e1629;
+}
+
+.likesText {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.nexusApp.dark .likesText {
+  color: #9ca3af;
+}
+
+.likedName {
+  font-weight: 700;
+  color: #141118;
+}
+
+.nexusApp.dark .likedName {
+  color: #ffffff;
+}
+
+.postComments {
+  margin-top: 0.75rem;
+}
+
+.commentItem {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.commentAuthor {
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: #141118;
+}
+
+.nexusApp.dark .commentAuthor {
+  color: #ffffff;
+}
+
+.commentText {
+  font-size: 0.75rem;
+  color: #4b5563;
+}
+
+.nexusApp.dark .commentText {
+  color: #d1d5db;
+}
+
+.viewComments {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.viewComments:hover {
+  color: #7b27f1;
+}
+
+.addComment {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.commentAvatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  background-size: cover;
+}
+
+.commentInput {
+  flex: 1;
+  background-color: #f9fafb;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: #141118;
+  transition: all 0.2s;
+}
+
+.nexusApp.dark .commentInput {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+}
+
+.commentInput:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #7b27f1;
+}
+
+.commentInput::placeholder {
+  color: #6b7280;
+}
+
+/* *********************** Side Right *************************************** */
+.sidebarRight {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .sidebarRight {
+    display: block;
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.profileCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.nexusApp.dark .profileCard {
+  background-color: #1e1629;
+  border-color: #374151;
+}
+
+.profileCard:hover {
+  border-color: #7b27f1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.profileAvatar {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatarImage {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  overflow: hidden;
+  border: 2px solid #ffffff;
+  background-size: cover;
+  background-position: center;
+}
+
+.nexusApp.dark .avatarImage {
+  border-color: #2a2435;
+}
+
+.onlineIndicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #10b981;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
+}
+
+.nexusApp.dark .onlineIndicator {
+  border-color: #1e1629;
+}
+
+.profileInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.profileName {
+  font-weight: 700;
+  color: #141118;
+  transition: color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexusApp.dark .profileName {
+  color: #ffffff;
+}
+
+.profileCard:hover .profileName {
+  color: #7b27f1;
+}
+
+.profileHandle {
+  font-size: 0.75rem;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexusApp.dark .profileHandle {
+  color: #9ca3af;
+}
+
+.chevron {
+  color: #9ca3af;
+  transition: color 0.2s;
+}
+
+.profileCard:hover .chevron {
+  color: #7b27f1;
+}
+
+.friendsCard {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: 1.25rem;
+}
+
+.nexusApp.dark .friendsCard {
+  background-color: #1e1629;
+  border-color: #374151;
+}
+
+.friendsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.friendsTitle {
+  font-weight: 700;
+  color: #141118;
+  font-size: 1rem;
+}
+
+.nexusApp.dark .friendsTitle {
+  color: #ffffff;
+}
+
+.friendsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.friendItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.friendInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  overflow: hidden;
+}
+
+.friendAvatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background-color: #e5e7eb;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.friendDetails {
+  overflow: hidden;
+  cursor: pointer;
+}
+
+
+.friendName {
+  font-weight: 700;
+  color: #141118;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.friendName:hover {
+  text-decoration: underline;
+}
+
+.nexusApp.dark .friendName {
+  color: #ffffff;
+}
+
+.friendHandle {
+  font-size: 0.75rem;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexusApp.dark .friendHandle {
+  color: #9ca3af;
+}
+
+.followBtn {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #7b27f1;
+  background-color: rgba(123, 39, 241, 0.1);
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.followBtn:hover {
+  background-color: rgba(123, 39, 241, 0.2);
+}
+
+.followBtn.following {
+  color: #ffffff;
+  background-color: #7b27f1;
+  box-shadow: 0 1px 2px 0 rgba(123, 39, 241, 0.3);
+}
+
+.followBtn.following:hover {
+  background-color: rgba(123, 39, 241, 0.9);
+}
+
+.footerLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.footerLink {
+  font-size: 0.6875rem;
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footerLink:hover {
+  text-decoration: underline;
+}
+
+.copyright {
+  font-size: 0.6875rem;
+  color: #d1d5db;
 }

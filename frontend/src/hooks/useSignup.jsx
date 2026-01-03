@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AuthPost } from "../utils/utils";
+import path from "../utils/apiEndPoints";
 
 function useSignup() {
     const [firstName, setFirstName] = useState('');
@@ -41,7 +42,7 @@ function useSignup() {
 
             console.log(password, confirmPassword)
             const res = await AuthPost(
-                'signup/',
+                path.signup,
                 {
                     first_name: firstName,
                     last_name: lastName,

@@ -1,19 +1,41 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './css/ProfilePage.module.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import { DotSpinner } from '../components/LoadingSpinner';
 import { AuthContext } from '../context/AuthContext';
 import FollowingModal from '../components/FollowingModal';
 import FollowersModal from '../components/FollowersModal';
 import ProfileHorizontalCard from '../components/ProfileHorizontalCard';
+import path from '../utils/apiEndPoints';
+import { getReq } from '../utils/utils';
 
-export default function ProfilePage() {
-    const { user, loading } = useContext(UserContext);
-    const { logout } = useContext(AuthContext);
+function UsersProfilePage() {
+    const [user, setUser] = useState({});
     const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
     const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
+    const [childLoading, setChildLoading] = useState(false);
+    const { username } = useParams();
 
+    
+    useEffect(() => {      
+        const fetchUser = async () => {
+            try {
+                setChildLoading(true);
+                const res = await getReq(path.profile(username));
+                setUser(res);
+            } catch (err) {
+                console.log(err.message);
+                if (err.message == 401) {
+                    navigate(path.login, {replace: true})
+                }
+            } finally {
+                setChildLoading(false);
+            };
+        }
+        
+        fetchUser();
+    }, [])
 
   const posts = [
     {
@@ -131,7 +153,7 @@ export default function ProfilePage() {
 
 
           {/* User Info */}
-          {loading
+          {childLoading
             
             ?
             
@@ -139,7 +161,6 @@ export default function ProfilePage() {
             
             :
             <>
-            {/* user profile */}
             <div className={styles.userInfo}>
                 <h1 className={styles.userName}>{user?.user?.first_name} {user?.user?.last_name}</h1>
                 <p className={styles.userHandle}>@{user?.user?.username}</p>
@@ -199,10 +220,14 @@ export default function ProfilePage() {
           {/* Action Buttons */}
           <div className={styles.actionButtons}>
             <Link to={'/profile/edit'} className={styles.editButton} style={{textDecoration: 'none'}}>
-                <span className="material-symbols-outlined">edit</span>
-                <span>Edit Profile</span>
+                {/* <span className="material-symbols-outlined">edit</span> */}
+                <span>Follow</span>
             </Link>
-            <button className={styles.iconButton}>
+            <button className={styles.messageButton}>
+                {/* <span className="material-symbols-outlined">message</span> */}
+                <span>Message</span>
+            </button>
+            {/* <button className={styles.iconButton}>
               <span className="material-symbols-outlined">ios_share</span>
             </button>
             <button className={styles.iconButton}>
@@ -210,13 +235,12 @@ export default function ProfilePage() {
             </button>
             <button className={styles.iconButton} onClick={logout}>
                 <span className="material-symbols-outlined logout-icon">logout</span>
-            </button>
+            </button> */}
 
           </div>
         </div>
-            
-            {/* Suggestion accounts card */}
-            <ProfileHorizontalCard />
+
+            {/* <ProfileHorizontalCard /> */}
 
         {/* Content Tabs */}
         <div className={styles.contentTabs}>
@@ -230,10 +254,10 @@ export default function ProfilePage() {
                 <span className="material-symbols-outlined">image</span>
                 <span className={styles.tabText}>Photos</span>
               </a>
-              <a className={styles.tabLink} href="#">
+              {/* <a className={styles.tabLink} href="#">
                 <span className="material-symbols-outlined">bookmark</span>
                 <span className={styles.tabText}>Saved</span>
-              </a>
+              </a> */}
             </nav>
           </div>
         </div>
@@ -279,3 +303,6 @@ export default function ProfilePage() {
     </div>
   );
 };
+
+
+export default UsersProfilePage;

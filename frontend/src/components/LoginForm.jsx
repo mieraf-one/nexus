@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthPost } from "../utils/utils";
 import { AuthContext } from "../context/AuthContext";
 import styles from '../pages/css/LoginPage.module.css'
+import path from "../utils/apiEndPoints";
 
 function LoginForm() {    
     const [username, setUsername] = useState('');
@@ -20,7 +21,7 @@ function LoginForm() {
             setLoading(true);
 
             const tokens = await AuthPost(
-                'token/',
+                path.login,
                 {
                     username,
                     password

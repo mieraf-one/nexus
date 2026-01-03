@@ -3,10 +3,6 @@ import SignupForm from '../components/SignupForm';
 import styles from './css/SignupPage.module.css';
 
 const SignupPage = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle sign up logic here
-  };
 
   return (
     <div className={styles.pageContainer}>

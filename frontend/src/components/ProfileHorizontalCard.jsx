@@ -3,9 +3,13 @@ import styles from './Css/ProfileHorizontalCard.module.css';
 import { useEffect } from 'react';
 import { getReq, postReq } from '../utils/utils';
 import { DotSpinner } from './LoadingSpinner';
+import path from '../utils/apiEndPoints';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileHorizontalCard = () => {
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
   const [suggestAccounts, setSuggestAccounts] = useState([
     {
       id: 1,
@@ -45,7 +49,7 @@ const ProfileHorizontalCard = () => {
 
     const followUser = async (id) => {
         try {
-          const res = await postReq(`user/follow/${id}/`, {})
+          const res = await postReq(path.followUser(id), {})
     
           setSuggestAccounts(suggestAccounts.map((user) => {
             if (user.id == id) {
@@ -75,6 +79,7 @@ const ProfileHorizontalCard = () => {
         }
       }
 
+  if (suggestAccounts.length == 0) return null;
   return (
     <>
     {loading
@@ -94,7 +99,11 @@ const ProfileHorizontalCard = () => {
       {/* Scroll Area */}
       <div className={styles.scrollArea}>
         {suggestAccounts.map((user) => (
-          <div key={user.id} className={styles.card}>
+          <div 
+              key={user.id}
+              className={styles.card}
+              onClick={() => {navigate(`/user/${user.username}/`)}}
+            >
             {/* Close Button */}
             <button 
               className={styles.closeButton}
@@ -114,13 +123,13 @@ const ProfileHorizontalCard = () => {
             {/* User Info */}
             <div className={styles.userInfo}>
               <h3 className={styles.userName}>{user.first_name}</h3>
-              <p className={styles.userUsername}>{user.username}</p>
+              <p className={styles.userUsername}>@{user.username}</p>
             </div>
             
             {/* Follow Button */}
             <button 
               className={`${styles.followButton} ${user.is_following ? styles.following : ''}`}
-              onClick={() => {user.is_following ? unFollowUser(user.id) : followUser(user.id)}}
+              onClick={(e) => {e.stopPropagation(); user.is_following ? unFollowUser(user.id) : followUser(user.id)}}
             >
               {user.is_following ? (
                 <>

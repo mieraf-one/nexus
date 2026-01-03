@@ -252,7 +252,7 @@
   width: 8rem;
   height: 8rem;
   border-radius: 9999px;
-  padding: 0.25rem;
+  padding: 0.45rem;
   background: linear-gradient(135deg, #7b27f1, #ec4899);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
@@ -268,7 +268,7 @@
   width: 100%;
   height: 100%;
   border-radius: 9999px;
-  border: 4px solid #ffffff;
+  border: 1px solid #ffffff;
   background-color: #ffffff;
   overflow: hidden;
 }
@@ -407,6 +407,25 @@
 
 .editButton .material-symbols-outlined {
   font-size: 18px;
+}
+
+.messageButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  background-color: #464346;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 9999px;
+  box-shadow: 0 4px 6px -1px rgba(123, 39, 241, 0.3);
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 8.75rem;
 }
 
 .iconButton {

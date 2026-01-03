@@ -8,6 +8,8 @@ import UserProvider from './context/UserContext'
 import ProfilePage from './pages/ProfilePage'
 import EditProfilePage from './pages/EditProfilePage'
 import PublicRoute from './components/PublicRoute'
+import UsersProfilePage from './pages/UsersProfilePage'
+import './index.css'
 
 function App() {
 
@@ -23,7 +25,8 @@ function App() {
                                     <PublicRoute>
                                         <LoginPage />
                                     </PublicRoute>
-                                } />
+                                }
+        />
         
         <Route path='/dashboard' element={
                                           <ProtectedRoute>
@@ -46,6 +49,13 @@ function App() {
                                               </UserProvider>
                                           </ProtectedRoute>
         }/>
+
+        <Route path='user/:username' element={ 
+                                    <PublicRoute>
+                                                <UsersProfilePage />
+                                    </PublicRoute>
+                                }
+        />
         
       </Routes>
   )

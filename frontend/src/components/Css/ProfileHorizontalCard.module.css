@@ -187,13 +187,13 @@
 .userInfo {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.15rem;
   width: 100%;
 }
 
 .userName {
   color: #141118;
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.25;
   overflow: hidden;
@@ -210,17 +210,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-family: 'Plus Jakarta Sans', sans-serif;
+  margin: 0px;
 }
 
-.userDescription {
-  color: #9e94aa;
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
 
 /* Follow Button */
 .followButton {

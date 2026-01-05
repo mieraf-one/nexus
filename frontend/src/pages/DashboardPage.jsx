@@ -26,7 +26,18 @@ export default function DashboardPage() {
 const Header = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
-  
+  const [users, setUsers] = useState([]);
+
+  const handleSearch = async (value) => {
+    try {
+        const res = await getReq(path.searchUser(value))
+        console.log(res);
+        setUsers(res);
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>
@@ -46,44 +57,43 @@ const Header = () => {
               className={styles.searchInput}
               placeholder="Search for people, posts, or tags..."
               type="text"
+              onChange={(e) => { handleSearch(e.target.value); }}
             />
             
             <div className={styles.searchDropdown}>
               <div className={styles.dropdownContent}>
-                <h4 className={styles.dropdownTitle}>Suggested Users</h4>
-                
-                <a href="#" className={styles.dropdownItem}>
-                  <div 
-                    className={styles.dropdownAvatar}
-                    style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCFniLr9qQ4CyMr7gt_qH24PZq4DIBiAoXewcG0PV1tilRCyEE5kMENVO3PA-BDYFeOKp7kX8wLfwEJ7ZRaCM6Ud8MX5XZDJq6NEABH8fIRUGzXPC6ZeahQeSXt3Oa6rC6shhdl7b_wCOM-H3QW55eMINzf5nKVUeAU7LLFct__MMyEYJU2RHCLjJyBt7W67fYv2aDn3cgLs6PH2aZp-ZMtuDpkiGGAzqykfmuNHuzPHu9tTsS8fRgCCkt0wyDv4Dqny52Kj7EZpN3y")' }}
-                  ></div>
-                  <div className={styles.dropdownUserInfo}>
-                    <h5 className={styles.dropdownUsername}>Alex Morgan</h5>
-                    <p className={styles.dropdownUserhandle}>@alex_creative</p>
-                  </div>
-                </a>
-                
-                <a href="#" className={styles.dropdownItem}>
-                  <div 
-                    className={styles.dropdownAvatar}
-                    style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCAvytpHetbHBoclqocctShLueN0d3j1vLCCILREkyMzOLXw9e5auSU6C6KoAjoQ2RDfwPu_2Bz6AF5hswBmDaiWEhs4YWbqSiRostSwEYvn_Y0E3FJYNO4yFegf-hzyglelo9Fud_Ck0lSLrw7f10Dk82uT4A_LJrL3WBfxT1285e-0ljpmVhW59dduWOmxRWfsd2HJA7qBMQwYEKWRBeUIf7R8UoQREBSS3a4qi9hG7SEwWyEtGhtLJy_79YA2DDQN-3P-qFLOjL")' }}
-                  ></div>
-                  <div className={styles.dropdownUserInfo}>
-                    <h5 className={styles.dropdownUsername}>Alexandra Smith</h5>
-                    <p className={styles.dropdownUserhandle}>@alexandra_s</p>
-                  </div>
-                </a>
-                
-                <a href="#" className={styles.dropdownItem}>
-                  <div 
-                    className={styles.dropdownAvatar} 
-                    style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuASqnoqallbOltYisWtkeWuH__miWyYk9YrVjxkby3mKdhcNkadi9B9Keelh8CSjnU5K-gFmia4mC9wycTDa2Ry9j0t0nupcYdKrk1nmOml8-Q51HTg44mzwfl6Tu-Bm7IDZk3y84zfPkNCxd7t24vUDcKa_5bFWqqtTY8LLUi0S6W8DlDBPkiKuH2gCFkQKj5YqQht5ZTC_8ZG75pH5H3bt76axzxKhRWlw6HEqLwcbva5jsFXwjDZO87zAbephzokpZ7VzMCjeOyc")' }}
-                  ></div>
-                  <div className={styles.dropdownUserInfo}>
-                    <h5 className={styles.dropdownUsername}>Alex Johnson</h5>
-                    <p className={styles.dropdownUserhandle}>@aj_dev</p>
-                  </div>
-                </a>
+                {/* <h4 className={styles.dropdownTitle}>Suggested Users</h4> */}
+
+                {/* searched users */}
+                {users.map((user) => (
+                  <>
+                  {users.length == 0 && <h4>Not found.</h4>}
+                  <Link to={`/user/${user.username}`} className={styles.dropdownItem}>
+                      <div 
+                        className={styles.dropdownAvatar}
+                        style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCFniLr9qQ4CyMr7gt_qH24PZq4DIBiAoXewcG0PV1tilRCyEE5kMENVO3PA-BDYFeOKp7kX8wLfwEJ7ZRaCM6Ud8MX5XZDJq6NEABH8fIRUGzXPC6ZeahQeSXt3Oa6rC6shhdl7b_wCOM-H3QW55eMINzf5nKVUeAU7LLFct__MMyEYJU2RHCLjJyBt7W67fYv2aDn3cgLs6PH2aZp-ZMtuDpkiGGAzqykfmuNHuzPHu9tTsS8fRgCCkt0wyDv4Dqny52Kj7EZpN3y")' }}
+                      ></div>
+                      <div className={styles.dropdownUserInfo}>
+                        <h5 className={styles.dropdownUsername}>{user.first_name}</h5>
+                        <p className={styles.dropdownUserhandle}>@{user.username}</p>
+                      </div>
+                  </Link>
+                    {/* <a  
+                        key={user.id}
+                        href="#"
+                        className={styles.dropdownItem}
+                    >
+                      <div 
+                        className={styles.dropdownAvatar}
+                        style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCFniLr9qQ4CyMr7gt_qH24PZq4DIBiAoXewcG0PV1tilRCyEE5kMENVO3PA-BDYFeOKp7kX8wLfwEJ7ZRaCM6Ud8MX5XZDJq6NEABH8fIRUGzXPC6ZeahQeSXt3Oa6rC6shhdl7b_wCOM-H3QW55eMINzf5nKVUeAU7LLFct__MMyEYJU2RHCLjJyBt7W67fYv2aDn3cgLs6PH2aZp-ZMtuDpkiGGAzqykfmuNHuzPHu9tTsS8fRgCCkt0wyDv4Dqny52Kj7EZpN3y")' }}
+                      ></div>
+                      <div className={styles.dropdownUserInfo}>
+                        <h5 className={styles.dropdownUsername}>{user.first_name}</h5>
+                        <p className={styles.dropdownUserhandle}>@{user.username}</p>
+                      </div>
+                    </a> */}
+                    </>
+                ))}                
                 
                 <a href="#" className={styles.dropdownSeeAll}>
                   See all results

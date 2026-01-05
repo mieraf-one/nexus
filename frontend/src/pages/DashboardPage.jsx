@@ -31,7 +31,7 @@ const Header = () => {
   const handleSearch = async (value) => {
     try {
         const res = await getReq(path.searchUser(value))
-        console.log(res);
+        // console.log(res);
         setUsers(res);
     } catch (err) {
       console.log(err.message);
@@ -68,7 +68,11 @@ const Header = () => {
                 {users.map((user) => (
                   <>
                   {users.length == 0 && <h4>Not found.</h4>}
-                  <Link to={`/user/${user.username}`} className={styles.dropdownItem}>
+                  <Link
+                      key={user.id}
+                      to={`/user/${user.username}`}
+                      className={styles.dropdownItem}
+                  >
                       <div 
                         className={styles.dropdownAvatar}
                         style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuCFniLr9qQ4CyMr7gt_qH24PZq4DIBiAoXewcG0PV1tilRCyEE5kMENVO3PA-BDYFeOKp7kX8wLfwEJ7ZRaCM6Ud8MX5XZDJq6NEABH8fIRUGzXPC6ZeahQeSXt3Oa6rC6shhdl7b_wCOM-H3QW55eMINzf5nKVUeAU7LLFct__MMyEYJU2RHCLjJyBt7W67fYv2aDn3cgLs6PH2aZp-ZMtuDpkiGGAzqykfmuNHuzPHu9tTsS8fRgCCkt0wyDv4Dqny52Kj7EZpN3y")' }}

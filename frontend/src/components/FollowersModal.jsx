@@ -2,16 +2,19 @@ import React, { useState } from 'react';
 import styles from './Css/FollowersModal.module.css';
 import { useEffect } from 'react';
 import { getReq } from '../utils/utils';
+import { Link, useParams } from 'react-router-dom';
+import path from '../utils/apiEndPoints';
 
 const FollowersModal = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [followers, setFollowers] = useState([]);
+  const { username } = useParams();
 
 
    useEffect(() => {
            const fetchFollowing = async () => {
                try {
-                   const res = await getReq('user/profile/');
+                   const res = await getReq(path.profile(username));
                   //  console.log(res.follower);
                    setFollowers(res.follower);
                } catch (err) {
@@ -91,7 +94,12 @@ const FollowersModal = ({ isOpen, onClose }) => {
           {/* Scrollable List Content */}
           <div className={styles.listContainer}>
             {filteredFollowers.map((user) => (
-              <div key={user.id} className={styles.listItem}>
+              <Link
+                  key={user.id}
+                  to={`/user/${user.username}`}
+                  className={styles.listItem}
+                  style={{textDecoration: 'none'}}
+              >
                 <div className={styles.userInfo}>
                   <div className={styles.avatarContainer}>
                     {user.avatar ? (
@@ -123,7 +131,7 @@ const FollowersModal = ({ isOpen, onClose }) => {
                 >
                   Remove
                 </button>
-              </div>
+              </Link>
             ))}
           </div>
 

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { BASE_URL } from './const';
+import path from './apiEndPoints';
 
 export async function AuthPost(endPoint, data) {
     try {
@@ -94,5 +95,24 @@ export async function postReq(path, data) {
         }
         
         throw new Error(Object.values(err.response.data).join('\n'));
+    }
+}
+
+
+export async function followUser(id) {
+    try {
+      const res = await postReq(path.followUser(id), {})
+        return res;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+}
+
+export async function unFollowUser(id) {
+    try {
+        const res = await postReq(path.unfollowUser(id), {});
+        return res;
+    } catch (err) {
+       throw new Error(err.message);
     }
 }

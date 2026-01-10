@@ -4,9 +4,10 @@ import { AuthContext } from '../context/AuthContext';
 import { UserContext } from '../context/UserContext';
 import { DotSpinner } from '../components/LoadingSpinner';
 import { Link, useNavigate } from 'react-router-dom';
-import { getReq, postReq } from '../utils/utils';
+import { getReq, postReq, unFollowUser } from '../utils/utils';
 import { useEffect } from 'react';
 import path from '../utils/apiEndPoints';
+import { followUser } from '../utils/utils';
 
 export default function DashboardPage() { 
   return (
@@ -67,7 +68,7 @@ const Header = () => {
                 {/* searched users */}
                 {users.map((user) => (
                   <>
-                  {users.length == 0 && <h4>Not found.</h4>}
+                  {/* {users.length == 0 && <h4>Not found.</h4>} */}
                   <Link
                       key={user.id}
                       to={`/user/${user.username}`}
@@ -346,8 +347,8 @@ const SidebarRight = () => {
     const fetchSuggestions = async () => {
       try {
         setChildLoading(true);
-        const res = await getReq('follow-suggestions/');
-        console.log(res.results)
+        const res = await getReq(path.followSuggestions);
+        // console.log(res.results)
         setSuggestAccounts(res.results);
       } catch (error) {
         console.log(error.message);
@@ -359,9 +360,9 @@ const SidebarRight = () => {
     fetchSuggestions();
   }, [])
 
-  const followUser = async (id) => {
+  const handleFollowUser = async (id) => {
     try {
-      const res = await postReq(path.followUser(id), {})
+      await followUser(id);
 
       setSuggestAccounts(suggestAccounts.map((user) => {
         if (user.id == id) {
@@ -374,9 +375,9 @@ const SidebarRight = () => {
     }
   }
 
-  const unFollowUser = async (id) => {
+  const handleUnFollowUser = async (id) => {
     try {
-      const res = await postReq(path.unfollowUser(id), {});
+      await unFollowUser(id);
 
       setSuggestAccounts(suggestAccounts.map((user) => {
         if (user.id == id) {
@@ -440,7 +441,7 @@ const SidebarRight = () => {
               </div>
               <button
                   className={`${styles.followBtn} ${user.is_following ? styles.following : ''}`}
-                  onClick={() => {user.is_following ? unFollowUser(user.id) : followUser(user.id)}}
+                  onClick={() => {user.is_following ? handleUnFollowUser(user.id) : handleFollowUser(user.id)}}
               >
                 {user.is_following ? 'Following' : 'Follow'}
               </button>

@@ -5,7 +5,8 @@ const path = {
     followUser: (id) => `user/follow/${id}/`,
     unfollowUser: (id) => `user/unfollow/${id}/`,
     profile: (username) => username ? `user/profile/${username}/` : 'user/profile/',
-    searchUser: (value) => `user/?search=${value}`
+    searchUser: (value) => `user/?search=${value}`,
+    notifications: 'notifications/'
 }
 
 export default path;

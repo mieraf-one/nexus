@@ -10,19 +10,9 @@ const ProfileHorizontalCard = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-  const [suggestAccounts, setSuggestAccounts] = useState([
-    {
-      id: 1,
-      name: "Sarah Jenks",
-      username: "@sarahj_design",
-      description: "Followed by miker_legal",
-      avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuB0joO45KH-JczFrxUoj9CYCGz5298FP-ei_cCgDXIQVQxpTwbMFzzvM5Go7fh2jMnd2Zjr_GfTH_hbUXjs4abauYDdqnf9_I-hdQJ-Z3CzA1YmQq0yoz4thz8rbu2eZyI53Jm11Ek6UJ0k5sEd-TQWvyItYwo-jUKvXSluSOFDChKLAlG33bCflfbfJ6JuTFlabz5Ro9gcl3cFX7w95xcd5YON8BHIB6VQHGEKvY0z2ow4si09qSL1Fb7kVfuB8Fe0LgzUU5kIMwwb",
-      isFollowing: false,
-      isOnline: true
-    }
-  ]);
+  const [suggestAccounts, setSuggestAccounts] = useState([]);
 
-  const avatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuB0joO45KH-JczFrxUoj9CYCGz5298FP-ei_cCgDXIQVQxpTwbMFzzvM5Go7fh2jMnd2Zjr_GfTH_hbUXjs4abauYDdqnf9_I-hdQJ-Z3CzA1YmQq0yoz4thz8rbu2eZyI53Jm11Ek6UJ0k5sEd-TQWvyItYwo-jUKvXSluSOFDChKLAlG33bCflfbfJ6JuTFlabz5Ro9gcl3cFX7w95xcd5YON8BHIB6VQHGEKvY0z2ow4si09qSL1Fb7kVfuB8Fe0LgzUU5kIMwwb";
+  // const avatar = "https://lh3.googleusercontent.com/aida-public/AB6AXuB0joO45KH-JczFrxUoj9CYCGz5298FP-ei_cCgDXIQVQxpTwbMFzzvM5Go7fh2jMnd2Zjr_GfTH_hbUXjs4abauYDdqnf9_I-hdQJ-Z3CzA1YmQq0yoz4thz8rbu2eZyI53Jm11Ek6UJ0k5sEd-TQWvyItYwo-jUKvXSluSOFDChKLAlG33bCflfbfJ6JuTFlabz5Ro9gcl3cFX7w95xcd5YON8BHIB6VQHGEKvY0z2ow4si09qSL1Fb7kVfuB8Fe0LgzUU5kIMwwb";
 
 
   const handleRemove = (id) => {
@@ -116,7 +106,7 @@ const ProfileHorizontalCard = () => {
             <div className={styles.avatarContainer}>
               <div 
                 className={styles.avatar}
-                style={{ backgroundImage: `url("${avatar}")` }}
+                style={{ backgroundImage: `url("${user?.profile_picture}")` }}
               ></div>
             </div>
             

@@ -99,10 +99,10 @@ export default function ProfilePage() {
                     <span className="material-symbols-outlined">explore</span>
                     <span className={styles.navText}>Explore</span>
                 </a>
-                <a className={styles.navLink} href="#">
+                <Link to={'/notifications'} className={styles.navLink}>
                     <span className="material-symbols-outlined">notifications</span>
                     <span className={styles.navText}>Notifications</span>
-                </a>
+                </Link>
                 <a className={`${styles.navLink} ${styles.active}`} href="#">
                     <span className="material-symbols-outlined">person</span>
                     <span className={styles.navText}>Profile</span>
@@ -122,7 +122,7 @@ export default function ProfilePage() {
               <div className={styles.avatarInner}>
                 <div 
                   className={styles.avatarImage} 
-                  style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDhgBGR8bwJax1bkjvEJXrdwT0-P8dE9q8tI2fTLK1SHCzI5snoFH6oiPINeJzGWBVX7VCt1trVOpwQ8uHU3RJNloFNjBwKyrJ6wj97Ol5KCo_bCFdOnopx6gvNjmV1ZcFM8Vgcp4D2rlTb8CP6eLmFav6lRTfuG10ekAgQ_qm73Q61F7_AqO0UX6vt05asMAc2hT7XsbUtIbpfCLIzCBZtkn-0ySBha83Jv5_KNmLiLXGdEl9fprPIBvAvkmRJX9WN17lFA_fVvx3I")' }}
+                  style={{ backgroundImage: `url(${user?.profile_picture})` }}
                 ></div>
               </div>
             </div>

@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Css/FollowingModal.module.css';
 import { getReq } from '../utils/utils';
+import path from '../utils/apiEndPoints';
+import { Link, useParams } from 'react-router-dom';
 
 const FollowingModal = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [following, setFollowing] = useState([]);
+  const { username } = useParams();
 
     useEffect(() => {
         const fetchFollowing = async () => {
             try {
-                const res = await getReq('user/profile/');
+                const res = await getReq(path.profile(username));
                 // console.log(res.following);
                 setFollowing(res.following);
             } catch (err) {
@@ -88,7 +91,13 @@ const FollowingModal = ({ isOpen, onClose }) => {
           {/* Scrollable List Content */}
           <div className={styles.listContainer}>
             {filteredFollowing.map((user) => (
-              <div key={user.id} className={styles.listItem}>
+              <Link
+                  key={user.id}
+                  to={`/user/${user.username}`}
+                  onClick={onClose}
+                  className={styles.listItem}
+                  style={{textDecoration: 'none'}}
+              >
                 <div className={styles.userInfo}>
                   <div className={styles.avatarContainer}>
                     {user.avatar ? (
@@ -121,7 +130,7 @@ const FollowingModal = ({ isOpen, onClose }) => {
                   <span className={styles.followText}>Following</span>
                   <span className={styles.unfollowText}>Unfollow</span>
                 </button>
-              </div>
+              </Link>
             ))}
           </div>
 

@@ -8,7 +8,7 @@ import FollowingModal from '../components/FollowingModal';
 import FollowersModal from '../components/FollowersModal';
 import ProfileHorizontalCard from '../components/ProfileHorizontalCard';
 import path from '../utils/apiEndPoints';
-import { getReq } from '../utils/utils';
+import { followUser, getReq } from '../utils/utils';
 
 function UsersProfilePage() {
     const [user, setUser] = useState({});
@@ -22,7 +22,9 @@ function UsersProfilePage() {
         const fetchUser = async () => {
             try {
                 setChildLoading(true);
+                console.log(`username: ${username}`);
                 const res = await getReq(path.profile(username));
+                console.log(res);
                 setUser(res);
             } catch (err) {
                 console.log(err.message);
@@ -144,7 +146,7 @@ function UsersProfilePage() {
               <div className={styles.avatarInner}>
                 <div 
                   className={styles.avatarImage} 
-                  style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDhgBGR8bwJax1bkjvEJXrdwT0-P8dE9q8tI2fTLK1SHCzI5snoFH6oiPINeJzGWBVX7VCt1trVOpwQ8uHU3RJNloFNjBwKyrJ6wj97Ol5KCo_bCFdOnopx6gvNjmV1ZcFM8Vgcp4D2rlTb8CP6eLmFav6lRTfuG10ekAgQ_qm73Q61F7_AqO0UX6vt05asMAc2hT7XsbUtIbpfCLIzCBZtkn-0ySBha83Jv5_KNmLiLXGdEl9fprPIBvAvkmRJX9WN17lFA_fVvx3I")' }}
+                  style={{ backgroundImage: `url(${user?.profile_picture})` }}
                 ></div>
               </div>
             </div>
@@ -219,10 +221,15 @@ function UsersProfilePage() {
           
           {/* Action Buttons */}
           <div className={styles.actionButtons}>
-            <Link to={'/profile/edit'} className={styles.editButton} style={{textDecoration: 'none'}}>
+
+            {/* follow btn */}
+            <button
+                className={styles.editButton}
+                onClick={() => {followUser(user?.user?.id)}}
+            >
                 {/* <span className="material-symbols-outlined">edit</span> */}
                 <span>Follow</span>
-            </Link>
+            </button>
             <button className={styles.messageButton}>
                 {/* <span className="material-symbols-outlined">message</span> */}
                 <span>Message</span>

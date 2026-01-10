@@ -10,6 +10,7 @@ import EditProfilePage from './pages/EditProfilePage'
 import PublicRoute from './components/PublicRoute'
 import UsersProfilePage from './pages/UsersProfilePage'
 import './index.css'
+import NotificationPage from './pages/NotificationPage'
 
 function App() {
 
@@ -53,6 +54,13 @@ function App() {
         <Route path='user/:username' element={ 
                                     <PublicRoute>
                                                 <UsersProfilePage />
+                                    </PublicRoute>
+        }
+        />
+
+        <Route path='/notifications' element={ 
+                                    <PublicRoute>
+                                                <NotificationPage />
                                     </PublicRoute>
                                 }
         />

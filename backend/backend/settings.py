@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'corsheaders',
+    'cloudinary',
+    'cloudinary_storage'
 ]
 
 MIDDLEWARE = [
@@ -141,3 +143,12 @@ SIMPLE_JWT = {
 
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dld9ikquj',
+    'API_KEY': '396442662657238',
+    'API_SECRET': 'c7JAcfN4jTATm4aD5n7K6i0Pg_g',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

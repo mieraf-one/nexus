@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Follow
+from .models import CustomUser, Follow, Notification
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -25,7 +25,17 @@ class FollowSerializer(serializers.Serializer):
     def create(self, validated_data):
         follower = self.context['request'].user.custom_user
         following = get_object_or_404(CustomUser, pk=validated_data['user_id'])
-        return Follow.objects.create(follower=follower, following=following)
+        
+        follow_user = Follow.objects.create(follower=follower, following=following)
+
+        # send a notification
+        Notification.objects.create(
+            sender=follower,
+            receiver=following,
+            description=f' started following you.'
+        )
+
+        return follow_user
 
 
 class UnFollowSerializer(serializers.Serializer):
@@ -76,19 +86,16 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
 
-class FollowingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Follow
-        fields = ['following', 'follower']
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     follower = serializers.SerializerMethodField()
     following = serializers.SerializerMethodField()
+    profile_picture = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
-        fields = ['user', 'bio', 'following', 'follower']
+        fields = ['user', 'bio', 'following', 'follower', 'profile_picture']
     
     def get_follower(self, obj):
         follows = obj.follower.all()
@@ -97,6 +104,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     def get_following(self, obj):
         followers = obj.following.all()
         return UserSerializer([f.following.user for f in followers], many=True).data
+
+    def get_profile_picture(self, obj):
+        if not obj.profile_picture:
+            return 'https://res.cloudinary.com/dld9ikquj/image/upload/v1768036307/default_profile_pic_modb9y.svg'
+        
+        return obj.profile_picture.url
 
     def update(self, instance, validated_data):
         request = self.context['request']
@@ -117,11 +130,38 @@ class FollowSuggestionSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     username = serializers.CharField()
     is_following = serializers.SerializerMethodField()
+    profile_picture = serializers.SerializerMethodField()
+
+    def get_profile_picture(self, obj):
+        user_picture = obj.custom_user.profile_picture
+
+        if user_picture:
+            return user_picture.url
+        
+        return 'https://res.cloudinary.com/dld9ikquj/image/upload/v1768036307/default_profile_pic_modb9y.svg'
+
 
     def get_is_following(self, obj):
         follower = self.context['request'].user.custom_user
+        print(f'follow suggestion: {follower}')
         
         return Follow.objects.filter(
             follower=follower,
             following=obj.custom_user
         ).exists()
+
+class NotificationSerializer(serializers.ModelSerializer):
+    sender = serializers.SlugRelatedField(
+        slug_field = 'user__username',
+        read_only = True
+    )
+
+    receiver = serializers.SlugRelatedField(
+        slug_field = 'user__username',
+        read_only = True
+    )
+
+    class Meta: 
+        model = Notification
+        fields = ['id', 'sender', 'receiver', 'description', 'created_at']
+        extra_fields = {'created_at': {'read_only': True}}

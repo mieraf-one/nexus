@@ -4,7 +4,13 @@ from django.contrib.auth.models import User
 # Create your models here.
 class CustomUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='custom_user')
-    # profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+
+    profile_picture = models.ImageField(
+        upload_to='profile_pictures/',
+        null=True,
+        blank=True
+    )
+
     bio = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
@@ -31,3 +37,10 @@ class Follow(models.Model):
     
     def __str__(self):
         return f'{self.follower.user.username, self.following.user.username}'
+
+
+class Notification(models.Model):
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='receiver')
+    description = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)

@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { BASE_URL } from './const';
+import { BASE_URL, UPLOAD_PRESET } from './const';
 import path from './apiEndPoints';
+import { request } from '../auth/client';
 
 export async function AuthPost(endPoint, data) {
     try {
@@ -16,22 +17,19 @@ export async function AuthPost(endPoint, data) {
             throw new Error('Something went wrong');
         }
 
-        throw new Error(Object.values(err.response.data).join('\n'));
+        throw new Error(Object.values(err.response.data)[0]);
     }
 }
 
 export async function getReq(path) {
     try {
-        const res = await axios.get(
-            `${BASE_URL}/${path}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('access')}`
-                }
-            }
+        const res = await request.get(
+            path,
         )
+        console.log(res);
         return res.data
     } catch (err) {
+        console.log(err.response.data)
         if (!err.response) {
             throw new Error('Something went wrong');
         }
@@ -114,5 +112,43 @@ export async function unFollowUser(id) {
         return res;
     } catch (err) {
        throw new Error(err.message);
+    }
+}
+
+export async function refreshToken() {
+    try {
+        const res = await axios.post(
+            path.refreshToken,
+            localStorage?.getItem('access')
+        )
+
+        /* put new access token in localstorage */
+        localStorage.setItem('access', res.data);
+
+    } catch (err) {
+        if (!err.response) {
+            throw new Error('Something went wrong');
+        }
+        
+        throw new Error(Object.values(err.response.data).join('\n'));
+    }
+}
+
+
+export async function uploadToCloudinary(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+
+    try {
+        const res = await axios.post(
+        path.uploadProfilePic,
+        formData
+        );
+
+        console.log(`secure_url: ${res.data.secure_url}`)
+        return res.data.secure_url;
+    } catch (error) {
+        throw new Error("upload failed");
     }
 }

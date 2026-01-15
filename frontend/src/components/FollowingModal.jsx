@@ -13,7 +13,7 @@ const FollowingModal = ({ isOpen, onClose }) => {
         const fetchFollowing = async () => {
             try {
                 const res = await getReq(path.profile(username));
-                // console.log(res.following);
+                console.log('following')
                 setFollowing(res.following);
             } catch (err) {
                 
@@ -27,10 +27,10 @@ const FollowingModal = ({ isOpen, onClose }) => {
     setFollowing(following.filter(user => user.id !== id));
   };
 
-  const filteredFollowing = following.filter(user =>
-    user.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.username.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredFollowing = following.filter(user =>
+  //   user.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //   user.username.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
 
   if (!isOpen) return null;
 

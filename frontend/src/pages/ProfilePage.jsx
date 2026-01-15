@@ -14,7 +14,6 @@ export default function ProfilePage() {
     const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
     const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
 
-
   const posts = [
     {
       id: 1,
@@ -141,8 +140,8 @@ export default function ProfilePage() {
             <>
             {/* user profile */}
             <div className={styles.userInfo}>
-                <h1 className={styles.userName}>{user?.user?.first_name} {user?.user?.last_name}</h1>
-                <p className={styles.userHandle}>@{user?.user?.username}</p>
+                <h1 className={styles.userName}>{user?.first_name} {user?.user?.last_name}</h1>
+                <p className={styles.userHandle}>@{user?.username}</p>
                 <p className={styles.userBio}>
                 {user?.bio || "bio"}
                 </p>

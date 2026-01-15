@@ -14,7 +14,7 @@ const UserProvider = ({ children }) => {
         try {
             setLoading(true);
             const res = await getReq(path.profile());
-            // console.log(res);
+            console.log(res);
             setUser(res);
         } catch (err) {
             if (err.message == 401) {

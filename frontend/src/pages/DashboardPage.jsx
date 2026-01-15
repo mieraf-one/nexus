@@ -339,24 +339,28 @@ const MainContent = () => {
 
 const SidebarRight = () => {
   const { user, loading } = useContext(UserContext);
+  const { refresh } = useContext(AuthContext);
   const [suggestAccounts, setSuggestAccounts] = useState([]);
   const [childLoading, setChildLoading] = useState(false);
   const navigate = useNavigate();
   
-  useEffect(() => {
-    const fetchSuggestions = async () => {
+  const fetchSuggestions = async () => {
       try {
         setChildLoading(true);
+
         const res = await getReq(path.followSuggestions);
-        // console.log(res.results)
+        console.log(res)
         setSuggestAccounts(res.results);
+
       } catch (error) {
         console.log(error.message);
+
       } finally {
         setChildLoading(false);
       }
     }
 
+  useEffect(() => {
     fetchSuggestions();
   }, [])
 
@@ -407,8 +411,8 @@ const SidebarRight = () => {
           <div className={styles.onlineIndicator}></div>
         </div>
         <div className={styles.profileInfo}>
-          <h3 className={styles.profileName}>{user?.user?.first_name}</h3>
-          <p className={styles.profileHandle}>@{user?.user?.username}</p>
+          <h3 className={styles.profileName}>{user?.first_name}</h3>
+          <p className={styles.profileHandle}>@{user?.username}</p>
         </div>
         <span className={`material-symbols-outlined ${styles.chevron}`}>chevron_right</span>
       </Link> 

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { AuthPost } from "../utils/utils";
-import path from "../utils/apiEndPoints";
+import { signupUser } from "../auth/auth.api";
+import { useNavigate } from "react-router-dom";
 
 function useSignup() {
     const [firstName, setFirstName] = useState('');
@@ -13,6 +13,8 @@ function useSignup() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+
+    const navigate = useNavigate();
 
     const clearForm = () => {
         setFirstName('');
@@ -40,21 +42,9 @@ function useSignup() {
                 throw new Error("You must accept Terms of Service.")
             }
 
-            console.log(password, confirmPassword)
-            const res = await AuthPost(
-                path.signup,
-                {
-                    first_name: firstName,
-                    last_name: lastName,
-                    username,
-                    email,
-                    password,
-                    confirm_password: confirmPassword
-                }
-            )
-            console.log(res)
-            clearForm();
-            setSuccess("You are successfully registered.")
+            await signupUser(firstName, lastName, username, email, password, confirmPassword);
+            setSuccess('You are successfully registered.')
+            navigate('/login');
         } catch (err) {
             setError(err.message)
         } finally {

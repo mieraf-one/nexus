@@ -1,20 +1,35 @@
 import { createContext, useEffect, useState } from "react";
+import { loginUser, logoutUser, refreshUser } from "../auth/auth.api";
 
 export const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('access'));
 
-    const login = async ({access, refresh}) => {
-        localStorage.setItem('access', access);
-        localStorage.setItem('refresh', refresh);
-        setIsAuthenticated(true);
+    const login = async (username, password) => {
+        try {
+            await loginUser(username, password);
+            setIsAuthenticated(true);
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 
     const logout = () => {
-        localStorage.removeItem('access');
-        localStorage.removeItem('refresh');
-        setIsAuthenticated(false);
+        try {
+            setIsAuthenticated(false);
+            logoutUser();
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    const refresh = async () => {
+        try {
+            await refreshUser();
+        } catch (error) {
+            throw new Error(error.message);
+        }
     }
 
 
@@ -22,6 +37,7 @@ function AuthProvider({ children }) {
         <AuthContext.Provider value={{
             login,
             logout,
+            refresh,
             isAuthenticated,
         }}
         >

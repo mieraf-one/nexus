@@ -48,6 +48,7 @@ function SignupForm() {
                         placeholder="Elyas"
                         value={firstName}
                         onChange={(e) => {setFirstName(e.target.value)}}
+                        required
                     />
                   </div>
                   
@@ -74,6 +75,7 @@ function SignupForm() {
                         placeholder="ela"
                         value={username}
                         onChange={(e) => { setUsername(e.target.value)} }
+                        required
                     />
                   </div>
                 </div>

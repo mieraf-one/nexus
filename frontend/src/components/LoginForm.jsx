@@ -1,16 +1,14 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
-import { AuthPost } from "../utils/utils";
 import { AuthContext } from "../context/AuthContext";
 import styles from '../pages/css/LoginPage.module.css'
-import path from "../utils/apiEndPoints";
 
 function LoginForm() {    
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] =  useState(false);
     const [error, setError] = useState(null);
-     const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -20,16 +18,9 @@ function LoginForm() {
             e.preventDefault();
             setLoading(true);
 
-            const tokens = await AuthPost(
-                path.login,
-                {
-                    username,
-                    password
-                }
-            )
-            login(tokens)
+            await login(username, password)
             navigate('/dashboard');
-            console.log('success login');
+
         } catch (err) {
             setError(err.message);
         } finally {

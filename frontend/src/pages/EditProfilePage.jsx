@@ -1,25 +1,35 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './css/EditProfilePage.module.css';
 import { UserContext } from '../context/UserContext';
 import { DotSpinner } from '../components/LoadingSpinner';
-import { patchReq } from '../utils/utils';
+import { patchReq, uploadToCloudinary } from '../utils/utils';
 import { useNavigate } from 'react-router-dom';
+import path from '../utils/apiEndPoints';
 
 const EditProfilePage = () => {
     const { user, loading } = useContext(UserContext);
 
-    const [name, setName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [bio, setBio] = useState('');
+    const [profilePic, setProfilePic] = useState('');
     const [childLoading, setChildLoading] = useState(false);
+
+    const fileInputRef = useRef(null);
 
     const navigate = useNavigate();
 
     const setPrevData = () => {
+      console.log(user);
         if (user) {
-            setName(user?.user?.first_name || '');
-            setUsername(user?.user?.username || '');
+            setFirstName(user?.first_name || '');
+            setLastName(user?.last_name || '');
+            setUsername(user?.username || '');
+            setEmail(user?.email || '');
             setBio(user?.bio || '');
+            setProfilePic(user?.profile_picture)
         }
     }
 
@@ -28,23 +38,37 @@ const EditProfilePage = () => {
     }, [user])
 
 
+  const handleImage = async (e) => {
+    try {
+      const secure_link = await uploadToCloudinary(e.target.files[0]);
+      const res = await patchReq(
+        path.profile(),
+        {
+          profile_picture: secure_link
+        }
+      )
+      console.log(res)
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
         setChildLoading(true);
         await patchReq(
-            'user/profile/',
+            path.profile(),
             {   
-                user: {
-                    first_name: name,
-                    // username: username
-                },
-
-                bio: bio
+                first_name: firstName,
+                last_name: lastName,
+                username,
+                email,
+                bio
             }
         )
-        window.location.reload();
+        // window.location.reload();
     } catch (err) {
         if (err.message == 401) {
             navigate('/login');
@@ -94,21 +118,34 @@ const EditProfilePage = () => {
           <div className={styles.sectionCard}>
             <div className={styles.profilePhotoSection}>
               <div className={styles.photoInfo}>
-                <div className={styles.photoContainer}>
+                <label
+                    className={styles.photoContainer}
+                >
+                  <input
+                    ref={fileInputRef}
+                    className={styles.changePhotoButton}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {handleImage(e);}}
+                    hidden
+                  />
+
                   <div 
                     className={styles.profilePhoto}
-                    style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTMn2bplDH27QsNvksy6vqUZ4nSrEQEhBMxUlZqQUDVUrjI62Ctj1uddmDeY39_zQMrMgwUcvOAX3DRm-Xr6xeYyAQ70FjYf91JMikh4D7NHmWfkxGIIRnlzYJ_tGInn2ucvx3ygIdU9ioPxyZdO3uaCCzvKGxAX77yLeOgImm1JuzMKj__-0tpn5LN7Z6gOQd_Kxt3zoJ3GH7kQxgrbnQ7x0V3Rk7X6DlHyy4oVZp4KVQU8miLpIcjHEp61VX-_sLohq0Ozm6QY6K")' }}
+                    style={{ backgroundImage: `url(${profilePic})` }}
                   ></div>
                   <div className={styles.photoOverlay}>
                     <span className="material-symbols-outlined">edit</span>
                   </div>
-                </div>
+                </label>
                 <div className={styles.photoDetails}>
                   <h3 className={styles.photoTitle}>Profile Photo</h3>
                   <p className={styles.photoDescription}>Accepts JPG, PNG or GIF (max 5MB)</p>
                 </div>
               </div>
-              <button className={styles.changePhotoButton}>
+              <button
+                  className={styles.changePhotoButton}
+                  onClick={() => fileInputRef.current.click()}>
                 Change Photo
               </button>
             </div>
@@ -121,19 +158,35 @@ const EditProfilePage = () => {
             <DotSpinner />
             :
             <div className={styles.formCard}>
-              {/* Name Field */}
+              {/* First Name Field */}
               <div className={styles.formGroup}>
-                <label className={styles.formLabel} htmlFor="name">Name</label>
+                <label className={styles.formLabel} htmlFor="first-name">First Name</label>
                 <div className={styles.inputWrapper}>
                   <input
                     className={styles.formInput}
-                    id="name"
+                    id="first-name"
                     type="text"
-                    placeholder="Enter your display name"
-                    value={name}
-                    onChange={(e) => { setName(e.target.value) }}
+                    placeholder="Enter your First name"
+                    value={firstName}
+                    onChange={(e) => { setFirstName(e.target.value) }}
                   />
-                  <span className="material-symbols-outlined">id_card</span>
+                  {/* <span className="material-symbols-outlined">id_card</span> */}
+                </div>
+              </div>
+
+              {/* Last Name Field */}
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel} htmlFor="last-name">Last Name</label>
+                <div className={styles.inputWrapper}>
+                  <input
+                    className={styles.formInput}
+                    id="last-name"
+                    type="text"
+                    placeholder="Enter your last name"
+                    value={lastName}
+                    onChange={(e) => { setLastName(e.target.value) }}
+                  />
+                  {/* <span className="material-symbols-outlined">id_card</span> */}
                 </div>
               </div>
 
@@ -150,7 +203,24 @@ const EditProfilePage = () => {
                     value={username}
                     onChange={(e) => { setUsername(e.target.value) }}
                   />
-                  <span className="material-symbols-outlined" title="Username available">check_circle</span>
+                  {/* <span className="material-symbols-outlined" title="Username available">check_circle</span> */}
+                </div>
+                {/* <p className={styles.helperText}>Your profile URL: nexus.com/@{formData.username}</p> */}
+              </div>
+              
+              {/* Email Field */}
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel} htmlFor="email">Email</label>
+                <div className={styles.inputWrapper}>
+                  <input
+                    className={`${styles.formInput} ${styles.usernameInput}`}
+                    id="email"
+                    type="email"
+                    placeholder="email"
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value) }}
+                  />
+                  {/* <span className="material-symbols-outlined" title="Username available">check_circle</span> */}
                 </div>
                 {/* <p className={styles.helperText}>Your profile URL: nexus.com/@{formData.username}</p> */}
               </div>

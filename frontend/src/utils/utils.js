@@ -2,6 +2,7 @@ import axios from 'axios';
 import { BASE_URL, UPLOAD_PRESET } from './const';
 import path from './apiEndPoints';
 import { request } from '../auth/client';
+import { getAccessToken } from './token';
 
 export async function AuthPost(endPoint, data) {
     try {
@@ -23,10 +24,15 @@ export async function AuthPost(endPoint, data) {
 
 export async function getReq(path) {
     try {
-        const res = await request.get(
-            path,
+        const res = await axios.get(
+            `${BASE_URL}/${path}`,
+            
+            {
+                headers: {
+                    Authorization: `Bearer ${getAccessToken()}`
+                }
+            }
         )
-        console.log(res);
         return res.data
     } catch (err) {
         console.log(err.response.data)
@@ -35,7 +41,34 @@ export async function getReq(path) {
         }
 
         if (err.response.status == 401) {
-            throw new Error(401);
+            try {
+                await refreshToken();
+                console.log('token refreshed');
+                
+                const res = await axios.get(
+                    `${BASE_URL}/${path}`,
+                    
+                    {
+                        headers: {
+                            Authorization: `Bearer ${getAccessToken()}`
+                        }
+                    }
+                )
+                return res.data
+            } catch (err) {
+                if (!err.response) {
+                    throw new Error('Something went wrong');
+                }
+
+                if (err.response.status == 401) {
+                    console.log('auth problem')
+                    const authError = new Error('TOKEN_EXPIRED');
+                    authError.code = 401;
+                    throw authError;
+                }
+
+                throw new Error(Object.values(err.response.data).join('\n'));
+            }
         }
         
         throw new Error(Object.values(err.response.data).join('\n'));
@@ -60,7 +93,33 @@ export async function patchReq(path, data) {
         }
 
         if (err.response.status == 401) {
-            throw new Error(401);
+            try {
+                await refreshToken();
+                console.log('token refreshed');
+                
+                const res = await axios.patch(
+                    `${BASE_URL}/${path}`,
+                    data,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('access')}`
+                        }
+                    }
+                )
+                return res.data
+            } catch (err) {
+                if (!err.response) {
+                    throw new Error('Something went wrong');
+                }
+
+                if (err.response.status == 401) {
+                    const authError = new Error('TOKEN_EXPIRED');
+                    authError.code = 401;
+                    throw authError;
+                }
+
+                throw new Error(Object.values(err.response.data).join('\n'));
+            }
         }
         
         throw new Error(Object.values(err.response.data)
@@ -84,12 +143,39 @@ export async function postReq(path, data) {
         )
         return res.data
     } catch (err) {
+        // console.log(err)
         if (!err.response) {
             throw new Error('Something went wrong');
         }
 
         if (err.response.status == 401) {
-            throw new Error(401);
+            try {
+                await refreshToken();
+                console.log('token refreshed');
+                
+                const res = await axios.post(
+                    `${BASE_URL}/${path}`,
+                    data,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('access')}`
+                        }
+                    }
+                )
+                return res.data
+            } catch (err) {
+                if (!err.response) {
+                    throw new Error('Something went wrong');
+                }
+
+                if (err.response.status == 401) {
+                    const authError = new Error('TOKEN_EXPIRED');
+                    authError.code = 401;
+                    throw authError;
+                }
+
+                throw new Error(Object.values(err.response.data).join('\n'));
+            }
         }
         
         throw new Error(Object.values(err.response.data).join('\n'));
@@ -118,14 +204,17 @@ export async function unFollowUser(id) {
 export async function refreshToken() {
     try {
         const res = await axios.post(
-            path.refreshToken,
-            localStorage?.getItem('access')
+            `${BASE_URL}/${path.refreshToken}`,
+            {refresh: localStorage?.getItem('refresh')}
         )
 
+        console.log('refreshed token');
+        console.log(res);
         /* put new access token in localstorage */
-        localStorage.setItem('access', res.data);
+        localStorage.setItem('access', res.data.access);
 
     } catch (err) {
+        console.log(err);
         if (!err.response) {
             throw new Error('Something went wrong');
         }
@@ -151,4 +240,9 @@ export async function uploadToCloudinary(file) {
     } catch (error) {
         throw new Error("upload failed");
     }
+}
+
+
+export function properDate(date) {
+    return new Date(date).toLocaleTimeString();
 }

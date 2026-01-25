@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { loginUser, logoutUser, refreshUser } from "../auth/auth.api";
+import { getUsername } from "../utils/token";
 
 export const AuthContext = createContext(null);
 
@@ -14,6 +15,8 @@ function AuthProvider({ children }) {
             throw new Error(error.message);
         }
     }
+
+    const username = () => getUsername()
 
     const logout = () => {
         try {
@@ -39,6 +42,7 @@ function AuthProvider({ children }) {
             logout,
             refresh,
             isAuthenticated,
+            username
         }}
         >
             { children }

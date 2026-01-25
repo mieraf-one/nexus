@@ -12,7 +12,7 @@ export async function loginUser(username, password) {
             }
         )
 
-        saveTokens(res.data);
+        saveTokens(res.data.access, res.data.refresh, username);
     } catch (error) {
         // check the error not came from backend
         if (!error.response) {

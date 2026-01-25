@@ -1,8 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import styles from './css/LandingPage.module.css';
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 const LandingPage = () => {
-  const navigate = useNavigate();
+  const { isAuthenticated } = useContext(AuthContext);
+
+  if (isAuthenticated) {
+    return <Navigate to={'/dashboard'} />
+  }
 
   return (
     <div className={styles.nexusApp}>

@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './css/NotificationPage.module.css';
 import { getReq } from '../utils/utils';
 import path from '../utils/apiEndPoints';
 import { useNavigate } from 'react-router-dom';
 import { DotSpinner } from '../components/LoadingSpinner';
+import { AuthContext } from '../context/AuthContext';
 
 const NotificationPage = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { logout } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,8 +20,12 @@ const NotificationPage = () => {
                 const res = await getReq(path.notifications);
                 console.log(res)
                 setNotifications(res);
-            } catch (err) {
-                console.log(err.message);
+            } catch (error) {
+                console.log(error.message);
+
+                if (error.code == 401) {
+                  logout;
+                }
             } finally {
                 setLoading(false);
             }

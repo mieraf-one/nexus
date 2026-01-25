@@ -1,18 +1,41 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styles from './css/ProfilePage.module.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
+import { Link } from 'react-router-dom';
 import { DotSpinner } from '../components/LoadingSpinner';
 import { AuthContext } from '../context/AuthContext';
-import FollowingModal from '../components/FollowingModal';
-import FollowersModal from '../components/FollowersModal';
+import FollowingModal from '../components/UserProfilePage/FollowingModal';
+import FollowersModal from '../components/UserProfilePage/FollowersModal';
 import ProfileHorizontalCard from '../components/ProfileHorizontalCard';
+import { getReq } from '../utils/utils';
+import path from '../utils/apiEndPoints';
 
 export default function ProfilePage() {
-    const { user, loading } = useContext(UserContext);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
     const { logout } = useContext(AuthContext);
     const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
     const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
+
+  
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+
+        const res = await getReq(path.profile());
+        setUser(res)
+
+      } catch (error) {
+        console.log(error.message);
+
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchUser();
+  }, [])
 
   const posts = [
     {
@@ -187,8 +210,6 @@ export default function ProfilePage() {
                   onClose={() => {setIsFollowingModalOpen(false);}}>
                 </FollowingModal>    
                 </div>
-                
-                
             </div>
             </>
 

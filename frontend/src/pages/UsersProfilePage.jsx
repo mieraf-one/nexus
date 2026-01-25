@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './css/ProfilePage.module.css';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { UserContext } from '../context/UserContext';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { DotSpinner } from '../components/LoadingSpinner';
 import { AuthContext } from '../context/AuthContext';
-import FollowingModal from '../components/FollowingModal';
-import FollowersModal from '../components/FollowersModal';
+import FollowingModal from '../components/UserProfilePage/FollowingModal';
+import FollowersModal from '../components/UserProfilePage/FollowersModal';
 import ProfileHorizontalCard from '../components/ProfileHorizontalCard';
 import path from '../utils/apiEndPoints';
-import { followUser, getReq } from '../utils/utils';
+import { followUser, getReq, unFollowUser } from '../utils/utils';
 
 function UsersProfilePage() {
     const [user, setUser] = useState({});
@@ -16,20 +15,24 @@ function UsersProfilePage() {
     const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
     const [childLoading, setChildLoading] = useState(false);
     const { username } = useParams();
+    const { logout } = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     
     useEffect(() => {      
         const fetchUser = async () => {
             try {
                 setChildLoading(true);
-                console.log(`username: ${username}`);
                 const res = await getReq(path.profile(username));
                 console.log(res);
                 setUser(res);
-            } catch (err) {
-                console.log(err.message);
-                if (err.message == 401) {
-                    navigate(path.login, {replace: true})
+            } catch (error) {
+                console.log(error.message);
+                if (error.code == 401) {
+                  logout;
+                  navigate('/login');
+                  return;
                 }
             } finally {
                 setChildLoading(false);
@@ -37,7 +40,30 @@ function UsersProfilePage() {
         }
         
         fetchUser();
-    }, [])
+    }, [username])
+
+
+    const handleFollow = async (id) => {
+      const prevState = {...user};
+
+      try {
+
+        setUser(prev => ({
+          ...prev, is_following: !prev.is_following
+        }));
+
+        if (prevState.is_following) {
+          await unFollowUser(id);
+
+        } else {
+          await followUser(id);
+        }
+
+      } catch (error) {
+        console.log(error.message);
+        setUser(prevState);
+      }
+    }
 
   const posts = [
     {
@@ -123,10 +149,10 @@ function UsersProfilePage() {
                     <span className="material-symbols-outlined">explore</span>
                     <span className={styles.navText}>Explore</span>
                 </a>
-                <a className={styles.navLink} href="#">
+                <Link to={'/notifications'} className={styles.navLink} href="#">
                     <span className="material-symbols-outlined">notifications</span>
                     <span className={styles.navText}>Notifications</span>
-                </a>
+                </Link>
                 <a className={`${styles.navLink} ${styles.active}`} href="#">
                     <span className="material-symbols-outlined">person</span>
                     <span className={styles.navText}>Profile</span>
@@ -164,8 +190,8 @@ function UsersProfilePage() {
             :
             <>
             <div className={styles.userInfo}>
-                <h1 className={styles.userName}>{user?.user?.first_name} {user?.user?.last_name}</h1>
-                <p className={styles.userHandle}>@{user?.user?.username}</p>
+                <h1 className={styles.userName}>{user?.first_name} {user?.last_name}</h1>
+                <p className={styles.userHandle}>@{user?.username}</p>
                 <p className={styles.userBio}>
                 {user?.bio || "bio"}
                 </p>
@@ -218,36 +244,57 @@ function UsersProfilePage() {
 
             }
           
-          
-          {/* Action Buttons */}
+          {user.is_owner 
+          ?
+          <>
+            {/* Action Buttons */}
+            <div className={styles.actionButtons}>
+              <button
+                className={styles.editButton}
+                onClick={() => {navigate('/create')}}
+              >
+                  <span className="material-symbols-outlined">upload</span>
+                  <span>Post</span>
+              </button>
+              <button
+                className={styles.iconButton}
+                onClick={() => {navigate('/profile/edit')}}
+              >
+                <span className="material-symbols-outlined">edit</span>
+              </button>
+              <button className={styles.iconButton}>
+                <span className="material-symbols-outlined">settings</span>
+              </button>
+              <button className={styles.iconButton} onClick={logout}>
+                  <span className="material-symbols-outlined logout-icon">logout</span>
+              </button>
+  
+            </div>
+          </>
+          :
+          <>
+           {/* Action Buttons */}
           <div className={styles.actionButtons}>
 
             {/* follow btn */}
             <button
-                className={styles.editButton}
-                onClick={() => {followUser(user?.user?.id)}}
+                className={`${styles.followBtn} ${user.is_following ? styles.following : ''}`}
+                onClick={() => {handleFollow(user?.id)}}
             >
-                {/* <span className="material-symbols-outlined">edit</span> */}
-                <span>Follow</span>
+                <span>{user.is_following ? 'Following' : 'Follow'}</span>
             </button>
+
+            {/* message button */}
             <button className={styles.messageButton}>
-                {/* <span className="material-symbols-outlined">message</span> */}
                 <span>Message</span>
             </button>
-            {/* <button className={styles.iconButton}>
-              <span className="material-symbols-outlined">ios_share</span>
-            </button>
-            <button className={styles.iconButton}>
-              <span className="material-symbols-outlined">settings</span>
-            </button>
-            <button className={styles.iconButton} onClick={logout}>
-                <span className="material-symbols-outlined logout-icon">logout</span>
-            </button> */}
-
           </div>
+          </>
+          }          
         </div>
 
             {/* <ProfileHorizontalCard /> */}
+            <ProfileHorizontalCard />
 
         {/* Content Tabs */}
         <div className={styles.contentTabs}>
@@ -271,12 +318,15 @@ function UsersProfilePage() {
 
         {/* Image Grid / Posts Feed */}
         <div className={styles.postsGrid}>
-          {posts.map((post) => (
-            <div key={post.id} className={styles.postCard}>
+          {user.posts?.map((post) => (
+            <div  
+                key={post.id}
+                className={styles.postCard}
+            >
               <div className={styles.postImage}>
                 <div 
                   className={styles.imageContent}
-                  style={{ backgroundImage: `url("${post.image}")` }}
+                  style={{ backgroundImage: `url("${post.photo}")` }}
                 ></div>
                 <div className={styles.imageOverlay}></div>
                 {post.hasMultiple && (
@@ -288,18 +338,20 @@ function UsersProfilePage() {
               </div>
               <div className={styles.postContent}>
                 <div className={styles.postHeader}>
-                  <h3 className={styles.postTitle}>{post.title}</h3>
-                  <span className={styles.postTime}>{post.time}</span>
+                  {/* <h3 className={styles.postTitle}>{post.title}</h3> */}
+                  <span className={styles.postTime}>{post.edited_at}</span>
                 </div>
-                <p className={styles.postDescription}>{post.description}</p>
+                <p className={styles.postDescription}>{post.caption}</p>
                 <div className={styles.postActions}>
-                  <div className={styles.actionItem}>
+                  <div
+                    className={`${styles.actionBtn} ${styles.likeBtn} ${post.is_liked ? styles.liked : ''}`}
+                  >
                     <span className="material-symbols-outlined">favorite</span>
-                    <span className={styles.actionCount}>{post.likes}</span>
+                    <span className={styles.actionCount}>{post.likes_count}</span>
                   </div>
                   <div className={styles.actionItem}>
                     <span className="material-symbols-outlined">chat_bubble</span>
-                    <span className={styles.actionCount}>{post.comments}</span>
+                    <span className={styles.actionCount}>500</span>
                   </div>
                 </div>
               </div>

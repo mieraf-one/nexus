@@ -1,35 +1,41 @@
-import React, { useState } from 'react';
-import styles from './Css/FollowersModal.module.css';
-import { useEffect } from 'react';
-import { getReq } from '../utils/utils';
-import { Link, useParams } from 'react-router-dom';
-import path from '../utils/apiEndPoints';
+import React, { useEffect, useState } from 'react';
+import styles from '../Css/FollowingModal.module.css';
+import { getReq, postReq } from '../../utils/utils';
+import path from '../../utils/apiEndPoints';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const FollowersModal = ({ isOpen, onClose }) => {
+const FollowingModal = ({ isOpen, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
   const { username } = useParams();
+  const navigate =  useNavigate();
 
+    useEffect(() => {
+        const fetchFollowing = async () => {
+            try {
+                const res = await getReq(path.userFollowing(username));
+                // console.log(res);
+                setFollowing(res.following);
+            } catch (err) {
+                console.log(err.message);
+            }
+        }
+        
+        fetchFollowing();
+    }, [username])
 
-   useEffect(() => {
-           const fetchFollowing = async () => {
-               try {
-                   const res = await getReq(path.profile(username));
-                  //  console.log(res.follower);
-                   setFollowers(res.follower);
-               } catch (err) {
-                   
-               }
-           }
-           
-           fetchFollowing();
-       }, [])
+  const handleUnfollow = async (id) => {
+    try {
+          await postReq(
+            path.unfollowUser(id));
 
-  const handleRemove = (id) => {
-    setFollowers(followers.filter(user => user.id !== id));
+          setFollowing(following.filter(user => user.id !== id));
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
-  const filteredFollowers = followers.filter(user =>
+  const filteredFollowing = following.filter(user =>
     user.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -41,7 +47,6 @@ const FollowersModal = ({ isOpen, onClose }) => {
       onClose();
     }
   };
-  
 
   return (
     <>
@@ -65,7 +70,7 @@ const FollowersModal = ({ isOpen, onClose }) => {
           <div className={styles.modalHeader}>
             <div className={styles.headerContent}>
               <h2 className={styles.modalTitle}>
-                Followers <span className={styles.count}>{followers?.length}</span>
+                Following <span className={styles.count}>{following?.length}</span>
               </h2>
               <button 
                 className={styles.closeButton}
@@ -84,7 +89,7 @@ const FollowersModal = ({ isOpen, onClose }) => {
               <input
                 className={styles.searchInput}
                 type="text"
-                placeholder="Search followers..."
+                placeholder="Search following..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -93,14 +98,16 @@ const FollowersModal = ({ isOpen, onClose }) => {
 
           {/* Scrollable List Content */}
           <div className={styles.listContainer}>
-            {filteredFollowers.map((user) => (
-              <Link
+            {filteredFollowing.map((user) => (
+              <div
                   key={user.id}
-                  to={`/user/${user.username}`}
                   className={styles.listItem}
-                  style={{textDecoration: 'none'}}
               >
-                <div className={styles.userInfo}>
+                <div
+                  className={styles.userInfo}
+                  onClick={() => { onClose(); navigate(`/user/${user.username}`)}}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className={styles.avatarContainer}>
                     {user.avatar ? (
                       <div 
@@ -126,12 +133,13 @@ const FollowersModal = ({ isOpen, onClose }) => {
                   </div>
                 </div>
                 <button 
-                  className={styles.removeButton}
-                  onClick={() => handleRemove(user.id)}
+                  className={styles.followButton}
+                  onClick={(e) => {e.stopPropagation(); handleUnfollow(user.id)}}
                 >
-                  Remove
+                  <span className={styles.followText}>Following</span>
+                  <span className={styles.unfollowText}>Unfollow</span>
                 </button>
-              </Link>
+              </div>
             ))}
           </div>
 
@@ -143,4 +151,4 @@ const FollowersModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default FollowersModal;
+export default FollowingModal;

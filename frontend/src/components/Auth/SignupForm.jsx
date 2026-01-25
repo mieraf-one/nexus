@@ -1,6 +1,6 @@
 import { useState } from "react";
-import useSignup from "../hooks/useSignup";
-import styles from "../pages/css/SignupPage.module.css"
+import useSignup from "../../hooks/useSignup";
+import styles from "../../pages/css/SignupPage.module.css"
 
 function SignupForm() {    
     const {

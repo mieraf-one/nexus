@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import styles from '../pages/css/LoginPage.module.css'
+import { AuthContext } from "../../context/AuthContext";
+import styles from '../../pages/css/LoginPage.module.css'
 
 function LoginForm() {    
     const [username, setUsername] = useState('');

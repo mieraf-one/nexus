@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Css/ProfileHorizontalCard.module.css';
 import { useEffect } from 'react';
-import { getReq, postReq } from '../utils/utils';
+import { followUser, getReq, postReq, unFollowUser } from '../utils/utils';
 import { DotSpinner } from './LoadingSpinner';
 import path from '../utils/apiEndPoints';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,7 @@ const ProfileHorizontalCard = () => {
       const fetchSuggestions = async () => {
         try {
           setLoading(true);
-        const res = await getReq('follow-suggestions/');
+        const res = await getReq(path.followSuggestions);
         console.log(res.results)
         setSuggestAccounts(res.results);
         } catch (error) {
@@ -37,35 +37,41 @@ const ProfileHorizontalCard = () => {
       
     }, [])
 
-    const followUser = async (id) => {
+    const handleFollow = async (id) => {
+      const prev = suggestAccounts;
+
         try {
-          const res = await postReq(path.followUser(id), {})
-    
-          setSuggestAccounts(suggestAccounts.map((user) => {
+          setSuggestAccounts(prev => prev.map((user) => {
             if (user.id == id) {
               return {...user, is_following: !user.is_following};
             }
             return user;
-            
-          }))
+          }));
+
+          await followUser(id);
+          
         } catch (err) {
           console.log(err.message)
+          setSuggestAccounts(prev);
         }
       }
     
-      const unFollowUser = async (id) => {
+      const handleUnFollow = async (id) => {
+        const prev = suggestAccounts;
+
         try {
-          const res = await postReq(`user/unfollow/${id}/`, {});
-    
-          setSuggestAccounts(suggestAccounts.map((user) => {
+          setSuggestAccounts(prev => prev.map((user) => {
             if (user.id == id) {
               return {...user, is_following: !user.is_following};
             }
             return user;
     
           }))
+
+          await unFollowUser(id);
         } catch (err) {
-          console.log(err.message)
+          console.log(err.message);
+          setSuggestAccounts(prev);
         }
       }
 
@@ -119,7 +125,7 @@ const ProfileHorizontalCard = () => {
             {/* Follow Button */}
             <button 
               className={`${styles.followButton} ${user.is_following ? styles.following : ''}`}
-              onClick={(e) => {e.stopPropagation(); user.is_following ? unFollowUser(user.id) : followUser(user.id)}}
+              onClick={(e) => {e.stopPropagation(); user.is_following ? handleUnFollow(user.id) : handleFollow(user.id)}}
             >
               {user.is_following ? (
                 <>

@@ -1,48 +1,62 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './css/EditProfilePage.module.css';
-import { UserContext } from '../context/UserContext';
 import { DotSpinner } from '../components/LoadingSpinner';
-import { patchReq, uploadToCloudinary } from '../utils/utils';
+import { getReq, patchReq, uploadToCloudinary } from '../utils/utils';
 import { useNavigate } from 'react-router-dom';
 import path from '../utils/apiEndPoints';
+import { getUsername } from '../utils/token';
+import { AuthContext } from '../context/AuthContext';
 
 const EditProfilePage = () => {
-    const { user, loading } = useContext(UserContext);
-
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [bio, setBio] = useState('');
     const [profilePic, setProfilePic] = useState('');
-    const [childLoading, setChildLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const { logout } = useContext(AuthContext);
 
     const fileInputRef = useRef(null);
 
     const navigate = useNavigate();
 
-    const setPrevData = () => {
-      console.log(user);
-        if (user) {
-            setFirstName(user?.first_name || '');
-            setLastName(user?.last_name || '');
-            setUsername(user?.username || '');
-            setEmail(user?.email || '');
-            setBio(user?.bio || '');
-            setProfilePic(user?.profile_picture)
-        }
-    }
-
     useEffect(() => {
-        setPrevData()
-    }, [user])
+      const userUsername = getUsername();
+
+      if (!userUsername) navigate('/login');
+
+      const fetchProfile = async () => {
+        try {
+          const res = await getReq(
+            path.profile(userUsername)
+          )
+
+          setFirstName(res?.first_name || '');
+          setLastName(res?.last_name || '');
+          setUsername(res?.username || '');
+          setEmail(res?.email || '');
+          setBio(res?.bio || '');
+          setProfilePic(res?.profile_picture)
+
+        } catch (error) {
+          if (error.code == 401) {
+          logout;
+        }
+        }
+      }
+        fetchProfile()
+    }, [])
 
 
   const handleImage = async (e) => {
     try {
+      const userUsername = getUsername();
+      if (!userUsername) navigate('/login');
+
       const secure_link = await uploadToCloudinary(e.target.files[0]);
       const res = await patchReq(
-        path.profile(),
+        path.profile(userUsername),
         {
           profile_picture: secure_link
         }
@@ -50,6 +64,10 @@ const EditProfilePage = () => {
       console.log(res)
     } catch (error) {
       console.log(error.message)
+
+      if (error.code == 401) {
+          logout;
+        }
     }
   }
 
@@ -57,9 +75,12 @@ const EditProfilePage = () => {
     e.preventDefault();
 
     try {
-        setChildLoading(true);
+        const userUsername = getUsername();
+        if (!userUsername) navigate('/login');
+
+        setLoading(true);
         await patchReq(
-            path.profile(),
+            path.profile(userUsername),
             {   
                 first_name: firstName,
                 last_name: lastName,
@@ -69,13 +90,13 @@ const EditProfilePage = () => {
             }
         )
         // window.location.reload();
-    } catch (err) {
-        if (err.message == 401) {
-            navigate('/login');
+    } catch (error) {
+        if (error.code == 401) {
+          logout;
         }
-        console.log(err.message)
+        console.log(error.message)
     } finally {
-        setChildLoading(false);
+        setLoading(false);
     }
   };
 
@@ -153,7 +174,7 @@ const EditProfilePage = () => {
 
           {/* Form Section */}
           <form onSubmit={handleSubmit} className={styles.formSection}>
-            {loading || childLoading
+            {loading
             ?
             <DotSpinner />
             :

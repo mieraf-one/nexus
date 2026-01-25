@@ -382,6 +382,45 @@
   max-width: 24rem;
 }
 
+.actionBtn {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.followBtn {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #7b27f1;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 8.75rem;
+  height: 2.5rem;
+  padding: 0 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.followBtn:hover {
+  background-color: rgba(123, 39, 241, 0.2);
+}
+
+.followBtn.following {
+  color: #7b27f1;
+  background-color: rgba(123, 39, 241, 0.1);
+  box-shadow: 0 1px 2px 0 rgba(123, 39, 241, 0.3);
+}
+
+.followBtn.following:hover {
+  background-color: rgba(123, 39, 241, 0.9);
+}
+
 .editButton {
   display: flex;
   align-items: center;
@@ -407,6 +446,31 @@
 
 .editButton .material-symbols-outlined {
   font-size: 18px;
+}
+
+/* Following state */
+.editButton.following {
+  background-color: #f7f6f8;
+  color: #141118;
+  border: 1px solid #dfdbe6;
+  box-shadow: none;
+}
+
+.dark .editButton.following {
+  background-color: #2d2438;
+  color: white;
+  border-color: #4d3c63;
+}
+
+.editButton.following:hover {
+  background-color: #f0e6ff;
+  color: #7b27f1;
+  border-color: #7b27f1;
+}
+
+.dark .editButton.following:hover {
+  background-color: rgba(123, 39, 241, 0.1);
+  color: #b59ae4;
 }
 
 .messageButton {
@@ -450,6 +514,22 @@
 
 .iconButton .material-symbols-outlined {
   font-size: 20px;
+}
+
+/* like button */
+.likeBtn:hover {
+  color: #dc2626;
+}
+
+/* Liked state - Heart turns red */
+.likeBtn.liked {
+  color: #dc2626 !important;
+  animation: heartBeat 0.4s ease;
+}
+
+/* Optional: Different hover color when already liked */
+.likeBtn.liked:hover {
+  color: #ef4444 !important;
 }
 
 /* Content Tabs */

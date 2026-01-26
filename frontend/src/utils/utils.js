@@ -35,12 +35,12 @@ export async function getReq(path) {
         )
         return res.data
     } catch (err) {
-        console.log(err.response.data)
         if (!err.response) {
             throw new Error('Something went wrong');
         }
 
         if (err.response.status == 401) {
+            console.log('refresh started');
             try {
                 await refreshToken();
                 console.log('token refreshed');
@@ -55,16 +55,10 @@ export async function getReq(path) {
                     }
                 )
                 return res.data
-            } catch (err) {
-                if (!err.response) {
-                    throw new Error('Something went wrong');
-                }
-
-                if (err.response.status == 401) {
+            } catch (err) {                
+                if (err.code == 401) {
                     console.log('auth problem')
-                    const authError = new Error('TOKEN_EXPIRED');
-                    authError.code = 401;
-                    throw authError;
+                    throw err;
                 }
 
                 throw new Error(Object.values(err.response.data).join('\n'));
@@ -88,11 +82,8 @@ export async function patchReq(path, data) {
         )
         return res.data
     } catch (err) {
-        if (!err.response) {
-            throw new Error('Something went wrong');
-        }
-
         if (err.response.status == 401) {
+            console.log('refresh started');
             try {
                 await refreshToken();
                 console.log('token refreshed');
@@ -107,15 +98,10 @@ export async function patchReq(path, data) {
                     }
                 )
                 return res.data
-            } catch (err) {
-                if (!err.response) {
-                    throw new Error('Something went wrong');
-                }
-
-                if (err.response.status == 401) {
-                    const authError = new Error('TOKEN_EXPIRED');
-                    authError.code = 401;
-                    throw authError;
+            } catch (err) {                
+                if (err.code == 401) {
+                    console.log('refresh expired')
+                    throw err;
                 }
 
                 throw new Error(Object.values(err.response.data).join('\n'));
@@ -143,12 +129,8 @@ export async function postReq(path, data) {
         )
         return res.data
     } catch (err) {
-        // console.log(err)
-        if (!err.response) {
-            throw new Error('Something went wrong');
-        }
-
         if (err.response.status == 401) {
+            console.log('refresh started');
             try {
                 await refreshToken();
                 console.log('token refreshed');
@@ -163,18 +145,13 @@ export async function postReq(path, data) {
                     }
                 )
                 return res.data
-            } catch (err) {
-                if (!err.response) {
-                    throw new Error('Something went wrong');
+            } catch (err) {                
+                if (err.code == 401) {
+                    console.log('refresh expired')
+                    throw err;
                 }
 
-                if (err.response.status == 401) {
-                    const authError = new Error('TOKEN_EXPIRED');
-                    authError.code = 401;
-                    throw authError;
-                }
-
-                throw new Error(Object.values(err.response.data).join('\n'));
+                throw new Error(Object.values(err.message.data).join('\n'));
             }
         }
         
@@ -219,7 +196,13 @@ export async function refreshToken() {
             throw new Error('Something went wrong');
         }
         
-        throw new Error(Object.values(err.response.data).join('\n'));
+        if (err.response.status == 401) {
+            const authError = new Error('TOKEN_EXPIRED');
+            authError.code = 401;
+            throw authError;
+        }
+
+        throw new Error('please try again later.')
     }
 }
 

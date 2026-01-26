@@ -16,7 +16,7 @@ const Header = () => {
         // console.log(res);
         setUsers(res);
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
     }
   }
 

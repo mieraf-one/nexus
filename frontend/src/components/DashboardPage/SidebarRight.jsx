@@ -38,7 +38,8 @@ const SidebarRight = () => {
 
       } catch (error) {
         console.log('sidebar right error')
-        console.log(error.message);
+        console.log(error.code);
+        // console.log(error.message);
          if (error.code == 401) {
             logout;
             navigate('/login');

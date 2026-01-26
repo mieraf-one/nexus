@@ -21,6 +21,9 @@ const MainContent = () => {
         console.log(res);
 
       } catch (error) {
+        console.log('post error');
+        console.log(error.message);
+        console.log(error.code);
         if (error.code == 401) {
           logout;
           navigate('/login');

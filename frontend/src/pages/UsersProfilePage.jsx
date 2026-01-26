@@ -7,7 +7,7 @@ import FollowingModal from '../components/UserProfilePage/FollowingModal';
 import FollowersModal from '../components/UserProfilePage/FollowersModal';
 import ProfileHorizontalCard from '../components/ProfileHorizontalCard';
 import path from '../utils/apiEndPoints';
-import { followUser, getReq, unFollowUser } from '../utils/utils';
+import { followUser, getReq, properDate, unFollowUser } from '../utils/utils';
 
 function UsersProfilePage() {
     const [user, setUser] = useState({});
@@ -339,7 +339,7 @@ function UsersProfilePage() {
               <div className={styles.postContent}>
                 <div className={styles.postHeader}>
                   {/* <h3 className={styles.postTitle}>{post.title}</h3> */}
-                  <span className={styles.postTime}>{post.edited_at}</span>
+                  <span className={styles.postTime}>{properDate(post.edited_at)}</span>
                 </div>
                 <p className={styles.postDescription}>{post.caption}</p>
                 <div className={styles.postActions}>

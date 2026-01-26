@@ -196,7 +196,7 @@ const MainContent = () => {
               <span className={styles.commentAuthor}>Sarah W.</span>
               <span className={styles.commentText}>Looks amazing! Can't wait to visit.</span>
             </div> */}
-            <div className={styles.viewComments}>View all 84 comments</div>
+            <div className={styles.viewComments}>View all {post.comments_count} comments</div>
           </div>
           
           {/* <div className={styles.addComment}>

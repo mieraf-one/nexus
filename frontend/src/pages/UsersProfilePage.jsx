@@ -351,7 +351,7 @@ function UsersProfilePage() {
                   </div>
                   <div className={styles.actionItem}>
                     <span className="material-symbols-outlined">chat_bubble</span>
-                    <span className={styles.actionCount}>{user?.comments_count}</span>
+                    <span className={styles.actionCount}>{post?.comments_count}</span>
                   </div>
                 </div>
               </div>

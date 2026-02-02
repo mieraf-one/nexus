@@ -1,43 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import styles from '../Css/FollowingModal.module.css';
-import { getReq, postReq } from '../../utils/utils';
-import path from '../../utils/apiEndPoints';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import styles from "../Css/FollowingModal.module.css";
+import { getReq, postReq } from "../../utils/utils";
+import path from "../../utils/apiEndPoints";
+import { useNavigate, useParams } from "react-router-dom";
 
 const FollowingModal = ({ isOpen, onClose }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [following, setFollowing] = useState([]);
   const { username } = useParams();
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchFollowing = async () => {
-            try {
-                const res = await getReq(path.userFollowing(username));
-                // console.log(res);
-                setFollowing(res.following);
-            } catch (err) {
-                console.log(err.message);
-            }
-        }
-        
-        fetchFollowing();
-    }, [username])
+  useEffect(() => {
+    const fetchFollowing = async () => {
+      try {
+        const res = await getReq(path.userFollowing(username));
+        // console.log(res);
+        setFollowing(res.following);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    fetchFollowing();
+  }, [username]);
 
   const handleUnfollow = async (id) => {
     try {
-          await postReq(
-            path.unfollowUser(id));
+      await postReq(path.unfollowUser(id));
 
-          setFollowing(following.filter(user => user.id !== id));
+      setFollowing(following.filter((user) => user.id !== id));
     } catch (error) {
       console.log(error.message);
     }
   };
 
-  const filteredFollowing = following.filter(user =>
-    user.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.username.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredFollowing = following.filter(
+    (user) =>
+      user.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.username.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   if (!isOpen) return null;
@@ -70,9 +70,10 @@ const FollowingModal = ({ isOpen, onClose }) => {
           <div className={styles.modalHeader}>
             <div className={styles.headerContent}>
               <h2 className={styles.modalTitle}>
-                Following <span className={styles.count}>{following?.length}</span>
+                Following{" "}
+                <span className={styles.count}>{following?.length}</span>
               </h2>
-              <button 
+              <button
                 className={styles.closeButton}
                 onClick={onClose}
                 aria-label="Close modal"
@@ -99,24 +100,26 @@ const FollowingModal = ({ isOpen, onClose }) => {
           {/* Scrollable List Content */}
           <div className={styles.listContainer}>
             {filteredFollowing.map((user) => (
-              <div
-                  key={user.id}
-                  className={styles.listItem}
-              >
+              <div key={user.id} className={styles.listItem}>
                 <div
                   className={styles.userInfo}
-                  onClick={() => { onClose(); navigate(`/user/${user.username}`)}}
-                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    onClose();
+                    navigate(`/user/${user.username}`);
+                  }}
+                  style={{ cursor: "pointer" }}
                 >
                   <div className={styles.avatarContainer}>
                     {user.avatar ? (
-                      <div 
-                        className={styles.avatar} 
+                      <div
+                        className={styles.avatar}
                         style={{ backgroundImage: `url("${user.avatar}")` }}
                       ></div>
                     ) : (
                       <div className={`${styles.avatar} ${styles.brandAvatar}`}>
-                        <span className="material-symbols-outlined">rocket_launch</span>
+                        <span className="material-symbols-outlined">
+                          rocket_launch
+                        </span>
                       </div>
                     )}
                   </div>
@@ -125,16 +128,21 @@ const FollowingModal = ({ isOpen, onClose }) => {
                       <span className={styles.userName}>{user.first_name}</span>
                       {user.verified && (
                         <span className={styles.verifiedIcon} title="Verified">
-                          <span className="material-symbols-outlined">verified</span>
+                          <span className="material-symbols-outlined">
+                            verified
+                          </span>
                         </span>
                       )}
                     </div>
                     <span className={styles.userUsername}>{user.username}</span>
                   </div>
                 </div>
-                <button 
+                <button
                   className={styles.followButton}
-                  onClick={(e) => {e.stopPropagation(); handleUnfollow(user.id)}}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleUnfollow(user.id);
+                  }}
                 >
                   <span className={styles.followText}>Following</span>
                   <span className={styles.unfollowText}>Unfollow</span>

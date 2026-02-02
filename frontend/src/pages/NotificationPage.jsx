@@ -1,41 +1,40 @@
-import React, { useContext, useEffect, useState } from 'react';
-import styles from './css/NotificationPage.module.css';
-import { getReq } from '../utils/utils';
-import path from '../utils/apiEndPoints';
-import { useNavigate } from 'react-router-dom';
-import { DotSpinner } from '../components/LoadingSpinner';
-import { AuthContext } from '../context/AuthContext';
+import React, { useContext, useEffect, useState } from "react";
+import styles from "./css/NotificationPage.module.css";
+import { getReq } from "../utils/utils";
+import path from "../utils/apiEndPoints";
+import { useNavigate } from "react-router-dom";
+import { DotSpinner } from "../components/LoadingSpinner";
+import { AuthContext } from "../context/AuthContext";
 
 const NotificationPage = () => {
-    const [notifications, setNotifications] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const { logout } = useContext(AuthContext);
-    const navigate = useNavigate();
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchNotifications = async () => {
-            try {
-                setLoading(true);
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        setLoading(true);
 
-                const res = await getReq(path.notifications);
-                console.log(res)
-                setNotifications(res);
-            } catch (error) {
-                console.log(error.message);
+        const res = await getReq(path.notifications);
+        console.log(res);
+        setNotifications(res);
+      } catch (error) {
+        console.log(error.message);
 
-                if (error.code == 401) {
-                  logout;
-                }
-            } finally {
-                setLoading(false);
-            }
+        if (error.code == 401) {
+          logout;
         }
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        fetchNotifications();
-    }, [])
+    fetchNotifications();
+  }, []);
 
-
-    if (loading) return <DotSpinner />
+  if (loading) return <DotSpinner />;
 
   return (
     <div className={styles.pageContainer}>
@@ -50,16 +49,31 @@ const NotificationPage = () => {
               <h2 className={styles.logoText}>Nexus</h2>
             </div>
             <nav className={styles.navLinks}>
-              <a className={styles.navLink} href="#">Home</a>
-              <a className={styles.navLink} href="#">Explore</a>
-              <a className={`${styles.navLink} ${styles.navLinkActive}`} href="#">Notifications</a>
-              <a className={styles.navLink} href="#">Messages</a>
+              <a className={styles.navLink} href="#">
+                Home
+              </a>
+              <a className={styles.navLink} href="#">
+                Explore
+              </a>
+              <a
+                className={`${styles.navLink} ${styles.navLinkActive}`}
+                href="#"
+              >
+                Notifications
+              </a>
+              <a className={styles.navLink} href="#">
+                Messages
+              </a>
             </nav>
           </div>
           <div className={styles.headerActions}>
             <div className={styles.searchContainer}>
-              <span className={`material-symbols-outlined ${styles.searchIcon}`}>search</span>
-              <input 
+              <span
+                className={`material-symbols-outlined ${styles.searchIcon}`}
+              >
+                search
+              </span>
+              <input
                 className={styles.searchInput}
                 placeholder="Search Nexus"
                 type="text"
@@ -68,9 +82,12 @@ const NotificationPage = () => {
             <button className={styles.settingsButton}>
               <span className="material-symbols-outlined">settings</span>
             </button>
-            <div 
+            <div
               className={styles.userAvatar}
-              style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBGKoOpfs-M5T0-oMbs84Pn6a1oq81cSn7J-XuSxfuo8aKyi1nr7gNEo22hlPeXm7J_wAl6rZ894g1zjF6aU828_HJVvr2MtfwzS8CDp8dRDMcCrLMcGZZCG1pBA_1BjL79k_-BhfpeUpsKOBhsXc7WCNH-OHzbrZX9iW1wy1lmAzWexqU3-Ih75jar5mwBLILOTZpJnmVfNcPSMcz6r8DhKFbL2BAstGQtxZTGmIxYZDS7aPP9IunauMuqFYim9Ff1XlEtcu-NbxLl")' }}
+              style={{
+                backgroundImage:
+                  'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBGKoOpfs-M5T0-oMbs84Pn6a1oq81cSn7J-XuSxfuo8aKyi1nr7gNEo22hlPeXm7J_wAl6rZ894g1zjF6aU828_HJVvr2MtfwzS8CDp8dRDMcCrLMcGZZCG1pBA_1BjL79k_-BhfpeUpsKOBhsXc7WCNH-OHzbrZX9iW1wy1lmAzWexqU3-Ih75jar5mwBLILOTZpJnmVfNcPSMcz6r8DhKFbL2BAstGQtxZTGmIxYZDS7aPP9IunauMuqFYim9Ff1XlEtcu-NbxLl")',
+              }}
             ></div>
           </div>
         </div>
@@ -82,15 +99,29 @@ const NotificationPage = () => {
           {/* Page Title */}
           <div className={styles.pageTitleSection}>
             <h1 className={styles.pageTitle}>Notifications</h1>
-            <button className={styles.markAllReadButton}>Mark all as read</button>
+            <button className={styles.markAllReadButton}>
+              Mark all as read
+            </button>
           </div>
 
           {/* Filters */}
           <div className={styles.filtersContainer}>
             <div className={styles.filtersWrapper}>
-              <button className={`${styles.filterButton} ${styles.filterButtonActive}`}>All</button>
-              <button className={`${styles.filterButton} ${styles.filterButtonInactive}`}>Mentions</button>
-              <button className={`${styles.filterButton} ${styles.filterButtonInactive}`}>Requests</button>
+              <button
+                className={`${styles.filterButton} ${styles.filterButtonActive}`}
+              >
+                All
+              </button>
+              <button
+                className={`${styles.filterButton} ${styles.filterButtonInactive}`}
+              >
+                Mentions
+              </button>
+              <button
+                className={`${styles.filterButton} ${styles.filterButtonInactive}`}
+              >
+                Requests
+              </button>
             </div>
           </div>
 
@@ -124,43 +155,44 @@ const NotificationPage = () => {
 
             {/* Notification Item: Follow */}
             {notifications.map((notification) => (
-                <div 
-                    key={notification.id}
-                    className={styles.notificationItem}
-                >
-                    <div className={styles.avatarContainer}>
-                    <div 
-                        className={styles.avatar}
-                        style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBgc5MktuH5oBeGvrf8K-QTPjIRfFxdO9b6qQGv9yCIKG9wKs2o8mNgKtxKtVtcAGZtvOJIHCEt73NLzKLJqoptq2SJTtLEbA7XgDk_m011o8p20byZEPO6jupqavKMe0EpjrMnxtfwedsn3aCDv9VzTfVfzHz07EVMaRADQNcWS9-_YRK7rNJe9WTHaIUYU7KdWTDKwtLPhMAnExs1jYSA7cZlQsaGobNzzyQQ3D-y7hzFMe4eBN4I4uCDhoyRSNVPNynMlfi7WHFd")' }}
-                    ></div>
-                    {/* <div className={`${styles.iconBadge} ${styles.iconBadgePrimary}`}>
+              <div key={notification.id} className={styles.notificationItem}>
+                <div className={styles.avatarContainer}>
+                  <div
+                    className={styles.avatar}
+                    style={{
+                      backgroundImage:
+                        'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBgc5MktuH5oBeGvrf8K-QTPjIRfFxdO9b6qQGv9yCIKG9wKs2o8mNgKtxKtVtcAGZtvOJIHCEt73NLzKLJqoptq2SJTtLEbA7XgDk_m011o8p20byZEPO6jupqavKMe0EpjrMnxtfwedsn3aCDv9VzTfVfzHz07EVMaRADQNcWS9-_YRK7rNJe9WTHaIUYU7KdWTDKwtLPhMAnExs1jYSA7cZlQsaGobNzzyQQ3D-y7hzFMe4eBN4I4uCDhoyRSNVPNynMlfi7WHFd")',
+                    }}
+                  ></div>
+                  {/* <div className={`${styles.iconBadge} ${styles.iconBadgePrimary}`}>
                         <span className="material-symbols-outlined">person_add</span>
                     </div> */}
-                    </div>
-                    <div className={styles.notificationContent}>
-                    <p className={styles.notificationText}>
-                        <span 
-                            className={styles.notificationTextHighlight}
-                            onClick={() => { navigate(`/user/${notification.sender}`) }}
-                        >
-                            {notification.sender}
-                        </span>
-                        
-                        {notification.description}
-                        
-                        <span className={styles.notificationTime}>{new Date(notification.created_at).toLocaleString()}</span>
-                    </p>
-                    </div>
-                    <div className={styles.notificationActions}>
-                    <button className={styles.followButton}>
-                        Follow Back
-                    </button>
-                    <div className={styles.unreadDot}></div>
-                    </div>
                 </div>
+                <div className={styles.notificationContent}>
+                  <p className={styles.notificationText}>
+                    <span
+                      className={styles.notificationTextHighlight}
+                      onClick={() => {
+                        navigate(`/user/${notification.sender}`);
+                      }}
+                    >
+                      {notification.sender}
+                    </span>
 
+                    {notification.description}
+
+                    <span className={styles.notificationTime}>
+                      {new Date(notification.created_at).toLocaleString()}
+                    </span>
+                  </p>
+                </div>
+                <div className={styles.notificationActions}>
+                  <button className={styles.followButton}>Follow Back</button>
+                  <div className={styles.unreadDot}></div>
+                </div>
+              </div>
             ))}
-            
+
             {/* Notification Item: Comment */}
             {/* <div className={`${styles.notificationItem} ${styles.notificationItemColumn}`}>
               <div className={styles.notificationItemRow}>

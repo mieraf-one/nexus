@@ -1,43 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import styles from '../Css/FollowersModal.module.css';
-import { getReq } from '../../utils/utils';
-import { useNavigate, useParams } from 'react-router-dom';
-import path from '../../utils/apiEndPoints';
-import { DotSpinner } from '../LoadingSpinner';
+import React, { useState, useEffect } from "react";
+import styles from "../Css/FollowersModal.module.css";
+import { getReq } from "../../utils/utils";
+import { useNavigate, useParams } from "react-router-dom";
+import path from "../../utils/apiEndPoints";
+import { DotSpinner } from "../LoadingSpinner";
 
 const FollowersModal = ({ isOpen, onClose }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [followers, setFollowers] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { username } = useParams();
 
-   useEffect(() => {
-      const fetchFollowing = async () => {
-        try {
-            setLoading(true);
+  useEffect(() => {
+    const fetchFollowing = async () => {
+      try {
+        setLoading(true);
 
-            const res = await getReq(path.userFollowers(username));
-            //  console.log(res);
-            setFollowers(res.follower);
-        } catch (err) {
-            console.log(err.message)
-        } finally {
-          setLoading(false);
-        }
-    }
-    
+        const res = await getReq(path.userFollowers(username));
+        //  console.log(res);
+        setFollowers(res.follower);
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchFollowing();
-    
-  }, [username])
+  }, [username]);
 
   const handleRemove = (id) => {
-    setFollowers(followers.filter(user => user.id !== id));
+    setFollowers(followers.filter((user) => user.id !== id));
   };
 
-  const filteredFollowers = followers.filter(user =>
-    user.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.username.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredFollowers = followers.filter(
+    (user) =>
+      user.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.username.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   if (!isOpen) return null;
@@ -47,8 +47,8 @@ const FollowersModal = ({ isOpen, onClose }) => {
       onClose();
     }
   };
-  
-  if (loading) <DotSpinner />
+
+  if (loading) <DotSpinner />;
   return (
     <>
       {/* Mock Background Blur */}
@@ -71,9 +71,10 @@ const FollowersModal = ({ isOpen, onClose }) => {
           <div className={styles.modalHeader}>
             <div className={styles.headerContent}>
               <h2 className={styles.modalTitle}>
-                Followers <span className={styles.count}>{followers?.length}</span>
+                Followers{" "}
+                <span className={styles.count}>{followers?.length}</span>
               </h2>
-              <button 
+              <button
                 className={styles.closeButton}
                 onClick={onClose}
                 aria-label="Close modal"
@@ -100,54 +101,57 @@ const FollowersModal = ({ isOpen, onClose }) => {
           {/* Scrollable List Content */}
           <div className={styles.listContainer}>
             {filteredFollowers.map((user) => (
+              <div key={user.id} className={styles.listItem}>
                 <div
-                  key={user.id}
-                  className={styles.listItem}
+                  className={styles.userInfo}
+                  onClick={() => {
+                    onClose();
+                    navigate(`/user/${user.username}`);
+                  }}
+                  style={{ cursor: "pointer" }}
                 >
-                  <div
-                    className={styles.userInfo}
-                    onClick={() => { onClose(); navigate(`/user/${user.username}`)}}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <div className={styles.avatarContainer}>
-                      {user.avatar ? (
-                        <div
-                          className={styles.avatar}
-                          style={{ backgroundImage: `url("${user.avatar}")` }}
-                        ></div>
-                      ) : (
-                        <div className={`${styles.avatar} ${styles.brandAvatar}`}>
-                          <span className="material-symbols-outlined">rocket_launch</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className={styles.userDetails}>
-                      <div className={styles.nameContainer}>
-                        <span className={styles.userName}>{user.first_name}</span>
-                        {user.verified && (
-                          <span className={styles.verifiedIcon} title="Verified">
-                            <span className="material-symbols-outlined">verified</span>
-                          </span>
-                        )}
+                  <div className={styles.avatarContainer}>
+                    {user.avatar ? (
+                      <div
+                        className={styles.avatar}
+                        style={{ backgroundImage: `url("${user.avatar}")` }}
+                      ></div>
+                    ) : (
+                      <div className={`${styles.avatar} ${styles.brandAvatar}`}>
+                        <span className="material-symbols-outlined">
+                          rocket_launch
+                        </span>
                       </div>
-                      <span className={styles.userUsername}>{user.username}</span>
-                    </div>
+                    )}
                   </div>
 
-                  {/* Remove button does NOT trigger navigation */}
-                  <button
-                    className={styles.removeButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleRemove(user.id);
-                    }}
-                  >
-                    Remove
-                  </button>
+                  <div className={styles.userDetails}>
+                    <div className={styles.nameContainer}>
+                      <span className={styles.userName}>{user.first_name}</span>
+                      {user.verified && (
+                        <span className={styles.verifiedIcon} title="Verified">
+                          <span className="material-symbols-outlined">
+                            verified
+                          </span>
+                        </span>
+                      )}
+                    </div>
+                    <span className={styles.userUsername}>{user.username}</span>
+                  </div>
                 </div>
-              ))}
 
+                {/* Remove button does NOT trigger navigation */}
+                <button
+                  className={styles.removeButton}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemove(user.id);
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
           </div>
 
           {/* Modal Footer Gradient */}

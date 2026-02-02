@@ -1,98 +1,100 @@
-import React, { useContext, useEffect, useState } from 'react';
-import styles from './css/ProfilePage.module.css';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { DotSpinner } from '../components/LoadingSpinner';
-import { AuthContext } from '../context/AuthContext';
-import FollowingModal from '../components/UserProfilePage/FollowingModal';
-import FollowersModal from '../components/UserProfilePage/FollowersModal';
-import ProfileHorizontalCard from '../components/ProfileHorizontalCard';
-import path from '../utils/apiEndPoints';
-import { followUser, getReq, properDate, unFollowUser } from '../utils/utils';
+import React, { useContext, useEffect, useState } from "react";
+import styles from "./css/ProfilePage.module.css";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { DotSpinner } from "../components/LoadingSpinner";
+import { AuthContext } from "../context/AuthContext";
+import FollowingModal from "../components/UserProfilePage/FollowingModal";
+import FollowersModal from "../components/UserProfilePage/FollowersModal";
+import ProfileHorizontalCard from "../components/ProfileHorizontalCard";
+import path from "../utils/apiEndPoints";
+import { followUser, getReq, properDate, unFollowUser } from "../utils/utils";
 
 function UsersProfilePage() {
-    const [user, setUser] = useState({});
-    const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
-    const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
-    const [childLoading, setChildLoading] = useState(false);
-    const { username } = useParams();
-    const { logout } = useContext(AuthContext);
+  const [user, setUser] = useState({});
+  const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
+  const [isFollowersModalOpen, setIsFollowersModalOpen] = useState(false);
+  const [childLoading, setChildLoading] = useState(false);
+  const { username } = useParams();
+  const { logout } = useContext(AuthContext);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    
-    useEffect(() => {      
-        const fetchUser = async () => {
-            try {
-                setChildLoading(true);
-                const res = await getReq(path.profile(username));
-                console.log(res);
-                setUser(res);
-            } catch (error) {
-                console.log(error.message);
-                if (error.code == 401) {
-                  logout;
-                  navigate('/login');
-                  return;
-                }
-            } finally {
-                setChildLoading(false);
-            };
-        }
-        
-        fetchUser();
-    }, [username])
-
-
-    const handleFollow = async (id) => {
-      const prevState = {...user};
-
+  useEffect(() => {
+    const fetchUser = async () => {
       try {
-
-        setUser(prev => ({
-          ...prev, is_following: !prev.is_following
-        }));
-
-        if (prevState.is_following) {
-          await unFollowUser(id);
-
-        } else {
-          await followUser(id);
-        }
-
+        setChildLoading(true);
+        const res = await getReq(path.profile(username));
+        console.log(res);
+        setUser(res);
       } catch (error) {
         console.log(error.message);
-        setUser(prevState);
+        if (error.code == 401) {
+          logout;
+          navigate("/login");
+          return;
+        }
+      } finally {
+        setChildLoading(false);
       }
+    };
+
+    fetchUser();
+  }, [username]);
+
+  const handleFollow = async (id) => {
+    const prevState = { ...user };
+
+    try {
+      setUser((prev) => ({
+        ...prev,
+        is_following: !prev.is_following,
+      }));
+
+      if (prevState.is_following) {
+        await unFollowUser(id);
+      } else {
+        await followUser(id);
+      }
+    } catch (error) {
+      console.log(error.message);
+      setUser(prevState);
     }
+  };
 
   const posts = [
     {
       id: 1,
       title: "Tokyo Sunset Vibes",
-      description: "Capturing the golden hour in Shibuya. The colors were absolutely unreal today! 🌆📸 #Tokyo #Photography",
+      description:
+        "Capturing the golden hour in Shibuya. The colors were absolutely unreal today! 🌆📸 #Tokyo #Photography",
       time: "2h ago",
       likes: "1.2k",
       comments: "86",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAIt3IrgNWXByEU5bD_You09jSeABItmrTP2w0vdlcuc66MgKpEu2xeWOuBmKk6a7Mi_w81wZtvJ0gr4NHw_TQ0xb-rfMUL3HVxut522T6pfqkjkg8-p-ks6gdh3BjyOTY5v0720NCxl-tr9wL_TZc1N3gWLEvwPUog-KDCMmKqKN8R1Cv6HcUu9P75A-mdNNFZ_rFUFrZjG-pBOGXE7da-NcIWPBywrMHQ19t-KKcJt9ybI2SPWEkwjLeMQHoroX1zcngMPaVYBnSt",
-      hasMultiple: true
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuAIt3IrgNWXByEU5bD_You09jSeABItmrTP2w0vdlcuc66MgKpEu2xeWOuBmKk6a7Mi_w81wZtvJ0gr4NHw_TQ0xb-rfMUL3HVxut522T6pfqkjkg8-p-ks6gdh3BjyOTY5v0720NCxl-tr9wL_TZc1N3gWLEvwPUog-KDCMmKqKN8R1Cv6HcUu9P75A-mdNNFZ_rFUFrZjG-pBOGXE7da-NcIWPBywrMHQ19t-KKcJt9ybI2SPWEkwjLeMQHoroX1zcngMPaVYBnSt",
+      hasMultiple: true,
     },
     {
       id: 2,
       title: "New Design System",
-      description: "Just finished the first draft of the new component library. Check out the button states! 🎨✨",
+      description:
+        "Just finished the first draft of the new component library. Check out the button states! 🎨✨",
       time: "5h ago",
       likes: "843",
       comments: "42",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCTC-nVs0AAIMO4V2JIZ3ILj7gbG6YLGNkgVo6qNikjC29hRbsYV6j85m6W_g4A6yfPgl10giIsoPZ6RE52ULEoM_7j7u3N4JS34n49OS4qO0FZDcF2oiv-MMfpvQSbOzrRrtQdYFiVJqCTHpdrsXQeind25zhPOxrbLJ1SGPOd0-zAgOVuk8mDBq4dEs_nKQ9Eeq5acnhKMIqA3U2DdCaMf9vJmoq7Imx1ozKw8TaloJVOKeTXLKaD-kHrqXcRRo7yD_oBvKnHZcce"
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCTC-nVs0AAIMO4V2JIZ3ILj7gbG6YLGNkgVo6qNikjC29hRbsYV6j85m6W_g4A6yfPgl10giIsoPZ6RE52ULEoM_7j7u3N4JS34n49OS4qO0FZDcF2oiv-MMfpvQSbOzrRrtQdYFiVJqCTHpdrsXQeind25zhPOxrbLJ1SGPOd0-zAgOVuk8mDBq4dEs_nKQ9Eeq5acnhKMIqA3U2DdCaMf9vJmoq7Imx1ozKw8TaloJVOKeTXLKaD-kHrqXcRRo7yD_oBvKnHZcce",
     },
     {
       id: 3,
       title: "Workspace Setup",
-      description: "Finally got the standing desk organized. Productivity boost incoming! 🚀",
+      description:
+        "Finally got the standing desk organized. Productivity boost incoming! 🚀",
       time: "1d ago",
       likes: "2.1k",
       comments: "156",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAx7Emoh1bzkU4uKOgoegQXOo3Kn_sBO0ihDpXKnS15yM5rpEqr1P34-V8UfnRjyAJdjsLU0_LaBHLjHQcGXgqbf13uBEkrZHpg3PG1rkXJZ_dpiAAyyK5spCEoGvioj5yh6H5pTb_A4njHsWzA4PIPJSjCPHWd84c8vMPpT20Q_q9n5vptZbTKEDP999MqFN1U0uFYFec3oUgiak7Bok1sg14QayBOSnCXBh258PNGoDFvWH3S7kQh8FpBv3GB-qiYaTtyOLl1QZCB"
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuAx7Emoh1bzkU4uKOgoegQXOo3Kn_sBO0ihDpXKnS15yM5rpEqr1P34-V8UfnRjyAJdjsLU0_LaBHLjHQcGXgqbf13uBEkrZHpg3PG1rkXJZ_dpiAAyyK5spCEoGvioj5yh6H5pTb_A4njHsWzA4PIPJSjCPHWd84c8vMPpT20Q_q9n5vptZbTKEDP999MqFN1U0uFYFec3oUgiak7Bok1sg14QayBOSnCXBh258PNGoDFvWH3S7kQh8FpBv3GB-qiYaTtyOLl1QZCB",
     },
     {
       id: 4,
@@ -101,26 +103,31 @@ function UsersProfilePage() {
       time: "2d ago",
       likes: "542",
       comments: "23",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC9iCvDBceAojztThILD1mKzgPQFnZeQdW6Hg2wXf3MMdlNrPp2MD8zu_BXZnI95Ux8O368Bkod-TmVsDIzxQd5jW_uDxWojAD8Swj46sPjFQ8BF4P0yt9B8tZRovQnaJHubGaPx8yraLhI20NNHbNmdgXI3J2aN3u6bFDjz9Y6r92fk6n6Cz8YDvxt3Os-wgYTpEj787nM2gjeWabO2MGMBEl0OdAXjlqrdU9bKoXfq4jgCtH0R8egtFyZTW9ErNPA5Mqm-wW2XvpG"
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuC9iCvDBceAojztThILD1mKzgPQFnZeQdW6Hg2wXf3MMdlNrPp2MD8zu_BXZnI95Ux8O368Bkod-TmVsDIzxQd5jW_uDxWojAD8Swj46sPjFQ8BF4P0yt9B8tZRovQnaJHubGaPx8yraLhI20NNHbNmdgXI3J2aN3u6bFDjz9Y6r92fk6n6Cz8YDvxt3Os-wgYTpEj787nM2gjeWabO2MGMBEl0OdAXjlqrdU9bKoXfq4jgCtH0R8egtFyZTW9ErNPA5Mqm-wW2XvpG",
     },
     {
       id: 5,
       title: "Night City",
-      description: "Neon lights and rain. The cyberpunk aesthetic is real tonight. ☔️🏙️",
+      description:
+        "Neon lights and rain. The cyberpunk aesthetic is real tonight. ☔️🏙️",
       time: "3d ago",
       likes: "3.4k",
       comments: "201",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCA-uN3MQ6r70AUOtO0aMPFPuc8DF91t2oKru5lyKalgXUbQsicM3XwKaVddVREWbSkeLQf8bKF9EwWHCozx4kbai80wWBGdP4OyTGKy1pWG0CL0dKiOxOtS8CU7lW4YZBSkRyvNtgPkj2Xsr7hUJbVa6Cj_Mi-T1lRCDh0jbqA3EH-Ven9vE1YvJ6kE89vhw7X_vhqEZT3GrkHSL7CiCyzU0Xcn7AqmIzw_NI2ncJSUGBLgKKn58hc39nE3MA1RLJVjZSFsRez0SAt"
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCA-uN3MQ6r70AUOtO0aMPFPuc8DF91t2oKru5lyKalgXUbQsicM3XwKaVddVREWbSkeLQf8bKF9EwWHCozx4kbai80wWBGdP4OyTGKy1pWG0CL0dKiOxOtS8CU7lW4YZBSkRyvNtgPkj2Xsr7hUJbVa6Cj_Mi-T1lRCDh0jbqA3EH-Ven9vE1YvJ6kE89vhw7X_vhqEZT3GrkHSL7CiCyzU0Xcn7AqmIzw_NI2ncJSUGBLgKKn58hc39nE3MA1RLJVjZSFsRez0SAt",
     },
     {
       id: 6,
       title: "Sketching Ideas",
-      description: "Back to basics with pen and paper. Sometimes low-fi is the best way to start. ✏️",
+      description:
+        "Back to basics with pen and paper. Sometimes low-fi is the best way to start. ✏️",
       time: "4d ago",
       likes: "980",
       comments: "67",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCxhLjLejoxaHHfIDm_bxwchHvP346ZxjjqdfdAzkU3qQfoy3kqaV1NnQljmaxlW6Nbl_GcDnKQZce-vYiDAMWoxWh2xjSLDLlpKGcsBPh2L_0zftVlTJmlFDEbVU12kORAIGfva9eXMDChHF9C8nzW66opmrdcuvARV3ua6JDruMGqB23y1gkpWOtHxP-0A6Wmg7GYscg-BxGHyu2hDs3cxH6_JFy-zgnTTMxY58vczh_Pz5M7fxbLIOgJQekGze9gcD-pELVYE9Oe"
-    }
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCxhLjLejoxaHHfIDm_bxwchHvP346ZxjjqdfdAzkU3qQfoy3kqaV1NnQljmaxlW6Nbl_GcDnKQZce-vYiDAMWoxWh2xjSLDLlpKGcsBPh2L_0zftVlTJmlFDEbVU12kORAIGfva9eXMDChHF9C8nzW66opmrdcuvARV3ua6JDruMGqB23y1gkpWOtHxP-0A6Wmg7GYscg-BxGHyu2hDs3cxH6_JFy-zgnTTMxY58vczh_Pz5M7fxbLIOgJQekGze9gcD-pELVYE9Oe",
+    },
   ];
 
   return (
@@ -130,7 +137,7 @@ function UsersProfilePage() {
         <div className={styles.headerContent}>
           {/* Logo & Branding */}
           <div className={styles.logoContainer}>
-            <Link to={'/dashboard'} className={styles.logoLink}>
+            <Link to={"/dashboard"} className={styles.logoLink}>
               <div className={styles.logoIcon}>
                 <span className="material-symbols-outlined">all_inclusive</span>
               </div>
@@ -138,27 +145,27 @@ function UsersProfilePage() {
             </Link>
           </div>
 
-            {/* Center Navigation Bar */}
-            <nav className={styles.navigation}>
-                <Link to={'/dashboard'} className={styles.navLink}>
-                    <span className="material-symbols-outlined">home</span>
-                    <span className={styles.navText}>Home</span>
-                </Link>
+          {/* Center Navigation Bar */}
+          <nav className={styles.navigation}>
+            <Link to={"/dashboard"} className={styles.navLink}>
+              <span className="material-symbols-outlined">home</span>
+              <span className={styles.navText}>Home</span>
+            </Link>
 
-                <a className={styles.navLink} href="#">
-                    <span className="material-symbols-outlined">explore</span>
-                    <span className={styles.navText}>Explore</span>
-                </a>
-                <Link to={'/notifications'} className={styles.navLink} href="#">
-                    <span className="material-symbols-outlined">notifications</span>
-                    <span className={styles.navText}>Notifications</span>
-                </Link>
-                <a className={`${styles.navLink} ${styles.active}`} href="#">
-                    <span className="material-symbols-outlined">person</span>
-                    <span className={styles.navText}>Profile</span>
-                </a>
-            </nav>
-            <div></div>
+            <a className={styles.navLink} href="#">
+              <span className="material-symbols-outlined">explore</span>
+              <span className={styles.navText}>Explore</span>
+            </a>
+            <Link to={"/notifications"} className={styles.navLink} href="#">
+              <span className="material-symbols-outlined">notifications</span>
+              <span className={styles.navText}>Notifications</span>
+            </Link>
+            <a className={`${styles.navLink} ${styles.active}`} href="#">
+              <span className="material-symbols-outlined">person</span>
+              <span className={styles.navText}>Profile</span>
+            </a>
+          </nav>
+          <div></div>
         </div>
       </header>
 
@@ -170,8 +177,8 @@ function UsersProfilePage() {
           <div className={styles.avatarContainer}>
             <div className={styles.avatarGradient}>
               <div className={styles.avatarInner}>
-                <div 
-                  className={styles.avatarImage} 
+                <div
+                  className={styles.avatarImage}
                   style={{ backgroundImage: `url(${user?.profile_picture})` }}
                 ></div>
               </div>
@@ -179,122 +186,127 @@ function UsersProfilePage() {
             <div className={styles.statusIndicator}></div>
           </div>
 
-
           {/* User Info */}
-          {childLoading
-            
-            ?
-            
+          {childLoading ? (
             <DotSpinner />
-            
-            :
+          ) : (
             <>
-            <div className={styles.userInfo}>
-                <h1 className={styles.userName}>{user?.first_name} {user?.last_name}</h1>
+              <div className={styles.userInfo}>
+                <h1 className={styles.userName}>
+                  {user?.first_name} {user?.last_name}
+                </h1>
                 <p className={styles.userHandle}>@{user?.username}</p>
-                <p className={styles.userBio}>
-                {user?.bio || "bio"}
-                </p>
-            </div>
-            
-            {/* Stats Row */}
-            <div className={styles.statsContainer}>
+                <p className={styles.userBio}>{user?.bio || "bio"}</p>
+              </div>
 
-              {/* Followers button*/}
+              {/* Stats Row */}
+              <div className={styles.statsContainer}>
+                {/* Followers button*/}
                 <div>
                   <button
                     className={styles.statItem}
-                    onClick={() => {setIsFollowersModalOpen(true);}}
+                    onClick={() => {
+                      setIsFollowersModalOpen(true);
+                    }}
                   >
-                      <span className={styles.statNumber}>{(user?.follower)?.length}</span>
-                      <span className={styles.statLabel}>Followers</span>
+                    <span className={styles.statNumber}>
+                      {user?.follower?.length}
+                    </span>
+                    <span className={styles.statLabel}>Followers</span>
                   </button>
 
                   <FollowersModal
                     isOpen={isFollowersModalOpen}
-                    onClose={() => {setIsFollowersModalOpen(false);}}>
-                  </FollowersModal>
-
+                    onClose={() => {
+                      setIsFollowersModalOpen(false);
+                    }}
+                  ></FollowersModal>
                 </div>
-                
-                
+
                 {/* divider */}
                 <div className={styles.statDivider}></div>
-
 
                 {/* Following button */}
                 <div>
                   <button
-                  className={styles.statItem}
-                  onClick={() => {setIsFollowingModalOpen(true);}}
-                >
-                    <span className={styles.statNumber}>{(user?.following)?.length}</span>
+                    className={styles.statItem}
+                    onClick={() => {
+                      setIsFollowingModalOpen(true);
+                    }}
+                  >
+                    <span className={styles.statNumber}>
+                      {user?.following?.length}
+                    </span>
                     <span className={styles.statLabel}>Following</span>
-                </button>
+                  </button>
 
-                <FollowingModal
-                  isOpen={isFollowingModalOpen}
-                  onClose={() => {setIsFollowingModalOpen(false);}}>
-                </FollowingModal>    
+                  <FollowingModal
+                    isOpen={isFollowingModalOpen}
+                    onClose={() => {
+                      setIsFollowingModalOpen(false);
+                    }}
+                  ></FollowingModal>
                 </div>
-                
-                
-            </div>
+              </div>
             </>
+          )}
 
-            }
-          
-          {user.is_owner 
-          ?
-          <>
-            {/* Action Buttons */}
-            <div className={styles.actionButtons}>
-              <button
-                className={styles.editButton}
-                onClick={() => {navigate('/create')}}
-              >
+          {user.is_owner ? (
+            <>
+              {/* Action Buttons */}
+              <div className={styles.actionButtons}>
+                <button
+                  className={styles.editButton}
+                  onClick={() => {
+                    navigate("/create");
+                  }}
+                >
                   <span className="material-symbols-outlined">upload</span>
                   <span>Post</span>
-              </button>
-              <button
-                className={styles.iconButton}
-                onClick={() => {navigate('/profile/edit')}}
-              >
-                <span className="material-symbols-outlined">edit</span>
-              </button>
-              <button className={styles.iconButton}>
-                <span className="material-symbols-outlined">settings</span>
-              </button>
-              <button className={styles.iconButton} onClick={logout}>
-                  <span className="material-symbols-outlined logout-icon">logout</span>
-              </button>
-  
-            </div>
-          </>
-          :
-          <>
-           {/* Action Buttons */}
-          <div className={styles.actionButtons}>
+                </button>
+                <button
+                  className={styles.iconButton}
+                  onClick={() => {
+                    navigate("/profile/edit");
+                  }}
+                >
+                  <span className="material-symbols-outlined">edit</span>
+                </button>
+                <button className={styles.iconButton}>
+                  <span className="material-symbols-outlined">settings</span>
+                </button>
+                <button className={styles.iconButton} onClick={logout}>
+                  <span className="material-symbols-outlined logout-icon">
+                    logout
+                  </span>
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Action Buttons */}
+              <div className={styles.actionButtons}>
+                {/* follow btn */}
+                <button
+                  className={`${styles.followBtn} ${user.is_following ? styles.following : ""}`}
+                  onClick={() => {
+                    handleFollow(user?.id);
+                  }}
+                >
+                  <span>{user.is_following ? "Following" : "Follow"}</span>
+                </button>
 
-            {/* follow btn */}
-            <button
-                className={`${styles.followBtn} ${user.is_following ? styles.following : ''}`}
-                onClick={() => {handleFollow(user?.id)}}
-            >
-                <span>{user.is_following ? 'Following' : 'Follow'}</span>
-            </button>
-
-            {/* message button */}
-            <button className={styles.messageButton}>
-                <span>Message</span>
-            </button>
-          </div>
-          </>
-          }          
+                {/* message button */}
+                <button className={styles.messageButton}>
+                  <span>Message</span>
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
-            {/* <ProfileHorizontalCard /> */}
-            <ProfileHorizontalCard />
+        {/* <ProfileHorizontalCard /> */}
+        <ProfileHorizontalCard />
 
         {/* Content Tabs */}
         <div className={styles.contentTabs}>
@@ -319,19 +331,24 @@ function UsersProfilePage() {
         {/* Image Grid / Posts Feed */}
         <div className={styles.postsGrid}>
           {user.posts?.map((post) => (
-            <div  
-                key={post.id}
-                className={styles.postCard}
+            <div
+              key={post.id}
+              className={styles.postCard}
+              onClick={() => {
+                navigate(`/post/${post?.id}`);
+              }}
             >
               <div className={styles.postImage}>
-                <div 
+                <div
                   className={styles.imageContent}
                   style={{ backgroundImage: `url("${post.photo}")` }}
                 ></div>
                 <div className={styles.imageOverlay}></div>
                 {post.hasMultiple && (
                   <div className={styles.collectionBadge}>
-                    <span className="material-symbols-outlined">collections</span>
+                    <span className="material-symbols-outlined">
+                      collections
+                    </span>
                     <span>Multiple</span>
                   </div>
                 )}
@@ -339,19 +356,30 @@ function UsersProfilePage() {
               <div className={styles.postContent}>
                 <div className={styles.postHeader}>
                   {/* <h3 className={styles.postTitle}>{post.title}</h3> */}
-                  <span className={styles.postTime}>{properDate(post.edited_at)}</span>
+                  <span className={styles.postTime}>
+                    {properDate(post.edited_at)}
+                  </span>
                 </div>
                 <p className={styles.postDescription}>{post.caption}</p>
                 <div className={styles.postActions}>
                   <div
-                    className={`${styles.actionBtn} ${styles.likeBtn} ${post.is_liked ? styles.liked : ''}`}
+                    className={`${styles.actionBtn} ${styles.likeBtn} ${post.is_liked ? styles.liked : ""}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
                   >
                     <span className="material-symbols-outlined">favorite</span>
-                    <span className={styles.actionCount}>{post.likes_count}</span>
+                    <span className={styles.actionCount}>
+                      {post.likes_count}
+                    </span>
                   </div>
                   <div className={styles.actionItem}>
-                    <span className="material-symbols-outlined">chat_bubble</span>
-                    <span className={styles.actionCount}>{post?.comments_count}</span>
+                    <span className="material-symbols-outlined">
+                      chat_bubble
+                    </span>
+                    <span className={styles.actionCount}>
+                      {post?.comments_count}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -361,7 +389,6 @@ function UsersProfilePage() {
       </main>
     </div>
   );
-};
-
+}
 
 export default UsersProfilePage;

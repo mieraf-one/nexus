@@ -1,14 +1,20 @@
-import React, { useState, useRef, useEffect, useActionState, useContext } from 'react';
-import styles from './css/ViewPostPage.module.css';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getReq, postReq, properDate } from '../utils/utils';
-import path from '../utils/apiEndPoints';
-import { DotSpinner } from '../components/LoadingSpinner';
-import ImageSection from '../components/ViewPostPage/ImageSection';
-import UserHeader from '../components/ViewPostPage/UserHeader';
-import Comments from '../components/ViewPostPage/Comments';
-import BottomSection from '../components/ViewPostPage/BottomSection';
-import { AuthContext } from '../context/AuthContext';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useActionState,
+  useContext,
+} from "react";
+import styles from "./css/ViewPostPage.module.css";
+import { useNavigate, useParams } from "react-router-dom";
+import { getReq, postReq, properDate } from "../utils/utils";
+import path from "../utils/apiEndPoints";
+import { DotSpinner } from "../components/LoadingSpinner";
+import ImageSection from "../components/ViewPostPage/ImageSection";
+import UserHeader from "../components/ViewPostPage/UserHeader";
+import Comments from "../components/ViewPostPage/Comments";
+import BottomSection from "../components/ViewPostPage/BottomSection";
+import { AuthContext } from "../context/AuthContext";
 
 const ViewPostPage = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -18,7 +24,7 @@ const ViewPostPage = () => {
 
   const commentsRef = useRef(null);
   const modalRef = useRef(null);
-  
+
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -27,55 +33,49 @@ const ViewPostPage = () => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-          setLoading(true);
-          const post = await getReq(path.post(id));
-          console.log(post);
-          setPost(post);
+        setLoading(true);
+        const post = await getReq(path.post(id));
+        console.log(post);
+        setPost(post);
       } catch (error) {
         console.log(error.message);
 
         if (error.code == 401) {
           logout;
-          navigate('/login');
+          navigate("/login");
           return;
         }
-
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchComments();
 
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const handleLikeState = () => {
-    setPost(prev => ({
+    setPost((prev) => ({
       ...prev,
       is_liked: !prev.is_liked,
-      likes_count: prev.is_liked
-        ? prev.likes_count - 1
-        : prev.likes_count + 1
-    }))
-  }
+      likes_count: prev.is_liked ? prev.likes_count - 1 : prev.likes_count + 1,
+    }));
+  };
 
   const handleCommentState = (newComment) => {
-      setPost(prev => ({
-        ...prev,
-        comments: [
-          ...prev.comments,
-          newComment
-        ]
-      }));
-  }
+    setPost((prev) => ({
+      ...prev,
+      comments: [...prev.comments, newComment],
+    }));
+  };
 
   // Auto-scroll to comments on mobile when modal opens
   // useEffect(() => {
@@ -86,15 +86,19 @@ const ViewPostPage = () => {
   //   }
   // }, [isMobile]);
 
-  if (loading) { return <DotSpinner /> }
+  if (loading) {
+    return <DotSpinner />;
+  }
 
   return (
     <div className={`${styles.container} ${styles.light}`}>
       <div className={styles.modal} ref={modalRef}>
         {/* Mobile close button */}
-        <button 
+        <button
           className={styles.mobileCloseButton}
-          onClick={() => {navigate(-1)}}
+          onClick={() => {
+            navigate(-1);
+          }}
         >
           <span className="material-symbols-outlined">close</span>
         </button>
@@ -106,7 +110,6 @@ const ViewPostPage = () => {
         <div className={styles.commentsSection} ref={commentsRef}>
           {/* User header */}
           <UserHeader post={post} setPost={setPost} />
-        
 
           {/* Scrollable comments list */}
           <div className={styles.commentsListContainer}>
@@ -129,13 +132,16 @@ const ViewPostPage = () => {
               </div> */}
 
               {/* User comments */}
-              < Comments post={post} />
+              <Comments post={post} />
             </div>
           </div>
 
           {/* Fixed bottom actions and comment input */}
-          <BottomSection post={post} setLikesCount={handleLikeState} setComment={handleCommentState} />
-          
+          <BottomSection
+            post={post}
+            setLikesCount={handleLikeState}
+            setComment={handleCommentState}
+          />
         </div>
       </div>
 

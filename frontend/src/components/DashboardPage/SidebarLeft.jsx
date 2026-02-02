@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import styles from "../../pages/css/DashboardPage.module.css"
+import styles from "../../pages/css/DashboardPage.module.css";
 
 const SidebarLeft = () => {
   const navigate = useNavigate();
@@ -28,10 +28,12 @@ const SidebarLeft = () => {
           Settings
         </a>
       </nav>
-      
-      <button 
-          className={styles.createPostBtn}
-          onClick={() => {navigate('/create')}}
+
+      <button
+        className={styles.createPostBtn}
+        onClick={() => {
+          navigate("/create");
+        }}
       >
         <span className="material-symbols-outlined">add_circle</span>
         Create New Post
@@ -39,6 +41,5 @@ const SidebarLeft = () => {
     </aside>
   );
 };
-
 
 export default SidebarLeft;

@@ -1,13 +1,15 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from user.models import CustomUser
+from django.contrib.auth import get_user_model
 from rest_framework.validators import ValidationError
+
+CustomUser = get_user_model()
 
 class SignupSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
+    first_name = serializers.CharField(required=True)
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['id', 'first_name', 'last_name', 'username', 'email', 'password', 'confirm_password']
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -20,6 +22,4 @@ class SignupSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data.pop('confirm_password', None)
-        user = User.objects.create_user(**validated_data)
-        CustomUser.objects.create(user=user)
-        return user
+        return CustomUser.objects.create_user(**validated_data)
